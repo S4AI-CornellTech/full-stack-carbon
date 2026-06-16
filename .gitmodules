@@ -1,0 +1,18 @@
+[submodule "ACT"]
+	path = ACT
+	url = https://github.com/S4AI-CornellTech/ACTv2.git
+[submodule "Fair-CO2"]
+	path = Fair-CO2
+	url = https://github.com/S4AI-CornellTech/fair-co2.git
+[submodule "COFFEE"]
+	path = COFFEE
+	url = https://github.com/S4AI-CornellTech/COFFEE.git
+[submodule "CarbonClarity"]
+	path = CarbonClarity
+	url = https://github.com/S4AI-CornellTech/CarbonClarity.git
+[submodule "MicroGreen"]
+	path = MicroGreen
+	url = https://github.com/S4AI-CornellTech/MicroGreen.git
+[submodule "EServe"]
+	path = EServe
+	url = https://github.com/S4AI-CornellTech/EServe.git
