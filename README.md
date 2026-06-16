@@ -1,0 +1,52 @@
+# Full-Stack Carbon
+
+A unified suite of lab tools for **carbon modeling of computer hardware and systems** —
+from device design & manufacturing, through server provisioning, to software carbon
+attribution in the cloud. The six tools are bundled here as git submodules with a
+single guided walkthrough that ties them into one story: **the life of a data center**.
+
+## The tools
+| Tool | Layer | What it models |
+|------|-------|----------------|
+| [ACT](ACT) | chip / server | Embodied + operational carbon from a bill-of-materials |
+| [COFFEE](COFFEE) | emerging memory | Carbon of HZO FeFET eNVM (extends ACT's CMOS tables) |
+| [CarbonClarity](CarbonClarity) | uncertainty | Probabilistic embodied carbon / fab variance |
+| [MicroGreen](MicroGreen) | edge / IoT | Design-space exploration for sustainable MCU devices |
+| [EServe](EServe) (a.k.a. EcoServe) | server | GPU/CPU server embodied carbon |
+| [Fair-CO2](Fair-CO2) | datacenter | Fair carbon attribution for co-located workloads |
+
+## Quickstart
+```bash
+git clone https://github.com/S4AI-CornellTech/full-stack-carbon.git
+cd full-stack-carbon
+git submodule update --init
+git -C MicroGreen submodule update --init EmbodiedCarbonModeling   # modeling dep only
+make setup          # build isolated per-tool Python envs (uv-first)
+make all-demos      # run the six-tool walkthrough, then verify the chain
+make golden         # or: show committed backup figures with zero compute
+```
+See **[walkthrough/README.md](walkthrough/README.md)** for the guided story, and
+`make help` for all targets.
+
+## Environments
+The tools carry mutually incompatible pins (numpy 2.3.4 / 2.3.5 / 2.4.3; Python 3.11
+vs 3.12), so each gets its **own** virtual environment under `.envs/<tool>/`, created
+by `scripts/bootstrap.sh`. Heavy/optional pieces (MicroGreen's on-device hardware +
+Streamlit stack, Fair-CO2's Prophet/HuggingFace forecasting path) are gated behind
+`make setup-full`.
+
+## Layout
+```
+ACT/ COFFEE/ CarbonClarity/ MicroGreen/ EServe/ Fair-CO2/   # the six tool submodules
+walkthrough/        the six-segment guided example (the workshop centerpiece)
+scripts/bootstrap.sh  per-tool environment builder
+Makefile            orchestration (make help)
+```
+
+## Notes
+- Submodules use HTTPS URLs so the suite clones anonymously for artifact evaluation.
+- The walkthrough never modifies a submodule: it reuses each tool's code/data in place
+  and writes only into `walkthrough/<segment>/figures/` (gitignored).
+
+## Citation
+See `CITATION.cff` and each tool's own README for per-tool references.

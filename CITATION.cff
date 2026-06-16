@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+title: "Full-Stack Carbon: a unified suite for carbon modeling of computer systems"
+message: >-
+  This repository bundles six carbon-modeling tools as submodules. If you use a
+  specific tool, please also cite that tool using the reference in its own README.
+authors:
+  - name: "S4AI, Cornell Tech"
+date-released: 2026-06-16
+url: "https://github.com/S4AI-CornellTech/full-stack-carbon"
+keywords:
+  - sustainable computing
+  - embodied carbon
+  - carbon attribution
+  - life-cycle assessment
