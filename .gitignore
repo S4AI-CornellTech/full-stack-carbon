@@ -1,0 +1,12 @@
+# Per-tool virtual environments (created by scripts/bootstrap.sh)
+/.envs/
+
+# Scratch / regenerated outputs
+/results/
+walkthrough/*/figures/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
