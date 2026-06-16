@@ -1,0 +1,9 @@
+{
+  "gpu": "H100HGX",
+  "gpu_embodied_kgco2e": 154.2,
+  "soc_kgco2e": 41.5,
+  "memory_kgco2e": 68.0,
+  "memory_type": "HBM3",
+  "soc_node_nm": 5,
+  "note": "Full embodied carbon of one accelerator (time_ratio=1). EServe allocates a slice of this to a workload via execution_time/lifetime; segment 6 does that allocation across co-located jobs."
+}

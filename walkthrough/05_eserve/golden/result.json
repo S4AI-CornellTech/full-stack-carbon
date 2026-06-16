@@ -1,0 +1,28 @@
+{
+  "segment": "05_eserve",
+  "tool": "EServe",
+  "anchor": "NVIDIA H100HGX",
+  "headline": {
+    "gpu_embodied_kgco2e": 154.2
+  },
+  "breakdown_kgco2e": {
+    "memory": 68.0,
+    "PCB": 1.19,
+    "PDN": 28.75,
+    "cooling": 6.5,
+    "SoC": 41.5,
+    "connection": 0.93
+  },
+  "context": {
+    "r740_server_embodied_kgco2e": 1523.1
+  },
+  "handoff": {
+    "gpu": "H100HGX",
+    "gpu_embodied_kgco2e": 154.2,
+    "soc_kgco2e": 41.5,
+    "memory_kgco2e": 68.0,
+    "memory_type": "HBM3",
+    "soc_node_nm": 5,
+    "note": "Full embodied carbon of one accelerator (time_ratio=1). EServe allocates a slice of this to a workload via execution_time/lifetime; segment 6 does that allocation across co-located jobs."
+  }
+}

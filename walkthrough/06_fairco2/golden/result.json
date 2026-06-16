@@ -1,0 +1,23 @@
+{
+  "segment": "06_fairco2",
+  "tool": "Fair-CO2",
+  "anchor": "Dell R740 node, Llama-3-8B + Spark co-located",
+  "headline": {
+    "llama_isolated": 0.1608,
+    "llama_with_spark": 0.0797,
+    "spark_isolated": 0.2928,
+    "spark_with_llama": 0.1681
+  },
+  "fairness_note": "Run alone, each job carries the full shared-hardware embodied carbon for its runtime. Co-located, Fair-CO2 splits it: Llama 0.1608 -> 0.0797, Spark 0.2928 -> 0.1681 (gCO2e).",
+  "server_embodied_budget": {
+    "source": "Fair-CO2 colocation/process_colocation_sweep.py (ACT-derived)",
+    "ACT_cpu_chip_cf_gco2e": 18530,
+    "from_segment1_R740_kgco2e": 1523.1,
+    "from_segment5_H100_kgco2e": 154.2
+  },
+  "figures": [
+    "fairco2_attribution.png",
+    "2a_runtime_relative_change_matrix_new.pdf",
+    "2b_proportional_energy_relative_change_matrix_new.pdf"
+  ]
+}

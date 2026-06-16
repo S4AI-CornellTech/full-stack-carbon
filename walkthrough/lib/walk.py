@@ -73,3 +73,34 @@ def bar_chart(out_png, labels, values, *, title, ylabel="kgCO2e",
     fig.savefig(out, dpi=130)
     plt.close(fig)
     return out
+
+
+def grouped_bar(out_png, groups, series: dict, *, title, ylabel="kgCO2e",
+                colors=None, figsize=(7.2, 4.3)):
+    """Grouped bar chart. ``groups`` are x labels; ``series`` maps a name to a
+    list of values (one per group)."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    x = np.arange(len(groups))
+    n = max(len(series), 1)
+    w = 0.8 / n
+    colors = colors or {}
+    fig, ax = plt.subplots(figsize=figsize)
+    for i, (name, vals) in enumerate(series.items()):
+        ax.bar(x + (i - (n - 1) / 2) * w, vals, w, label=name, color=colors.get(name))
+    ax.set_xticks(x)
+    ax.set_xticklabels([str(g) for g in groups])
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
+    ax.legend(frameon=False)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    fig.tight_layout()
+    out = Path(out_png)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out, dpi=130)
+    plt.close(fig)
+    return out
