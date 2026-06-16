@@ -1,0 +1,15 @@
+{
+  "segment": "04_microgreen",
+  "tool": "MicroGreen",
+  "anchor": "Edge/IoT MCU boards",
+  "branch": "parallel edge tier (grams, not server kg) - not a provisioning-chain step",
+  "headline": {
+    "n_boards": 8,
+    "min_board": "nRF52840",
+    "min_kgco2e": 0.175,
+    "max_board": "coralDevMicro",
+    "max_kgco2e": 1.141,
+    "max_board_ic_share_pct": 78.0
+  },
+  "note": "Per-board embodied carbon from MicroGreen's committed board_carbon.csv (itself ACT-derived). The IC dominates the heaviest board, echoing the silicon-centric view ACT gives for servers."
+}

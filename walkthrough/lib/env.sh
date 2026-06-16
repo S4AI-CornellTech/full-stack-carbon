@@ -15,3 +15,4 @@ tool_py() {  # tool_py <tool> -> absolute path to that tool's venv python
 }
 
 export MPLBACKEND=Agg
+export PYTHONDONTWRITEBYTECODE=1   # keep submodules clean when we import their modules

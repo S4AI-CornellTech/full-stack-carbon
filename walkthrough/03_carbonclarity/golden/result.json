@@ -1,0 +1,14 @@
+{
+  "segment": "03_carbonclarity",
+  "tool": "CarbonClarity",
+  "anchor": "R740 CPU die, 28nm, 6.98 cm2",
+  "headline": {
+    "mean_kgco2e": 7.361,
+    "std_kgco2e": 1.698,
+    "p10_kgco2e": 5.154,
+    "p50_kgco2e": 7.312,
+    "p90_kgco2e": 9.623,
+    "act_point_estimate_kgco2e": 5.78
+  },
+  "note": "Propagates EPA/GPA/carbon-intensity/yield uncertainty into a distribution of embodied carbon. ACT's single-point estimate (segment 1) is shown as the dashed line for comparison."
+}
