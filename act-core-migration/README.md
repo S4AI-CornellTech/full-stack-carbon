@@ -41,11 +41,18 @@ reframed walkthrough.
     Plus **7 new component models** (active/connector/diode/inductor/other/resistor/switch).
     The ONLY behavioral delta: capacitor→`CAPACITOR` & PCB→`PCB` (vs ACT's `PASSIVES` &
     `FABRICATION`); `bom.py` differs by 74 additive lines (extra ComponentSpecs + dispatch).
-  - REMAINING PORT (next increment): (1) adopt superset enums + data + 7 models into act_core;
-    (2) add a SourceType **policy** to capacitor_model/pcb_model — default PASSIVES/FABRICATION
-    (keeps ACT green), ECM sets CAPACITOR/PCB; (3) superset `bom.py`; (4) port ECM's frontend to
-    import act_core (delete its `act/core`+`act/models`), policy=CAPACITOR/PCB, keep IoT BOMs;
-    (5) verify ACT ci_script + baselines byte-identical AND ECM's 14 baselines reproduce;
-    (6) commit+push act_core (ACTv2) + ECM, repoint the EmbodiedCarbonModeling pin.
+  - **act_core SUPERSET DONE** (ACTv2 `act-core`, commit `5d07fe7`, pushed): adopted the superset
+    enums + data + 7 component models + bom/materials/utils; added the capacitor/pcb `source_type`
+    policy (default ACT `PASSIVES`/`FABRICATION`; ECM will set `CAPACITOR`/`PCB`). ACT verified
+    **byte-identical** (ci_script + all 4 BOM totals; the report merely lists the 6 new SourceTypes
+    as 0). logic_model/storage_model kept as ACT's (IC packaging in-model, no yield division).
+  - **REMAINING — the ECM frontend port (entangled with C4):**
+    (1) make act_core **pip-installable** (pyproject + namespace-package handling — there are no
+    `__init__.py` files) so ECM can `import act_core` across submodules; (2) rewire ECM's frontend —
+    delete its `act/core`+`act/models`, import act_core, set capacitor/pcb policy=CAPACITOR/PCB;
+    (3) reconcile **IC packaging**: ECM adds it in the *frontend* with `/fab_yield`, ACT adds it
+    *in-model* without — add an `add_ic_packaging` flag to logic/storage (default True=ACT; ECM=False
+    and lets its frontend supply it) so BOTH reproduce exactly; (4) verify ECM's 14 baselines;
+    (5) push ECM + repoint the EmbodiedCarbonModeling pin.
 - **C3** (EServe convergence + vendor re-validation — needs the HBM-basis decision / domain
   sign-off), **C4** (wire suite to `act_core`): pending.
