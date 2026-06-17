@@ -46,13 +46,14 @@ reframed walkthrough.
     policy (default ACT `PASSIVES`/`FABRICATION`; ECM will set `CAPACITOR`/`PCB`). ACT verified
     **byte-identical** (ci_script + all 4 BOM totals; the report merely lists the 6 new SourceTypes
     as 0). logic_model/storage_model kept as ACT's (IC packaging in-model, no yield division).
-  - **REMAINING — the ECM frontend port (entangled with C4):**
-    (1) make act_core **pip-installable** (pyproject + namespace-package handling — there are no
-    `__init__.py` files) so ECM can `import act_core` across submodules; (2) rewire ECM's frontend —
-    delete its `act/core`+`act/models`, import act_core, set capacitor/pcb policy=CAPACITOR/PCB;
-    (3) reconcile **IC packaging**: ECM adds it in the *frontend* with `/fab_yield`, ACT adds it
-    *in-model* without — add an `add_ic_packaging` flag to logic/storage (default True=ACT; ECM=False
-    and lets its frontend supply it) so BOTH reproduce exactly; (4) verify ECM's 14 baselines;
-    (5) push ECM + repoint the EmbodiedCarbonModeling pin.
+  - **ECM PORT DONE** (EmbodiedCarbonModeling `act-core`, commit `d9fd240`, pushed):
+    made act_core **pip-installable** (pyproject + `__init__.py`; ACTv2 `3046ecf`); added an
+    `add_ic_packaging` flag + re-adopted ECM's `world_cpa` lookup in logic_model (both inert for
+    ACT — verified byte-identical, all 4 ACT totals + ci_script). Rewired ECM's frontend to import
+    act_core, **deleted its `act/core`+`act/models` fork**, set capacitor/pcb policy=CAPACITOR/PCB
+    and silicon `add_ic_packaging=False` (frontend supplies MANUAL packaging /fab_yield).
+    **All 14 ECM BOMs reproduce their baselines byte-for-byte.** ACT + MicroGreen now share one core.
+  - REMAINING (folds into C4): repoint MicroGreen's EmbodiedCarbonModeling pin to `d9fd240`; bump the
+    suite gitlinks; add editable `act-core` installs to `scripts/bootstrap.sh`.
 - **C3** (EServe convergence + vendor re-validation — needs the HBM-basis decision / domain
   sign-off), **C4** (wire suite to `act_core`): pending.
