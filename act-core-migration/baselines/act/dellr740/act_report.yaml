@@ -1,0 +1,95 @@
+cl_args: /home/leo/full-stack-carbon/ACT/act/act_model.py -m act/boms/dellr740.yaml
+  -o ../act-core-migration/baselines/act/dellr740
+query_settings:
+  duty_cycle: '1.0'
+  hw_lifetime: 2 year
+  op_ci: usa
+  op_power: 0 milliwatt
+report_generated: 06/17/2026 01:08:08
+result_by_category:
+  CONNECTOR: 0.0 kilogram
+  ENCLOSURE: 0.0 kilogram
+  FABRICATION: 1467.9376914285717 kilogram
+  MATERIALS: 0.0 kilogram
+  OPERATION: 0.0 kilogram
+  OTHER: 0.0 kilogram
+  PACKAGING: 55.2 kilogram
+  PASSIVES: 0.0 kilogram
+  PCB: 0.0 kilogram
+result_by_device:
+  materials_results: {}
+  passives_results: {}
+  silicon_results:
+    cpu.main0:
+      FABRICATION: 11.27170285714286 kilogram
+      PACKAGING: 0.3 kilogram
+    cpu.main1:
+      FABRICATION: 11.27170285714286 kilogram
+      PACKAGING: 0.3 kilogram
+    dram.main0:
+      FABRICATION: 24.685714285714283 kilogram
+      PACKAGING: 2.85 kilogram
+    dram.main1:
+      FABRICATION: 24.685714285714283 kilogram
+      PACKAGING: 2.85 kilogram
+    dram.main10:
+      FABRICATION: 24.685714285714283 kilogram
+      PACKAGING: 2.85 kilogram
+    dram.main11:
+      FABRICATION: 24.685714285714283 kilogram
+      PACKAGING: 2.85 kilogram
+    dram.main2:
+      FABRICATION: 24.685714285714283 kilogram
+      PACKAGING: 2.85 kilogram
+    dram.main3:
+      FABRICATION: 24.685714285714283 kilogram
+      PACKAGING: 2.85 kilogram
+    dram.main4:
+      FABRICATION: 24.685714285714283 kilogram
+      PACKAGING: 2.85 kilogram
+    dram.main5:
+      FABRICATION: 24.685714285714283 kilogram
+      PACKAGING: 2.85 kilogram
+    dram.main6:
+      FABRICATION: 24.685714285714283 kilogram
+      PACKAGING: 2.85 kilogram
+    dram.main7:
+      FABRICATION: 24.685714285714283 kilogram
+      PACKAGING: 2.85 kilogram
+    dram.main8:
+      FABRICATION: 24.685714285714283 kilogram
+      PACKAGING: 2.85 kilogram
+    dram.main9:
+      FABRICATION: 24.685714285714283 kilogram
+      PACKAGING: 2.85 kilogram
+    ssd.main0:
+      FABRICATION: 136.0457142857143 kilogram
+      PACKAGING: 1.95 kilogram
+    ssd.main1:
+      FABRICATION: 136.0457142857143 kilogram
+      PACKAGING: 1.95 kilogram
+    ssd.main2:
+      FABRICATION: 136.0457142857143 kilogram
+      PACKAGING: 1.95 kilogram
+    ssd.main3:
+      FABRICATION: 136.0457142857143 kilogram
+      PACKAGING: 1.95 kilogram
+    ssd.main4:
+      FABRICATION: 136.0457142857143 kilogram
+      PACKAGING: 1.95 kilogram
+    ssd.main5:
+      FABRICATION: 136.0457142857143 kilogram
+      PACKAGING: 1.95 kilogram
+    ssd.main6:
+      FABRICATION: 136.0457142857143 kilogram
+      PACKAGING: 1.95 kilogram
+    ssd.main7:
+      FABRICATION: 136.0457142857143 kilogram
+      PACKAGING: 1.95 kilogram
+    ssd.secondary.dram:
+      FABRICATION: 46.628571428571426 kilogram
+      PACKAGING: 2.85 kilogram
+    ssd.secondary.ssd:
+      FABRICATION: 14.171428571428573 kilogram
+      PACKAGING: 1.95 kilogram
+total_carbon: 1523.1376914285718 kilogram

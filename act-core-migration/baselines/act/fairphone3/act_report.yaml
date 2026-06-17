@@ -1,0 +1,92 @@
+cl_args: /home/leo/full-stack-carbon/ACT/act/act_model.py -m act/boms/fairphone3.yaml
+  -o ../act-core-migration/baselines/act/fairphone3
+query_settings:
+  duty_cycle: '1.0'
+  hw_lifetime: 2 year
+  op_ci: usa
+  op_power: 0 milliwatt
+report_generated: 06/17/2026 01:08:08
+result_by_category:
+  CONNECTOR: 0.0 kilogram
+  ENCLOSURE: 0.0 kilogram
+  FABRICATION: 8.451223314285713 kilogram
+  MATERIALS: 0.0 kilogram
+  OPERATION: 0.0 kilogram
+  OTHER: 0.0 kilogram
+  PACKAGING: 3.45 kilogram
+  PASSIVES: 0.0 kilogram
+  PCB: 0.0 kilogram
+result_by_device:
+  materials_results: {}
+  passives_results: {}
+  silicon_results:
+    cpu:
+      FABRICATION: 0.7492937142857143 kilogram
+      PACKAGING: 0.15 kilogram
+    dram:
+      FABRICATION: 2.742857142857143 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.audio_power_amplifier:
+      FABRICATION: 0.20928548571428573 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.cmos_image_sensor:
+      FABRICATION: 0.5652 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.ic_analog_switch0:
+      FABRICATION: 0.013726285714285715 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.ic_analog_switch1:
+      FABRICATION: 0.025999200000000004 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.ic_audio_power:
+      FABRICATION: 0.15502628571428573 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.ic_pmu0:
+      FABRICATION: 0.43407360000000006 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.ic_pmu1:
+      FABRICATION: 0.012434400000000002 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.ic_pmu2:
+      FABRICATION: 0.18344777142857144 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.ic_power_amplifier:
+      FABRICATION: 0.10173600000000001 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.ic_tranceiver:
+      FABRICATION: 0.17763428571428574 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.ic_wlan0:
+      FABRICATION: 0.18732342857142859 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.ic_wlan1:
+      FABRICATION: 0.023253942857142856 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.image_sensor:
+      FABRICATION: 0.2906742857142858 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.led_flash0:
+      FABRICATION: 0.019378285714285716 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.led_flash1:
+      FABRICATION: 0.019378285714285716 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.led_full_color:
+      FABRICATION: 0.004037142857142857 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.light_sensor0:
+      FABRICATION: 0.014372228571428574 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.light_sensor1:
+      FABRICATION: 0.0012918857142857146 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.nfc_microcontroller:
+      FABRICATION: 0.1403310857142857 kilogram
+      PACKAGING: 0.15 kilogram
+    ics.sensor:
+      FABRICATION: 0.11304000000000002 kilogram
+      PACKAGING: 0.15 kilogram
+    ssd:
+      FABRICATION: 2.267428571428572 kilogram
+      PACKAGING: 0.15 kilogram
+total_carbon: 11.901223314285714 kilogram
