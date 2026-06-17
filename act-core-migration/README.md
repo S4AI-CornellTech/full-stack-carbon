@@ -22,5 +22,13 @@ reframed walkthrough.
 
 ## Status
 - **C0 baselines:** ACT + EServe captured. MicroGreen / `EmbodiedCarbonModeling`
-  baselines are deferred to C2 (captured when that nested submodule is initialized).
-- C1–C4: pending (see plan).
+  baselines deferred to C2 (captured when that nested submodule is initialized).
+- **C1 (carve act_core):** DONE — ACT submodule branch `act-core`, commit `96292d8`
+  (local, not yet pushed to ACTv2). `act/core`→`act_core`, `act/models`→`act_core/models`;
+  ACT frontend + tests import `act_core`; `ACT_ROOT` now = the `act_core` dir. Verified:
+  `ci_script.sh` passes, report carbon numbers byte-identical to baselines,
+  `from act_core... import` works, `make demo-act` green. The suite gitlink is **not**
+  bumped yet (deferred to C4, together with pushing the ACTv2 `act-core` branch).
+- **C2** (superset enums/data + passives registry; port MicroGreen, repoint
+  EmbodiedCarbonModeling), **C3** (EServe convergence + vendor re-validation — needs the
+  HBM-basis decision / domain sign-off), **C4** (wire suite to `act_core`): pending.
