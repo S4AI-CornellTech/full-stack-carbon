@@ -1,0 +1,69 @@
+cl_args: /home/leo/full-stack-carbon/MicroGreen/EmbodiedCarbonModeling/act/act_model.py
+  -m act/boms/ESP32.yaml -o /home/leo/full-stack-carbon/act-core-migration/baselines/microgreen/ESP32
+query_settings:
+  duty_cycle: '1.0'
+  hw_lifetime: 2 year
+  op_ci: usa
+  op_power: 0 milliwatt
+report_generated: 06/17/2026 10:18:50
+result_by_category:
+  ACTIVE: 0 kilogram
+  CAPACITOR: 0.005335 kilogram
+  CONNECTOR: 0.054404 kilogram
+  DIODE: 0.010641 kilogram
+  ENCLOSURE: 0 kilogram
+  FABRICATION: 0.115356 kilogram
+  INDUCTOR: 0 kilogram
+  MATERIALS: 0 kilogram
+  OPERATION: 0 kilogram
+  OTHER: 0 kilogram
+  PACKAGING: 0 kilogram
+  PASSIVES: 0 kilogram
+  PCB: 0.021697 kilogram
+  RESISTOR: 0.00024 kilogram
+  SWITCH: 0.006675 kilogram
+result_by_device:
+  materials_results:
+    pcb:
+      PCB: 0.021697 kilogram
+  passives_results:
+    capacitor.C1:
+      CAPACITOR: 0.001067 kilogram
+    capacitor.C2:
+      CAPACITOR: 0.001067 kilogram
+    capacitor.C3:
+      CAPACITOR: 0.001067 kilogram
+    capacitor.C4:
+      CAPACITOR: 0.001067 kilogram
+    capacitor.C5:
+      CAPACITOR: 0.001067 kilogram
+    connector.JP1:
+      CONNECTOR: 0.036169 kilogram
+    connector.JP2:
+      CONNECTOR: 0.009117 kilogram
+    connector.JP5:
+      CONNECTOR: 0.009117 kilogram
+    diode.D1:
+      DIODE: 0.002512 kilogram
+    diode.D2:
+      DIODE: 0.002512 kilogram
+    diode.D3:
+      DIODE: 0.000452 kilogram
+    diode.D5:
+      DIODE: 0.002583 kilogram
+    diode.D6:
+      DIODE: 0.002583 kilogram
+    resistor.R2:
+      RESISTOR: 0.00012 kilogram
+    resistor.R4:
+      RESISTOR: 0.00012 kilogram
+    switch.SW1:
+      SWITCH: 0.003338 kilogram
+    switch.SW2:
+      SWITCH: 0.003338 kilogram
+  silicon_results:
+    soc.AP2112:
+      FABRICATION: 0.03054 kilogram
+    soc.ESP32_WROOM32:
+      FABRICATION: 0.084816 kilogram
+total_carbon: 0.214348 kilogram

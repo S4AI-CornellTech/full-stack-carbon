@@ -29,6 +29,23 @@ reframed walkthrough.
   `ci_script.sh` passes, report carbon numbers byte-identical to baselines,
   `from act_core... import` works, `make demo-act` green. The suite gitlink is **not**
   bumped yet (deferred to C4, together with pushing the ACTv2 `act-core` branch).
-- **C2** (superset enums/data + passives registry; port MicroGreen, repoint
-  EmbodiedCarbonModeling), **C3** (EServe convergence + vendor re-validation — needs the
-  HBM-basis decision / domain sign-off), **C4** (wire suite to `act_core`): pending.
+- **C2 (superset act_core + port MicroGreen): IN PROGRESS.**
+  - DONE: `EmbodiedCarbonModeling` initialized; its broken `location.yaml` symlink fixed
+    (relative) — commit `42cfed5` on its `act-core` branch (pushed) — so it runs again; 14
+    IoT/device BOM baselines captured in `baselines/microgreen/`.
+  - VERIFIED DELTAS (ECM vs act_core, all confirmed by diff): **enums are pure additions** —
+    `SourceType` +6 (DIODE/RESISTOR/CAPACITOR/SWITCH/INDUCTOR/ACTIVE), `LogicProcess` +3
+    (180/130/90nm), `ComponentCategory` +8. **Data are additive supersets** — logic epa/gpa
+    add legacy nodes (overlapping rows identical), materials adds tin/bronze/aluminum/
+    pb_free_solder, capacitors adds package factors 0201–0805 (energy values preserved).
+    Plus **7 new component models** (active/connector/diode/inductor/other/resistor/switch).
+    The ONLY behavioral delta: capacitor→`CAPACITOR` & PCB→`PCB` (vs ACT's `PASSIVES` &
+    `FABRICATION`); `bom.py` differs by 74 additive lines (extra ComponentSpecs + dispatch).
+  - REMAINING PORT (next increment): (1) adopt superset enums + data + 7 models into act_core;
+    (2) add a SourceType **policy** to capacitor_model/pcb_model — default PASSIVES/FABRICATION
+    (keeps ACT green), ECM sets CAPACITOR/PCB; (3) superset `bom.py`; (4) port ECM's frontend to
+    import act_core (delete its `act/core`+`act/models`), policy=CAPACITOR/PCB, keep IoT BOMs;
+    (5) verify ACT ci_script + baselines byte-identical AND ECM's 14 baselines reproduce;
+    (6) commit+push act_core (ACTv2) + ECM, repoint the EmbodiedCarbonModeling pin.
+- **C3** (EServe convergence + vendor re-validation — needs the HBM-basis decision / domain
+  sign-off), **C4** (wire suite to `act_core`): pending.

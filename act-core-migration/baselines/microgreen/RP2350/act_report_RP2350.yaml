@@ -1,0 +1,129 @@
+cl_args: /home/leo/full-stack-carbon/MicroGreen/EmbodiedCarbonModeling/act/act_model.py
+  -m act/boms/RP2350.yaml -o /home/leo/full-stack-carbon/act-core-migration/baselines/microgreen/RP2350
+query_settings:
+  duty_cycle: '1.0'
+  hw_lifetime: 2 year
+  op_ci: usa
+  op_power: 0 milliwatt
+report_generated: 06/17/2026 10:18:51
+result_by_category:
+  ACTIVE: 0.021249 kilogram
+  CAPACITOR: 0.022672 kilogram
+  CONNECTOR: 0.009851 kilogram
+  DIODE: 0.003316 kilogram
+  ENCLOSURE: 0.022898 kilogram
+  FABRICATION: 0.210662 kilogram
+  INDUCTOR: 0.036064 kilogram
+  MATERIALS: 0 kilogram
+  OPERATION: 0 kilogram
+  OTHER: 0.002351 kilogram
+  PACKAGING: 0 kilogram
+  PASSIVES: 0 kilogram
+  PCB: 0.01312 kilogram
+  RESISTOR: 0.00268 kilogram
+  SWITCH: 0.042481 kilogram
+result_by_device:
+  materials_results:
+    SH1.SHJJ-031306:
+      ENCLOSURE: 0.015056 kilogram
+    connector.TP1.SQ1P5MM:
+      ENCLOSURE: 0.007842 kilogram
+    pcb:
+      PCB: 0.01312 kilogram
+  passives_results:
+    active.FL1.LFB212G45CG7D227:
+      ACTIVE: 0.000967 kilogram
+    active.Q1.DMG1012T:
+      ACTIVE: 0.000345 kilogram
+    active.X1.12MHz:
+      ACTIVE: 0.001695 kilogram
+    active.X2.37.4MHz:
+      ACTIVE: 0.018242 kilogram
+    capacitor.C1.47u:
+      CAPACITOR: 0.003201 kilogram
+    capacitor.C12.2.2u:
+      CAPACITOR: 0.00073 kilogram
+    capacitor.C16.15p:
+      CAPACITOR: 0.001222 kilogram
+    capacitor.C19.10u:
+      CAPACITOR: 0.001222 kilogram
+    capacitor.C240.4.7u:
+      CAPACITOR: 0.000438 kilogram
+    capacitor.C242.1u:
+      CAPACITOR: 0.002444 kilogram
+    capacitor.C247.NF:
+      CAPACITOR: 0.001222 kilogram
+    capacitor.C249.10p:
+      CAPACITOR: 0.001222 kilogram
+    capacitor.C257.18p:
+      CAPACITOR: 0.001222 kilogram
+    capacitor.C260.0.2pF:
+      CAPACITOR: 0.000292 kilogram
+    capacitor.C261.0.36pF:
+      CAPACITOR: 0.000146 kilogram
+    capacitor.C262.0.3pF:
+      CAPACITOR: 0.000146 kilogram
+    capacitor.C4.100n:
+      CAPACITOR: 0.009165 kilogram
+    connector.J0.CON_PICO_40W-notfitted:
+      CONNECTOR: 0.006686 kilogram
+    connector.J1.690-005-298-486:
+      CONNECTOR: 0.002664 kilogram
+    connector.J2.CON_PICO_3W-notfitted:
+      CONNECTOR: 0.000501 kilogram
+    diode.D1.MBR120VLSFT1G:
+      DIODE: 0.002939 kilogram
+    diode.D2.Green:
+      DIODE: 0.000377 kilogram
+    inductor.L1.1u:
+      INDUCTOR: 0.001362 kilogram
+    inductor.L2.4.7u:
+      INDUCTOR: 0.034042 kilogram
+    inductor.L8.2.2u:
+      INDUCTOR: 0.00033 kilogram
+    inductor.L9.4.7n:
+      INDUCTOR: 0.00033 kilogram
+    other.FB8.600@100MHz:
+      OTHER: 0.000128 kilogram
+    other.FB9.600@100MHz:
+      OTHER: 0.002223 kilogram
+    resistor.R1.10K:
+      RESISTOR: 0.00048 kilogram
+    resistor.R11.1K:
+      RESISTOR: 0.00024 kilogram
+    resistor.R12.27R:
+      RESISTOR: 0.00024 kilogram
+    resistor.R17.27R:
+      RESISTOR: 0.00036 kilogram
+    resistor.R2.100K:
+      RESISTOR: 0.00036 kilogram
+    resistor.R21.560K:
+      RESISTOR: 0.00012 kilogram
+    resistor.R3.470R:
+      RESISTOR: 0.00012 kilogram
+    resistor.R5.20K:
+      RESISTOR: 0.00012 kilogram
+    resistor.R7.200R:
+      RESISTOR: 0.00012 kilogram
+    resistor.R80.22R:
+      RESISTOR: 0.00012 kilogram
+    resistor.R81.220R:
+      RESISTOR: 0.00012 kilogram
+    resistor.R86.0R:
+      RESISTOR: 0.00012 kilogram
+    resistor.R87.470R:
+      RESISTOR: 0.00012 kilogram
+    resistor.R9.1R:
+      RESISTOR: 0.00004 kilogram
+    switch.SW1.TP-1221U-K9K5325:
+      SWITCH: 0.042481 kilogram
+  silicon_results:
+    U1.RP2350:
+      FABRICATION: 0.049814 kilogram
+    U19.CYW43439KUBG:
+      FABRICATION: 0.068349 kilogram
+    U2.RT6154AGQW:
+      FABRICATION: 0.021642 kilogram
+    U3.W25Q16JVUXIQ:
+      FABRICATION: 0.070857 kilogram
+total_carbon: 0.387344 kilogram

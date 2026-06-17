@@ -1,0 +1,219 @@
+cl_args: /home/leo/full-stack-carbon/MicroGreen/EmbodiedCarbonModeling/act/act_model.py
+  -m act/boms/RPi_4_BoM_Official.yaml -o /home/leo/full-stack-carbon/act-core-migration/baselines/microgreen/RPi_4_BoM_Official
+query_settings:
+  duty_cycle: '1.0'
+  hw_lifetime: 2 year
+  op_ci: usa
+  op_power: 0 milliwatt
+report_generated: 06/17/2026 10:18:51
+result_by_category:
+  ACTIVE: 0 kilogram
+  CAPACITOR: 0.118172 kilogram
+  CONNECTOR: 0.582591 kilogram
+  DIODE: 0.15628 kilogram
+  ENCLOSURE: 0 kilogram
+  FABRICATION: 2.511597 kilogram
+  INDUCTOR: 0.008114 kilogram
+  MATERIALS: 0 kilogram
+  OPERATION: 0 kilogram
+  OTHER: 0.01481 kilogram
+  PACKAGING: 0 kilogram
+  PASSIVES: 0 kilogram
+  PCB: 0.046648 kilogram
+  RESISTOR: 0.0052 kilogram
+  SWITCH: 0 kilogram
+result_by_device:
+  materials_results:
+    aluminum:
+      ENCLOSURE: 0 kilogram
+    pcb:
+      PCB: 0.046648 kilogram
+    solder.pbfree:
+      ENCLOSURE: 0 kilogram
+  passives_results:
+    capacitor.cap_001:
+      CAPACITOR: 0.020774 kilogram
+    capacitor.cap_002:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.cap_003:
+      CAPACITOR: 0.004277 kilogram
+    capacitor.cap_004:
+      CAPACITOR: 0.003666 kilogram
+    capacitor.cap_005:
+      CAPACITOR: 0.002444 kilogram
+    capacitor.cap_006:
+      CAPACITOR: 0.002444 kilogram
+    capacitor.cap_007:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.cap_008:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.cap_009:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.cap_010:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.cap_011:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.cap_012:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.cap_013:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.cap_014:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.cap_015:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.cap_016:
+      CAPACITOR: 0.045825 kilogram
+    capacitor.cap_017:
+      CAPACITOR: 0.011609 kilogram
+    capacitor.cap_018:
+      CAPACITOR: 0.009603 kilogram
+    capacitor.cap_019:
+      CAPACITOR: 0.005499 kilogram
+    capacitor.cap_020:
+      CAPACITOR: 0.003066 kilogram
+    capacitor.cap_021:
+      CAPACITOR: 0.001833 kilogram
+    capacitor.cap_022:
+      CAPACITOR: 0.001022 kilogram
+    connector.con_001:
+      CONNECTOR: 0.2464 kilogram
+    connector.con_002:
+      CONNECTOR: 0.112 kilogram
+    connector.con_003:
+      CONNECTOR: 0.057218 kilogram
+    connector.con_004:
+      CONNECTOR: 0.05159 kilogram
+    connector.con_005:
+      CONNECTOR: 0.045962 kilogram
+    connector.con_006:
+      CONNECTOR: 0.02814 kilogram
+    connector.con_007:
+      CONNECTOR: 0.02464 kilogram
+    connector.con_008:
+      CONNECTOR: 0.007504 kilogram
+    connector.con_009:
+      CONNECTOR: 0.00469 kilogram
+    connector.con_010:
+      CONNECTOR: 0.004409 kilogram
+    connector.con_011:
+      CONNECTOR: 0.000038 kilogram
+    diode.dio_001:
+      DIODE: 0.045178 kilogram
+    diode.dio_002:
+      DIODE: 0.029654 kilogram
+    diode.dio_003:
+      DIODE: 0.023342 kilogram
+    diode.dio_004:
+      DIODE: 0.023342 kilogram
+    diode.dio_005:
+      DIODE: 0.016945 kilogram
+    diode.dio_006:
+      DIODE: 0.00753 kilogram
+    diode.dio_007:
+      DIODE: 0.006275 kilogram
+    diode.dio_008:
+      DIODE: 0.003012 kilogram
+    diode.dio_009:
+      DIODE: 0.001004 kilogram
+    inductor.ind_001:
+      INDUCTOR: 0.004936 kilogram
+    inductor.ind_002:
+      INDUCTOR: 0.002979 kilogram
+    inductor.ind_003:
+      INDUCTOR: 0.00017 kilogram
+    inductor.ind_004:
+      INDUCTOR: 0.000007 kilogram
+    inductor.ind_005:
+      INDUCTOR: 0.000007 kilogram
+    inductor.ind_006:
+      INDUCTOR: 0.000007 kilogram
+    inductor.ind_007:
+      INDUCTOR: 0.000007 kilogram
+    other.BLM15AG221SN1D:
+      OTHER: 0.000255 kilogram
+    other.DPX165950DT-8048A1:
+      OTHER: 0.000152 kilogram
+    other.SC0264:
+      OTHER: 0.001532 kilogram
+    other.SMD:
+      OTHER: 0.00017 kilogram
+    other.X25M000000S305:
+      OTHER: 0.00635 kilogram
+    other.X37M400000S002:
+      OTHER: 0.003175 kilogram
+    other.X54M000000S303:
+      OTHER: 0.003175 kilogram
+    resistor.res_001:
+      RESISTOR: 0.00048 kilogram
+    resistor.res_002:
+      RESISTOR: 0.00012 kilogram
+    resistor.res_003:
+      RESISTOR: 0.0006 kilogram
+    resistor.res_004:
+      RESISTOR: 0.0006 kilogram
+    resistor.res_005:
+      RESISTOR: 0.00048 kilogram
+    resistor.res_006:
+      RESISTOR: 0.00036 kilogram
+    resistor.res_007:
+      RESISTOR: 0.00036 kilogram
+    resistor.res_008:
+      RESISTOR: 0.00036 kilogram
+    resistor.res_009:
+      RESISTOR: 0.00036 kilogram
+    resistor.res_010:
+      RESISTOR: 0.00028 kilogram
+    resistor.res_011:
+      RESISTOR: 0.00028 kilogram
+    resistor.res_012:
+      RESISTOR: 0.00024 kilogram
+    resistor.res_013:
+      RESISTOR: 0.00012 kilogram
+    resistor.res_014:
+      RESISTOR: 0.00012 kilogram
+    resistor.res_015:
+      RESISTOR: 0.00008 kilogram
+    resistor.res_016:
+      RESISTOR: 0.00008 kilogram
+    resistor.res_017:
+      RESISTOR: 0.00008 kilogram
+    resistor.res_018:
+      RESISTOR: 0.00008 kilogram
+    resistor.res_019:
+      RESISTOR: 0.00004 kilogram
+    resistor.res_020:
+      RESISTOR: 0.00004 kilogram
+    resistor.res_021:
+      RESISTOR: 0.00004 kilogram
+  silicon_results:
+    dram.LPDDR4__1GB:
+      FABRICATION: 0.726857 kilogram
+    ics.AP2552W6-7:
+      FABRICATION: 0.022931 kilogram
+    ics.BCM2711ZPKFSB06C0TT:
+      FABRICATION: 0.787243 kilogram
+    ics.CG9052AMT:
+      FABRICATION: 0.39887 kilogram
+    ics.FPF1320UCX:
+      FABRICATION: 0.006459 kilogram
+    ics.NC7WZ16P6X:
+      FABRICATION: 0.011304 kilogram
+    ics.PI4IOE5V6408ZTAEX-13:
+      FABRICATION: 0.019863 kilogram
+    ics.RT9742SNGV:
+      FABRICATION: 0.011627 kilogram
+    ics.SC0182:
+      FABRICATION: 0.063948 kilogram
+    ics.SC0243:
+      FABRICATION: 0.011627 kilogram
+    ics.SC0263:
+      FABRICATION: 0.011627 kilogram
+    ics.SC0591:
+      FABRICATION: 0.174405 kilogram
+    ics.SKY13351-378LF:
+      FABRICATION: 0.00323 kilogram
+    ics.VL805-Q6_T_A1:
+      FABRICATION: 0.232539 kilogram
+    ics.W25X40CLUXIG:
+      FABRICATION: 0.029067 kilogram
+total_carbon: 3.443412 kilogram

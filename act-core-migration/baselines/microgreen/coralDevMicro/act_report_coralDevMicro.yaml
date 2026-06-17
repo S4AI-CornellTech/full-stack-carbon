@@ -1,0 +1,111 @@
+cl_args: /home/leo/full-stack-carbon/MicroGreen/EmbodiedCarbonModeling/act/act_model.py
+  -m act/boms/coralDevMicro.yaml -o /home/leo/full-stack-carbon/act-core-migration/baselines/microgreen/coralDevMicro
+query_settings:
+  duty_cycle: '1.0'
+  hw_lifetime: 2 year
+  op_ci: usa
+  op_power: 0 milliwatt
+report_generated: 06/17/2026 10:18:49
+result_by_category:
+  ACTIVE: 0.003618 kilogram
+  CAPACITOR: 0.012513 kilogram
+  CONNECTOR: 0.01361 kilogram
+  DIODE: 0.062277 kilogram
+  ENCLOSURE: 0 kilogram
+  FABRICATION: 0.885488 kilogram
+  INDUCTOR: 0.0194 kilogram
+  MATERIALS: 0 kilogram
+  OPERATION: 0 kilogram
+  OTHER: 0.004572 kilogram
+  PACKAGING: 0 kilogram
+  PASSIVES: 0 kilogram
+  PCB: 0.07644 kilogram
+  RESISTOR: 0.00223 kilogram
+  SWITCH: 0.060833 kilogram
+result_by_device:
+  materials_results:
+    pcb:
+      PCB: 0.07644 kilogram
+  passives_results:
+    active.Q1.MOSFET_N:
+      ACTIVE: 0.000848 kilogram
+    active.X1.24MHz:
+      ACTIVE: 0.000834 kilogram
+    active.X2.32k768:
+      ACTIVE: 0.001936 kilogram
+    capacitor.C_0201.100n:
+      CAPACITOR: 0.003456 kilogram
+    capacitor.C_0402.1u:
+      CAPACITOR: 0.002336 kilogram
+    capacitor.C_0603:
+      CAPACITOR: 0.006721 kilogram
+    connector.J5.Header2x50:
+      CONNECTOR: 0.000844 kilogram
+    connector.J8.USB_C:
+      CONNECTOR: 0.012766 kilogram
+    diode.D1.Schottky_0402:
+      DIODE: 0.001242 kilogram
+    diode.D31.TVS_SOD923:
+      DIODE: 0.002761 kilogram
+    diode.D4.Schottky_SOD123:
+      DIODE: 0.00753 kilogram
+    diode.ESD1.TVS:
+      DIODE: 0.03815 kilogram
+    diode.LED2.Green:
+      DIODE: 0.000798 kilogram
+    diode.LED4.Orange:
+      DIODE: 0.006526 kilogram
+    diode.LED5.White:
+      DIODE: 0.005271 kilogram
+    inductor.L1.1u:
+      INDUCTOR: 0.001532 kilogram
+    inductor.L15.4u7:
+      INDUCTOR: 0.016511 kilogram
+    inductor.L7.choke_0805:
+      INDUCTOR: 0.001358 kilogram
+    other.FB1.120ohm:
+      OTHER: 0.004572 kilogram
+    resistor.R_0201:
+      RESISTOR: 0.00083 kilogram
+    resistor.R_0402:
+      RESISTOR: 0.00044 kilogram
+    resistor.R_0603:
+      RESISTOR: 0.00036 kilogram
+    resistor.R_0805:
+      RESISTOR: 0.0006 kilogram
+    switch.SW2.tact_smd:
+      SWITCH: 0.0127 kilogram
+    switch.SW3.tact_edge:
+      SWITCH: 0.048133 kilogram
+  silicon_results:
+    U1.DA9061:
+      FABRICATION: 0.170269 kilogram
+    U10.SPST_SOT833:
+      FABRICATION: 0.009563 kilogram
+    U13.SPST_SOT833:
+      FABRICATION: 0.009563 kilogram
+    U14.SPST_SOT833:
+      FABRICATION: 0.009563 kilogram
+    U17.MT29F1G01ABBFDWB:
+      FABRICATION: 0.004535 kilogram
+    U18.MT48H32M16LFB4:
+      FABRICATION: 0.043886 kilogram
+    U2.TCR2LN33:
+      FABRICATION: 0.001487 kilogram
+    U20.PTN5150AHXMP:
+      FABRICATION: 0.008972 kilogram
+    U21.SIP32408DNP:
+      FABRICATION: 0.004468 kilogram
+    U22.NCP170ASN180T2G:
+      FABRICATION: 0.004873 kilogram
+    U23.TPU:
+      FABRICATION: 0.317363 kilogram
+    U3.SN74LVC1G126DRYR:
+      FABRICATION: 0.003391 kilogram
+    U4.74AXP1T34GMH:
+      FABRICATION: 0.007112 kilogram
+    U5.MIMXRT1176CVM8A:
+      FABRICATION: 0.236451 kilogram
+    U6.A7101CHUK:
+      FABRICATION: 0.053991 kilogram
+total_carbon: 1.140982 kilogram

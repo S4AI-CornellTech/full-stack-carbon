@@ -1,0 +1,49 @@
+cl_args: /home/leo/full-stack-carbon/MicroGreen/EmbodiedCarbonModeling/act/act_model.py
+  -m act/boms/RYLR998.yaml -o /home/leo/full-stack-carbon/act-core-migration/baselines/microgreen/RYLR998
+query_settings:
+  duty_cycle: '1.0'
+  hw_lifetime: 2 year
+  op_ci: usa
+  op_power: 0 milliwatt
+report_generated: 06/17/2026 10:18:52
+result_by_category:
+  ACTIVE: 0 kilogram
+  CAPACITOR: 0.002444 kilogram
+  CONNECTOR: 0.000836 kilogram
+  DIODE: 0 kilogram
+  ENCLOSURE: 0.027642 kilogram
+  FABRICATION: 0.013964 kilogram
+  INDUCTOR: 0 kilogram
+  MATERIALS: 0 kilogram
+  OPERATION: 0 kilogram
+  OTHER: 0.001523 kilogram
+  PACKAGING: 0 kilogram
+  PASSIVES: 0 kilogram
+  PCB: 0.004006 kilogram
+  RESISTOR: 0 kilogram
+  SWITCH: 0 kilogram
+result_by_device:
+  materials_results:
+    ANT1.ANT-418-HESM:
+      ENCLOSURE: 0.027642 kilogram
+    pcb:
+      PCB: 0.004006 kilogram
+  passives_results:
+    J1.TSW-105-07-G-S:
+      CONNECTOR: 0.000836 kilogram
+    capacitor.C1.10uF:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.C2.10uF:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.C3.100nF:
+      CAPACITOR: 0.000611 kilogram
+    capacitor.C4.47pF:
+      CAPACITOR: 0.000611 kilogram
+    other.B1.BLM15EG121SN1D:
+      OTHER: 0.000761 kilogram
+    other.B2.BLM15EG121SN1D:
+      OTHER: 0.000761 kilogram
+  silicon_results:
+    M1.RYLR998:
+      FABRICATION: 0.013964 kilogram
+total_carbon: 0.050415 kilogram

@@ -1,0 +1,51 @@
+cl_args: /home/leo/full-stack-carbon/MicroGreen/EmbodiedCarbonModeling/act/act_model.py
+  -m act/boms/test.yaml -o /home/leo/full-stack-carbon/act-core-migration/baselines/microgreen/test
+query_settings:
+  duty_cycle: '1.0'
+  hw_lifetime: 2 year
+  op_ci: usa
+  op_power: 0 milliwatt
+report_generated: 06/17/2026 10:18:52
+result_by_category:
+  ACTIVE: 0 kilogram
+  CAPACITOR: 0.092502 kilogram
+  CONNECTOR: 0 kilogram
+  DIODE: 0 kilogram
+  ENCLOSURE: 0 kilogram
+  FABRICATION: 28.436284 kilogram
+  INDUCTOR: 0 kilogram
+  MATERIALS: 0 kilogram
+  OPERATION: 0 kilogram
+  OTHER: 0 kilogram
+  PACKAGING: 0 kilogram
+  PASSIVES: 0 kilogram
+  PCB: 0.00043 kilogram
+  RESISTOR: 0 kilogram
+  SWITCH: 0 kilogram
+result_by_device:
+  materials_results:
+    battery:
+      FABRICATION: 0.435 kilogram
+    fasteners:
+      ENCLOSURE: 0 kilogram
+    pcb:
+      PCB: 0.00043 kilogram
+    subsystem.imported_mat:
+      ENCLOSURE: 0 kilogram
+  passives_results:
+    cap0:
+      CAPACITOR: 0.000055 kilogram
+    subsystem.imported_cap:
+      CAPACITOR: 0.092446 kilogram
+  silicon_results:
+    dram:
+      FABRICATION: 0.072222 kilogram
+    dut:
+      FABRICATION: 0.156563 kilogram
+    hdd:
+      FABRICATION: 4.967391 kilogram
+    ssd:
+      FABRICATION: 22.727273 kilogram
+    subsystem.imported_si:
+      FABRICATION: 0.077834 kilogram
+total_carbon: 28.529216 kilogram
