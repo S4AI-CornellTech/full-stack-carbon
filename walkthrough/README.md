@@ -1,48 +1,50 @@
 # The life of a data center — a carbon walkthrough
 
-A single guided example that runs **six lab tools, one at a time**, in narrative
-order, to trace carbon across the life of a data center: from designing and
-manufacturing the silicon, through provisioning servers, to attributing the carbon
-of the software that runs on them.
+Six lab tools, run one at a time, in narrative order. The thread that ties them
+together: **at every scale, the naive carbon number misleads.** Each tool starts from
+a number you might naively report, then reveals the decision or trade-off that number
+hides. Underneath all six is one recurring tension — **embodied (manufacturing) carbon
+vs operational (running) carbon** — and the lesson that point estimates, static
+breakdowns, and proportional splits all give the wrong answer.
 
-Every segment is **artifact-evaluation style**: it recomputes its result from
-committed intermediate data (no live workloads, no cluster), writes a figure +
-`result.json`, and can fall back to a committed golden with `--golden`. Each segment
-also runs **standalone** — the value one segment hands the next is committed into the
-next segment's `inputs/`, so no segment depends on another having just run.
+Every segment is **artifact-evaluation style**: it recomputes from committed data (no
+live workloads, no cluster), writes a figure + `result.json`, and falls back to a
+committed golden with `--golden`. Each segment runs standalone.
 
 ## Run it
 ```bash
-make setup            # one-time: per-tool Python envs
-make all-demos        # run all six in order, then verify the chain
-# or one at a time:
-make demo-act         # demo-coffee, demo-carbonclarity, demo-microgreen, demo-eserve, demo-fairco2
-make golden           # show the committed backup figures/numbers (zero compute)
-make verify           # assert the cross-tool handoffs line up
+make setup        # one-time: per-tool Python envs
+make all-demos    # run all six in order, then verify the chain
+# or one at a time, in story order:
+make demo-act     # demo-carbonclarity, demo-coffee, demo-microgreen, demo-eserve, demo-fairco2
+make golden       # committed backup figures/numbers (zero compute)
+make verify       # assert the cross-tool carbon handoffs line up
 ```
 
-## The story
-| # | Tool | Beat | Headline (recomputed) |
-|---|------|------|------------------------|
-| 1 | **ACT** | A server is designed & manufactured | Dell R740 ≈ **1,523 kgCO2e** embodied (storage-dominated) |
-| 2 | **COFFEE** | *branch:* emerging FeFET memory | HZO FeFET adds **+20%** energy-per-area vs CMOS |
-| 3 | **CarbonClarity** | How trustworthy is that number? | R740 CPU die **7.3 kgCO2e** (P10–P90 5.2–9.6) |
-| 4 | **MicroGreen** | *branch:* the edge tier | 8 edge boards, **0.18–1.14 kgCO2e**, IC-dominated |
-| 5 | **EServe** | A server is provisioned (H100) | H100 HGX ≈ **154 kgCO2e** embodied (HBM + SoC) |
-| 6 | **Fair-CO2** | Software is attributed its share | Co-location **halves** each job's attributed embodied carbon |
+## The story: naive number → real decision
+| # | Tool | The naive number | The real point |
+|---|------|------------------|----------------|
+| 1 | **ACT** | "the server is 1,523 kgCO2e" | one deterministic, **embodied-only** number — the foundation, and the thing the rest complicates |
+| 2 | **CarbonClarity** | "…so report 1,523" | it's a **distribution**: ACT ≈ the *mean* (~50% exceedance); report the **95th percentile (~1.3×)**, and uncertainty **grows at advanced nodes** |
+| 3 | **COFFEE** | "FeFET memory costs +11% carbon" | wrong axis: **+11% per cm² but ~4.3× *less* per MB** (+ lower leakage) — a life-cycle **trade-off FeFET wins** |
+| 4 | **MicroGreen** | "this MCU has the lowest embodied carbon" | the **carbon-optimal device flips** with light / inference-rate / lifetime (>10×); energy-efficiency ≠ the carbon winner |
+| 5 | **EServe** | "the H100 is 154 kgCO2e" | the **host dominates** (~3,355 kg); and **below ~27 gCO2e/kWh embodied outweighs all operational** — the grid decides |
+| 6 | **Fair-CO2** | "split shared carbon by usage" | that proportional split (the industry default) is **~80% unfair** (up to 279%) vs a Shapley ground truth — Fair-CO2 fixes it **~4–6×** at **600,000× less compute** |
 
-The **spine is 1 → 5 → 6** (manufacture → provision → attribute); **2** and **4** are
-labelled side-branches (a silicon what-if and the edge tier). The carry-forward
-quantity is embodied carbon, changing units as it descends the stack:
-kgCO2e/cm² → per-component → per-server → per-workload.
+## The throughline: the embodied↔operational crossover, at every scale
+Embodied carbon dominates at the **edge** (MicroGreen: tiny devices, ~75% embodied);
+operational carbon usually dominates in the **data center** (EServe) — *unless the grid
+is clean*, where embodied wins again below ~27 gCO2e/kWh. The same co-optimization
+recurs at every tier; only the dominant term changes. Segments **4→5 are deliberately
+paired** to show that crossover, and **Fair-CO2 (6) is the climax**: once the carbon is
+built and burned, *splitting it fairly* is its own hard problem — and getting it right
+is what lets anyone act on it.
 
 ## How the chain is real (not just narrated)
-ACT's R740 embodied carbon (1,523 kgCO2e) and EServe's H100 figure (154 kgCO2e) are
-committed into Fair-CO2's `inputs/`, and `make verify` asserts they match end to end.
-Fair-CO2 itself hardcodes an ACT-derived per-CPU constant
-(`ACT_cpu_chip_cf = 18530` gCO2e, `colocation/process_colocation_sweep.py:43`) — the
-same kind of number ACT produces in segment 1 (related by method, not identical,
-because that constant was computed for the node's actual Xeon, not the illustrative BOM).
+ACT's R740 embodied carbon (1,523 kg) and EServe's H100 figure (154 kg) are committed
+into Fair-CO2's `inputs/`, and `make verify` asserts they match end to end — Fair-CO2
+even hardcodes an ACT-derived per-CPU constant, `ACT_cpu_chip_cf = 18,530` gCO2e
+(`colocation/process_colocation_sweep.py:43`).
 
 ## Anatomy of a segment
 Each `NN_<tool>/` directory contains:
@@ -51,5 +53,5 @@ Each `NN_<tool>/` directory contains:
 - `inputs/` — committed handoffs from prior segments + any committed intermediate data
 - `figures/` — regenerated outputs (gitignored)
 - `golden/` — committed backup figures + `result.json` (the zero-compute fallback)
-- `TALKING_POINTS.md` — the slide content for that tool's presentation (tool owners
-  author the actual deck from this)
+- `TALKING_POINTS.md` — slide content for that tool's presentation, with honesty
+  caveats where committed data is partial (tool owners author the actual deck)

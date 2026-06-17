@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Segment 4 - MicroGreen: embodied carbon of edge MCU boards (a side-branch).
+# Segment 4 - MicroGreen: the carbon-optimal edge MCU is NOT fixed - it flips.
 #
-#   ./run.sh            recompute from MicroGreen's committed board_carbon.csv
+#   ./run.sh            run MicroGreen's carbon sweep (~1 min) + compute the flip
 #   ./run.sh --golden   restore the committed golden figures/result (zero compute)
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

@@ -25,16 +25,16 @@ setup: ; bash scripts/bootstrap.sh
 setup-full: ; FULL=1 bash scripts/bootstrap.sh
 
 demo-act: ; bash $(WALK)/01_act/run.sh
-demo-coffee: ; bash $(WALK)/02_coffee/run.sh
-demo-carbonclarity: ; bash $(WALK)/03_carbonclarity/run.sh
+demo-carbonclarity: ; bash $(WALK)/02_carbonclarity/run.sh
+demo-coffee: ; bash $(WALK)/03_coffee/run.sh
 demo-microgreen: ; bash $(WALK)/04_microgreen/run.sh
 demo-eserve: ; bash $(WALK)/05_eserve/run.sh
 demo-fairco2: ; bash $(WALK)/06_fairco2/run.sh
 
-all-demos: demo-act demo-coffee demo-carbonclarity demo-microgreen demo-eserve demo-fairco2 verify
+all-demos: demo-act demo-carbonclarity demo-coffee demo-microgreen demo-eserve demo-fairco2 verify
 
 verify: ; $(PYACT) $(WALK)/lib/verify_chain.py
 
-golden: ; @for s in 01_act 02_coffee 03_carbonclarity 04_microgreen 05_eserve 06_fairco2; do bash $(WALK)/$$s/run.sh --golden; done
+golden: ; @for s in 01_act 02_carbonclarity 03_coffee 04_microgreen 05_eserve 06_fairco2; do bash $(WALK)/$$s/run.sh --golden; done
 
 clean: ; rm -rf $(ROOT)/.envs $(WALK)/*/figures

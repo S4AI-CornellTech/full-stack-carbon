@@ -17,8 +17,8 @@ jobs:
       matrix:
         include:
           - { tool: act,           dir: ACT,           seg: 01_act }
-          - { tool: coffee,        dir: COFFEE,        seg: 02_coffee }
-          - { tool: carbonclarity, dir: CarbonClarity, seg: 03_carbonclarity }
+          - { tool: carbonclarity, dir: CarbonClarity, seg: 02_carbonclarity }
+          - { tool: coffee,        dir: COFFEE,        seg: 03_coffee }
           - { tool: microgreen,    dir: MicroGreen,    seg: 04_microgreen }
           - { tool: eserve,        dir: EServe,        seg: 05_eserve }
           - { tool: fair-co2,      dir: Fair-CO2,      seg: 06_fairco2 }

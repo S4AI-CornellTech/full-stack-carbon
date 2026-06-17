@@ -9,11 +9,11 @@ single guided walkthrough that ties them into one story: **the life of a data ce
 | Tool | Layer | What it models |
 |------|-------|----------------|
 | [ACT](ACT) | chip / server | Embodied + operational carbon from a bill-of-materials |
-| [COFFEE](COFFEE) | emerging memory | Carbon of HZO FeFET eNVM (extends ACT's CMOS tables) |
-| [CarbonClarity](CarbonClarity) | uncertainty | Probabilistic embodied carbon / fab variance |
-| [MicroGreen](MicroGreen) | edge / IoT | Design-space exploration for sustainable MCU devices |
-| [EServe](EServe) (a.k.a. EcoServe) | server | GPU/CPU server embodied carbon |
-| [Fair-CO2](Fair-CO2) | datacenter | Fair carbon attribution for co-located workloads |
+| [COFFEE](COFFEE) | emerging memory | Life-cycle carbon of HZO FeFET memory (a density / endurance trade-off) |
+| [CarbonClarity](CarbonClarity) | uncertainty | Probabilistic embodied carbon — distributions & risk, not point estimates |
+| [MicroGreen](MicroGreen) | edge / IoT | Carbon-aware design-space exploration (embodied vs operational) for edge devices |
+| [EServe](EServe) (a.k.a. EcoServe) | server | Carbon-aware LLM serving — embodied + operational across the fleet |
+| [Fair-CO2](Fair-CO2) | datacenter | Fair (Shapley-based) carbon attribution for co-located workloads |
 
 ## Quickstart
 ```bash
