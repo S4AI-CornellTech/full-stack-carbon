@@ -74,7 +74,7 @@
     "source": "Fair-CO2 colocation/process_colocation_sweep.py (ACT-derived)",
     "ACT_cpu_chip_cf_gco2e": 18530,
     "from_segment1_R740_kgco2e": 1523.1,
-    "from_segment5_H100_kgco2e": 154.2,
+    "from_segment5_H100_kgco2e": 103.0,
     "note": "The embodied carbon being divided fairly here is exactly the hardware quantified upstream: ACT's R740 server (segment 1) and EServe's H100 node (segment 5)."
   },
   "figures": [

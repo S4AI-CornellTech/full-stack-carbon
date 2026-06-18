@@ -69,7 +69,7 @@ dynamic demand) and `fairco2_interference.png` (co-location interference).
 
 - This is the **accounting climax** for the carbon quantified upstream: the embodied
   budget being divided is **ACT's R740 server ≈ 1,523 kgCO₂e** (segment 1) and
-  **EServe's H100 node ≈ 154 kgCO₂e** (segment 5). Fair-CO2 even hardcodes an
+  **EServe's H100 node ≈ 103 kgCO₂e** (segment 5). Fair-CO2 even hardcodes an
   **ACT-derived `ACT_cpu_chip_cf = 18,530 gCO₂e`** per CPU — the same kind of number
   segment 1 produces. `lib/verify_chain.py` checks those handoffs line up.
 - **Prev — EServe (segment 5):** EServe allocates a slice of one accelerator's

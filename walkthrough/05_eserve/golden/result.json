@@ -3,12 +3,12 @@
   "tool": "EServe / EcoServe",
   "anchor": "NVIDIA H100HGX node (8 GPU + host)",
   "headline": {
-    "gpu_embodied_kgco2e": 154.2,
+    "gpu_embodied_kgco2e": 103.0,
     "host_embodied_kgco2e": 3355.4,
-    "host_pct_of_per_accelerator": 95.6,
-    "storage_dram_vs_gpu_ratio": 20.0,
-    "embodied_rate_gco2e_per_hr": 131.0,
-    "crossover_ci_gco2e_per_kwh": 27.5
+    "host_pct_of_per_accelerator": 97.0,
+    "storage_dram_vs_gpu_ratio": 29.9,
+    "embodied_rate_gco2e_per_hr": 119.3,
+    "crossover_ci_gco2e_per_kwh": 25.1
   },
   "host_breakdown_kgco2e": {
     "ssd": 2499.0,
@@ -17,7 +17,7 @@
     "total": 3355.4
   },
   "gpu_breakdown_kgco2e": {
-    "memory": 68.0,
+    "memory": 19.2,
     "PCB": 1.19,
     "PDN": 28.75,
     "cooling": 6.5,
@@ -34,26 +34,26 @@
     "power_kw": 5.95,
     "utilization": 0.8,
     "lifetime_years": 4,
-    "node_embodied_kgco2e": 4589.0
+    "node_embodied_kgco2e": 4179.4
   },
   "context": {
     "r740_server_embodied_kgco2e": 1523.1
   },
   "handoff": {
     "gpu": "H100HGX",
-    "gpu_embodied_kgco2e": 154.2,
+    "gpu_embodied_kgco2e": 103.0,
     "soc_kgco2e": 41.5,
-    "memory_kgco2e": 68.0,
+    "memory_kgco2e": 19.2,
     "memory_type": "HBM3",
     "soc_node_nm": 5,
     "host_embodied_kgco2e": 3355.4,
     "host_storage_kgco2e": 2499.0,
     "host_dram_kgco2e": 580.0,
-    "per_accelerator_embodied_kgco2e": 3509.6,
+    "per_accelerator_embodied_kgco2e": 3458.4,
     "n_gpus_per_node": 8,
-    "server_embodied_kgco2e": 4589.0,
-    "embodied_rate_gco2e_per_hr": 131.0,
-    "crossover_ci_gco2e_per_kwh": 27.5,
+    "server_embodied_kgco2e": 4179.4,
+    "embodied_rate_gco2e_per_hr": 119.3,
+    "crossover_ci_gco2e_per_kwh": 25.1,
     "note": "EcoServe Section-3 carbon model on the H100 HGX node. The HOST (2 TB DRAM + 22.7 TB SSD) dominates embodied carbon, not the GPU (Obs 2: host ~95% of one accelerator's embodied; storage+DRAM ~20x the GPU). Amortized over a 4-yr life the node's embodied rate (~131 gCO2e/hr) outweighs operational below ~27 gCO2e/kWh (Obs 3). Fair-CO2 (seg 6) time-allocates this embodied carbon to co-located queries; gpu_embodied_kgco2e is the per-accelerator figure it cites."
   }
 }
