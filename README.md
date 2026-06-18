@@ -5,6 +5,8 @@ from device design & manufacturing, through server provisioning, to software car
 attribution in the cloud. The six tools are bundled here as git submodules with a
 single guided walkthrough that ties them into one story: **the life of a data center**.
 
+> **Collaborators / reviewers:** start with **[CONTRIBUTING.md](CONTRIBUTING.md)** — the handoff guide: current state, the branch model (review on `act-core`, nothing merged to `main`), how to run, and how to continue.
+
 ## The tools
 | Tool | Layer | What it models |
 |------|-------|----------------|
