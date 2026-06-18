@@ -46,8 +46,8 @@ echo "full-stack-carbon: bootstrapping envs under $ROOT/.envs"
 if want act;           then echo "[act]";           mkenv act 3.12;           pipin act pyyaml pint matplotlib; fi
 if want coffee;        then echo "[coffee]";        mkenv coffee 3.12;        pipin coffee -r "$ROOT/COFFEE/requirements.txt" matplotlib; fi
 if want carbonclarity; then echo "[carbonclarity]"; mkenv carbonclarity 3.11; pipin carbonclarity -r "$ROOT/CarbonClarity/requirements.txt"; fi
-if want eserve;        then echo "[eserve]";        mkenv eserve 3.12;        pipin eserve -e "$ROOT/EServe" matplotlib; fi
-if want microgreen;    then echo "[microgreen]";    mkenv microgreen 3.11;    pipin microgreen numpy==2.4.3 pandas==2.3.3 matplotlib==3.10.8; fi
+if want eserve;        then echo "[eserve]";        mkenv eserve 3.12;        pipin eserve -e "$ROOT/EServe" -e "$ROOT/ACT" matplotlib; fi
+if want microgreen;    then echo "[microgreen]";    mkenv microgreen 3.11;    pipin microgreen -e "$ROOT/ACT" numpy==2.4.3 pandas==2.3.3 matplotlib==3.10.8; fi
 if want fair-co2;      then echo "[fair-co2]";      mkenv fair-co2 3.12;      pipin fair-co2 matplotlib seaborn numpy pandas scipy; fi
 
 if [ "${FULL:-0}" = "1" ]; then

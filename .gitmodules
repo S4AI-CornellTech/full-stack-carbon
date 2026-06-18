@@ -1,6 +1,7 @@
 [submodule "ACT"]
 	path = ACT
 	url = https://github.com/S4AI-CornellTech/ACTv2.git
+	branch = act-core
 [submodule "Fair-CO2"]
 	path = Fair-CO2
 	url = https://github.com/S4AI-CornellTech/fair-co2.git
@@ -13,6 +14,8 @@
 [submodule "MicroGreen"]
 	path = MicroGreen
 	url = https://github.com/S4AI-CornellTech/MicroGreen.git
+	branch = act-core
 [submodule "EServe"]
 	path = EServe
 	url = https://github.com/S4AI-CornellTech/EServe.git
+	branch = act-core
