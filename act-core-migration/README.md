@@ -53,7 +53,21 @@ reframed walkthrough.
     act_core, **deleted its `act/core`+`act/models` fork**, set capacitor/pcb policy=CAPACITOR/PCB
     and silicon `add_ic_packaging=False` (frontend supplies MANUAL packaging /fab_yield).
     **All 14 ECM BOMs reproduce their baselines byte-for-byte.** ACT + MicroGreen now share one core.
-  - REMAINING (folds into C4): repoint MicroGreen's EmbodiedCarbonModeling pin to `d9fd240`; bump the
-    suite gitlinks; add editable `act-core` installs to `scripts/bootstrap.sh`.
-- **C3** (EServe convergence + vendor re-validation — needs the HBM-basis decision / domain
-  sign-off), **C4** (wire suite to `act_core`): pending.
+  - These folded into C4 (done): ECM pin repointed (MicroGreen `act-core` `7f03583`), suite gitlinks
+    bumped, `bootstrap.sh` installs act-core editable into the eserve + microgreen envs.
+- **C3 (EServe convergence): DONE** (EServe `act-core` `d38bf93`). Memory model converged onto
+  `act_core.MemoryModel` using the **paper-backed HBM3e = 0.24** (EcoServe Table 1; the GPU's 0.85
+  was unsourced and absent from the paper). GPU + CPU now self-consistent. Only HBM3/HBM3E GPUs change
+  (H100 full embodied 154 → ~103); EServe tests pass; deltas in
+  `baselines/eserve/c3_convergence_deltas.md`; walkthrough segment 5 refreshed. SoC/SSD/PDN/cooling
+  kept EServe-specific (documented follow-ups).
+- **C4 (wire suite): DONE** (suite `act-core` `cc465ce`). `bootstrap.sh` installs act-core editable;
+  `.gitmodules` tracks the act-core branch; gitlinks bumped (ACT `8764d6a`, EServe `d38bf93`,
+  MicroGreen `7f03583`). `make all-demos` is green on the unified suite; submodules clean.
+
+## Workstream C COMPLETE
+All three ACT lineages — ACT, MicroGreen/EmbodiedCarbonModeling, and EServe — now share the single
+`act_core` package (pip-installable; ACT also uses it via PYTHONPATH). ACT is byte-identical, ECM's 14
+BOMs reproduce, and EServe's memory carbon is corrected to the paper-backed value. Everything is on
+`act-core` branches across the repos; **nothing is merged to `main`/`suite-assembly`** — the stable
+`v0.1.0` walkthrough is untouched, so merging is the user's call.
