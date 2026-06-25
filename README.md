@@ -21,6 +21,7 @@ single guided walkthrough that ties them into one story: **the life of a data ce
 ```bash
 git clone https://github.com/S4AI-CornellTech/full-stack-carbon.git
 cd full-stack-carbon
+git checkout act-core
 git submodule update --init
 git -C MicroGreen submodule update --init EmbodiedCarbonModeling   # modeling dep only
 make setup          # build isolated per-tool Python envs (uv-first)
