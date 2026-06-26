@@ -24,6 +24,8 @@ per-tool Pythons (3.11 / 3.12), and its cache all stay inside the repo, so nothi
 machine-wide. (First run needs a `python3` and network to bootstrap; `make clean` / `rm -rf .uv .envs`
 removes everything.)
 
+**Platforms:** Linux and macOS (CI runs on Linux). On Windows, run it inside [WSL](https://learn.microsoft.com/windows/wsl/).
+
 ```bash
 git clone https://github.com/S4AI-CornellTech/full-stack-carbon.git
 cd full-stack-carbon

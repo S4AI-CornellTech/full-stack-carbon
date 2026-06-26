@@ -74,7 +74,8 @@ Pinned commits (for review / verification):
 **No global install needed.** `make setup` uses a system [`uv`](https://docs.astral.sh/uv/) if present;
 otherwise it provisions a **repo-local** `uv` under `.uv/` (gitignored) — binary, the per-tool Pythons
 (3.11 / 3.12), and cache all stay inside the repo, so nothing is installed machine-wide. First run
-needs a `python3` + network; `make clean` removes `.uv/` and `.envs/`.
+needs a `python3` + network; `make clean` removes `.uv/` and `.envs/`. **Platforms:** Linux and macOS
+(CI runs on Linux); on Windows use WSL.
 
 ```bash
 make submodules     # init the six tools + MicroGreen's EmbodiedCarbonModeling
