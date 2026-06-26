@@ -14,12 +14,35 @@
 #   scripts/bootstrap.sh act eserve      # build only the named tools
 #   FULL=1 scripts/bootstrap.sh          # also install heavy/optional extras
 #
-# Prefers `uv` (fast, can fetch pinned interpreters); falls back to python -m venv.
+# Self-contained: prefers a system `uv`; else uses python3.x already on PATH; and if a
+# needed interpreter is missing, provisions a repo-local `uv` under .uv/ (its binary,
+# managed Pythons, and cache all stay inside the repo — nothing is installed machine-wide).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+UV_DIR="$ROOT/.uv"
 UV="$(command -v uv || true)"
+# Reuse a repo-local uv from a previous run (and keep its Pythons + cache in-repo).
+if [ -z "$UV" ] && [ -x "$UV_DIR/venv/bin/uv" ]; then
+  UV="$UV_DIR/venv/bin/uv"
+  export UV_PYTHON_INSTALL_DIR="$UV_DIR/python" UV_CACHE_DIR="$UV_DIR/cache"
+fi
 TOOLS=("$@")
+
+ensure_local_uv() {  # install a repo-local uv (once) when a needed Python is missing; sets $UV
+  [ -n "$UV" ] && return 0
+  echo "  no uv and 'python$1' not on PATH — installing a repo-local uv under .uv/ (nothing machine-wide)"
+  local pyboot; pyboot="$(command -v python3 || command -v python || true)"
+  [ -z "$pyboot" ] && { echo "  ERROR: need python3 (or uv) to bootstrap; install either and re-run." >&2; exit 1; }
+  mkdir -p "$UV_DIR"
+  "$pyboot" -m venv "$UV_DIR/venv" >/dev/null 2>&1 \
+    || { echo "  ERROR: could not create $UV_DIR/venv with '$pyboot'." >&2; exit 1; }
+  "$UV_DIR/venv/bin/python" -m pip install --quiet --disable-pip-version-check uv \
+    || { echo "  ERROR: could not pip-install uv (offline?). Install uv, or put python3.11 + python3.12 on PATH." >&2; exit 1; }
+  UV="$UV_DIR/venv/bin/uv"
+  export UV_PYTHON_INSTALL_DIR="$UV_DIR/python" UV_CACHE_DIR="$UV_DIR/cache"
+  echo "  repo-local uv ready ($("$UV" --version 2>/dev/null))"
+}
 
 want() {  # want <tool> -> success if it should be built (no args = all)
   [ "${#TOOLS[@]}" -eq 0 ] && return 0
@@ -31,19 +54,10 @@ mkenv() {  # mkenv <name> <python-version>
   local d="$ROOT/.envs/$1"
   if [ -d "$d" ]; then echo "  env '$1' exists, reusing"; return 0; fi
   echo "  creating env '$1' (python $2)"
-  if [ -n "$UV" ]; then
-    "$UV" venv --python "$2" "$d" >/dev/null
-  elif command -v "python$2" >/dev/null 2>&1; then
-    "python$2" -m venv "$d"
-  else
-    echo "  ERROR: this tool needs Python $2, but 'python$2' is not on your PATH." >&2
-    echo "  Easiest fix — install uv; it auto-provisions the right Python for every tool:" >&2
-    echo "      brew install uv                                    # macOS (Homebrew)" >&2
-    echo "      curl -LsSf https://astral.sh/uv/install.sh | sh    # any platform" >&2
-    echo "  then re-run 'make setup' (already-built envs are reused)." >&2
-    echo "  Or install Python $2 directly, e.g.:  brew install python@$2" >&2
-    return 1
-  fi
+  # No uv and the exact interpreter isn't on PATH → provision a repo-local uv to supply it.
+  if [ -z "$UV" ] && ! command -v "python$2" >/dev/null 2>&1; then ensure_local_uv "$2"; fi
+  if [ -n "$UV" ]; then "$UV" venv --python "$2" "$d" >/dev/null
+  else "python$2" -m venv "$d"; fi
 }
 
 pipin() {  # pipin <name> <pip-args...>
@@ -52,7 +66,8 @@ pipin() {  # pipin <name> <pip-args...>
 }
 
 echo "full-stack-carbon: bootstrapping envs under $ROOT/.envs"
-[ -n "$UV" ] && echo "using uv ($("$UV" --version))" || echo "uv not found; using python -m venv"
+if [ -n "$UV" ]; then echo "using uv ($("$UV" --version 2>/dev/null))"
+else echo "no system uv — will use python3.x on PATH, fetching a repo-local uv into .uv/ only if a version is missing"; fi
 
 if want act;           then echo "[act]";           mkenv act 3.12;           pipin act pyyaml pint matplotlib; fi
 if want coffee;        then echo "[coffee]";        mkenv coffee 3.12;        pipin coffee -r "$ROOT/COFFEE/requirements.txt" matplotlib; fi

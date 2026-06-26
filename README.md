@@ -18,10 +18,11 @@ single guided walkthrough that ties them into one story: **the life of a data ce
 | [Fair-CO2](Fair-CO2) | datacenter | Fair (Shapley-based) carbon attribution for co-located workloads |
 
 ## Quickstart
-**Prerequisite:** install [`uv`](https://docs.astral.sh/uv/) (`brew install uv`, or
-`curl -LsSf https://astral.sh/uv/install.sh | sh`). It auto-provisions each tool's pinned Python
-(3.11 / 3.12). Without uv, `make setup` falls back to `python -m venv` and needs **both** `python3.11`
-and `python3.12` already on your PATH.
+**No global install needed.** `make setup` uses a system [`uv`](https://docs.astral.sh/uv/) if you
+have one; otherwise it provisions a **repo-local** `uv` under `.uv/` (gitignored) — its binary, the
+per-tool Pythons (3.11 / 3.12), and its cache all stay inside the repo, so nothing is installed
+machine-wide. (First run needs a `python3` and network to bootstrap; `make clean` / `rm -rf .uv .envs`
+removes everything.)
 
 ```bash
 git clone https://github.com/S4AI-CornellTech/full-stack-carbon.git

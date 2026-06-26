@@ -37,4 +37,4 @@ verify: ; $(PYACT) $(WALK)/lib/verify_chain.py
 
 golden: ; @for s in 01_act 02_carbonclarity 03_coffee 04_microgreen 05_eserve 06_fairco2; do bash $(WALK)/$$s/run.sh --golden; done
 
-clean: ; rm -rf $(ROOT)/.envs $(WALK)/*/figures
+clean: ; rm -rf $(ROOT)/.envs $(ROOT)/.uv $(WALK)/*/figures

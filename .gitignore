@@ -1,6 +1,9 @@
 # Per-tool virtual environments (created by scripts/bootstrap.sh)
 /.envs/
 
+# Repo-local uv toolchain (binary + managed Pythons + cache), if bootstrapped in-repo
+/.uv/
+
 # Scratch / regenerated outputs
 /results/
 walkthrough/*/figures/
