@@ -31,8 +31,19 @@ mkenv() {  # mkenv <name> <python-version>
   local d="$ROOT/.envs/$1"
   if [ -d "$d" ]; then echo "  env '$1' exists, reusing"; return 0; fi
   echo "  creating env '$1' (python $2)"
-  if [ -n "$UV" ]; then "$UV" venv --python "$2" "$d" >/dev/null
-  else "python$2" -m venv "$d"; fi
+  if [ -n "$UV" ]; then
+    "$UV" venv --python "$2" "$d" >/dev/null
+  elif command -v "python$2" >/dev/null 2>&1; then
+    "python$2" -m venv "$d"
+  else
+    echo "  ERROR: this tool needs Python $2, but 'python$2' is not on your PATH." >&2
+    echo "  Easiest fix — install uv; it auto-provisions the right Python for every tool:" >&2
+    echo "      brew install uv                                    # macOS (Homebrew)" >&2
+    echo "      curl -LsSf https://astral.sh/uv/install.sh | sh    # any platform" >&2
+    echo "  then re-run 'make setup' (already-built envs are reused)." >&2
+    echo "  Or install Python $2 directly, e.g.:  brew install python@$2" >&2
+    return 1
+  fi
 }
 
 pipin() {  # pipin <name> <pip-args...>

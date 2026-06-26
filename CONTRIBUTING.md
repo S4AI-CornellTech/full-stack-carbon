@@ -71,6 +71,10 @@ Pinned commits (for review / verification):
 
 ## Get it running
 
+**Prerequisite:** install [`uv`](https://docs.astral.sh/uv/) (`brew install uv`, or the install
+script). It auto-provisions each tool's pinned Python (3.11 / 3.12); without it, `make setup` falls
+back to `python -m venv` and requires **both** `python3.11` and `python3.12` already on your PATH.
+
 ```bash
 make submodules     # init the six tools + MicroGreen's EmbodiedCarbonModeling
 make setup          # build the six isolated per-tool venvs (uv-first); ~a few min
