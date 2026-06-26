@@ -24,10 +24,11 @@ Two things were built on top of bundling them:
 |---|---|---|
 | A — plumbing & envs | six submodules, per-tool venvs, `Makefile`, CI | ✅ done |
 | B — the walkthrough | six reframed segments, golden fallbacks, chain verify | ✅ done (tag `v0.1.0`) |
-| C — `act_core` unification | ACT + MicroGreen + EServe share one core | ✅ done (on `act-core` branches) |
+| C — `act_core` unification | ACT + MicroGreen + EServe share one core | ✅ done (shipped on `main`) |
 
 A from-scratch clone → `make setup` → `make all-demos` is **verified to run end-to-end**.
-**Nothing is merged to `main` on any pre-existing repo.**
+The suite's `main` ships the unified suite; the pre-existing **tool** repos keep their `act_core` work
+on `act-core` branches (their own `main`s untouched).
 
 ---
 
@@ -35,37 +36,38 @@ A from-scratch clone → `make setup` → `make all-demos` is **verified to run 
 
 | Branch | What's on it |
 |---|---|
-| `main` (suite) | initial commit only — untouched |
-| `suite-assembly` + tag **`v0.1.0`** | the stable reframed walkthrough (pre-unification; e.g. EServe H100 ≈ 154 kg) |
-| **`act-core`** (suite + the unified tool repos) | the full unified suite (`act_core`; EServe H100 ≈ 103 kg) — **the review branch** |
+| **`main`** (default) | the **released unified suite** (`act_core`; EServe H100 ≈ 103 kg) — what a plain clone gets |
+| `act-core` | **active development**; currently even with `main`, moves ahead as work continues — promote `main` → `act-core` to cut the next milestone |
+| `suite-assembly` + tag **`v0.1.0`** | the **pre-unification** stable snapshot (each tool on its original code; EServe H100 ≈ 154 kg) |
 
-**Constraint (from the repo owner):** the `act_core` unification work in the pre-existing public tool
-repos — **ACTv2, MicroGreen, EmbodiedCarbonModeling** (and EServe) — must stay on the **`act-core`
-review branch, never `main`**. **Do not merge `act-core` to `main` or open PRs** until the team has
-reviewed. (EServe and the suite repo are new, so their branches are fine. COFFEE's one-line
-`NVMExplorer`-submodule fix was a separate, owner-approved hygiene change and is already on `main`;
-CarbonClarity and Fair-CO2 are untouched.)
+**Constraint (from the repo owner):** the `act_core` changes in the pre-existing public **tool** repos
+— **ACTv2, MicroGreen, EmbodiedCarbonModeling** (and EServe) — live on their **`act-core` branches**;
+those repos' own `main`s are untouched. **Do not merge them to the tool repos' `main` or open PRs**
+until the team has reviewed. (The *suite's* `main` pins those `act-core` commits — that's how the
+unified suite ships — which does **not** merge anything into the tool repos themselves. EServe and the
+suite are new repos. COFFEE's one-line `NVMExplorer` fix was an owner-approved hygiene change already on
+its `main`; CarbonClarity and Fair-CO2 are untouched.)
 
 Pinned commits (for review / verification):
 
-| repo | review branch | tip | original default |
+| repo | active branch | tip | original default |
 |---|---|---|---|
-| full-stack-carbon (suite) | `act-core` | _this branch (see `git log`)_ | main `6de3e0c` |
+| full-stack-carbon (suite) | `main` (= `act-core`) | _tip; see `git log`_ | was `6de3e0c` (empty init) |
 | ACTv2 | `act-core` | `8764d6a` | main `abc9fbb` |
 | EServe | `act-core` | `d38bf93` | main `a1b33a5` |
 | MicroGreen | `act-core` | `7f03583` | main `384d8b7` |
 | EmbodiedCarbonModeling | `act-core` | `d9fd240` | `microgreen` `365589b` |
-| COFFEE | _(fix merged to `main`)_ | `257f4d5` | was main `8e019a6` |
+| COFFEE | `main` | `257f4d5` | was `8e019a6` |
 | CarbonClarity | _(untouched)_ | — | main `ae209c9` |
 | Fair-CO2 | _(untouched)_ | — | main `a1142d6` |
 
 > **COFFEE** carries a one-line repo-hygiene fix (unrelated to `act_core`), now on `main`: it adds the
 > missing `.gitmodules` mapping for COFFEE's `NVMExplorer` submodule (the gitlink existed but had no
-> URL, so `git submodule update --init --recursive` failed). The suite's `act-core` pins COFFEE at this
-> commit (= COFFEE `main` HEAD), so a suite clone gets the working mapping.
+> URL, so `git submodule update --init --recursive` failed). The suite pins COFFEE at this commit
+> (= COFFEE `main` HEAD), so a suite clone gets the working mapping.
 
-- Stable demo: `git checkout suite-assembly && git submodule update --init`
-- Unified version: `git checkout act-core && git submodule update --init`
+- Unified suite (default `main`): `git submodule update --init` right after cloning
+- Pre-unification snapshot: `git checkout suite-assembly && git submodule update --init`
 
 ---
 
@@ -132,10 +134,11 @@ stays byte-identical, ECM's 14 BOMs reproduce, and EServe's memory was corrected
 
 ## What's left / how to continue
 
-- **Review → merge (owner's call):** the `act-core` branches are the review vehicle — green and
-  reproducible. When the team signs off, merge `act-core` → `suite-assembly`/`main` (or open PRs).
-- **Make the tool repos public** if you want anonymous artifact-evaluation clones (the suite uses
-  HTTPS submodule URLs; currently access is required).
+- **Tool-repo review → merge (owner's call):** the tool repos' `act-core` branches (ACTv2, MicroGreen,
+  ECM, EServe) are the review vehicle — green and reproducible. When the team signs off, merge each into
+  its own `main` (or open PRs). The suite's `main` already ships these commits via gitlinks.
+- **Keep developing on the suite's `act-core`**, then promote `main` → `act-core` to cut each milestone.
+- **Repos are public** — all eight clone anonymously (the suite uses HTTPS submodule URLs).
 - **Slide decks:** build from the six `TALKING_POINTS.md`.
 - **Deferred technical follow-ups** (detailed in `act-core-migration/README.md`):
   - EServe's **SoC / SSD / PDN** are still EServe-specific (only the memory model converged onto `act_core`).
