@@ -37,23 +37,31 @@ A from-scratch clone → `make setup` → `make all-demos` is **verified to run 
 |---|---|
 | `main` (suite) | initial commit only — untouched |
 | `suite-assembly` + tag **`v0.1.0`** | the stable reframed walkthrough (pre-unification; e.g. EServe H100 ≈ 154 kg) |
-| **`act-core`** (suite **and** each tool repo) | the full unified suite (`act_core`; EServe H100 ≈ 103 kg) — **the review branch** |
+| **`act-core`** (suite + the unified tool repos) | the full unified suite (`act_core`; EServe H100 ≈ 103 kg) — **the review branch** |
 
 **Constraint (from the repo owner):** the pre-existing public tool repos — **ACTv2, COFFEE,
-CarbonClarity, Fair-CO2, MicroGreen, EmbodiedCarbonModeling** — must keep all work on `act-core`
-branches. **Do not merge to `main` or open PRs** until the team has reviewed. (EServe and the suite
-repo are new, so their branches are fine.)
+CarbonClarity, Fair-CO2, MicroGreen, EmbodiedCarbonModeling** — must keep all work on **review
+branches, never `main`** (the `act_core` unification rides `act-core`; COFFEE's submodule fix rides
+`fix-nvmexplorer-submodule`). **Do not merge to `main` or open PRs** until the team has reviewed.
+(EServe and the suite repo are new, so their branches are fine.)
 
 Pinned commits (for review / verification):
 
-| repo | `act-core` | original |
-|---|---|---|
-| full-stack-carbon (suite) | `4868098` | main `6de3e0c` |
-| ACTv2 | `8764d6a` | main `abc9fbb` |
-| EServe | `d38bf93` | main `a1b33a5` |
-| MicroGreen | `7f03583` | main `384d8b7` |
-| EmbodiedCarbonModeling | `d9fd240` | `microgreen` `365589b` |
-| COFFEE / CarbonClarity / Fair-CO2 | _(untouched)_ | `8e019a6` / `ae209c9` / `a1142d6` |
+| repo | review branch | tip | original default |
+|---|---|---|---|
+| full-stack-carbon (suite) | `act-core` | _this branch (see `git log`)_ | main `6de3e0c` |
+| ACTv2 | `act-core` | `8764d6a` | main `abc9fbb` |
+| EServe | `act-core` | `d38bf93` | main `a1b33a5` |
+| MicroGreen | `act-core` | `7f03583` | main `384d8b7` |
+| EmbodiedCarbonModeling | `act-core` | `d9fd240` | `microgreen` `365589b` |
+| COFFEE | `fix-nvmexplorer-submodule` | `257f4d5` | main `8e019a6` |
+| CarbonClarity | _(untouched)_ | — | main `ae209c9` |
+| Fair-CO2 | _(untouched)_ | — | main `a1142d6` |
+
+> **COFFEE's branch** is a one-line repo-hygiene fix unrelated to `act_core`: it adds the missing
+> `.gitmodules` mapping for COFFEE's `NVMExplorer` submodule (the gitlink existed but had no URL, so
+> `git submodule update --init --recursive` failed). The suite's `act-core` already points COFFEE at
+> this commit, so a suite clone gets the working mapping.
 
 - Stable demo: `git checkout suite-assembly && git submodule update --init`
 - Unified version: `git checkout act-core && git submodule update --init`
