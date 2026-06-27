@@ -68,8 +68,26 @@ two slots. That burst is what forces you to provision — and embody — the ext
 owes the most (761 kg, 50%)**. But RUP bills by CPU×runtime, so it charges faiss the *least* (254 kg) and
 over-charges the steady all-day batch (spark). **RUP is backwards** — off by 67%. **Fair-CO2** moves
 faiss the right way (254 → 571 kg), landing ~25% from the exact fair share — far closer than RUP, and
-cheap enough to compute live (Stage 1's 600,000×). Now **edit the schedule** — shorten faiss's `runtime`,
-shift its `start` out of the peak, or give spark a burst — re-run and watch all three move.
+cheap enough to compute live (Stage 1's 600,000×).
+
+**Try this — the experiment that nails *why* RUP fails.** Change faiss's `runtime` from `2` to `10` so
+it runs flat-out the whole window instead of as a burst, and re-run:
+
+```bash
+./tutorial.sh --workloads exercises/workloads.json
+```
+**All three methods collapse onto the same split** (RUP error → 0%):
+
+| job | RUP | Shapley (fair) | Fair-CO2 |
+|---|---|---|---|
+| llama | 304.6 | 304.6 | 304.6 |
+| spark | 456.9 | 456.9 | 456.9 |
+| faiss (now always-on) | 761.5 | 761.5 | 761.5 |
+
+When every job runs steadily, proportional billing **is** fair — RUP's ~80% error comes *entirely* from
+**temporal, bursty demand**. Real workloads (LLM request spikes, nightly index rebuilds, batch bursts)
+are exactly that, which is when Fair-CO2 earns its keep. (Other knobs to try: shift faiss's `start` off
+the peak, or give spark its own burst.)
 
 ---
 
