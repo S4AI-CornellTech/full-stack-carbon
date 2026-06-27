@@ -74,19 +74,19 @@ from a server's spec sheet — CPU socket count + die area + node, DRAM module c
 ./tutorial.sh exercises/poweredge2_starter.yaml
 ```
 
-Compare your total + breakdown to `solutions/EXPECTED.md`. A complete example is in
-`solutions/poweredge2.yaml`:
+Compare your total + breakdown to `solutions/EXPECTED.md`. The completed solution
+(`solutions/poweredge2.yaml`) is the **Fair-CO2 paper's test node** — 2× Xeon Gold 6240R (14 nm) ·
+192 GB DDR4 · 480 GB SSD:
 
 ```bash
-./tutorial.sh solutions/poweredge2.yaml
+./tutorial.sh solutions/poweredge2.yaml          # total ≈ 72.55 kg
 ```
 
-> **Placeholder note.** `solutions/poweredge2.yaml` and `EXPECTED.md` currently carry **placeholder**
-> numbers (an illustrative stand-in server) so the exercise runs end-to-end; the real second-PowerEdge
-> config drops in later. Replace the values tagged `__TODO__`.
-
-**Takeaway:** you can model *any* whole server from its BOM and validate the total against published /
-known data — the core ACT workflow.
+**Takeaway:** the embodied profile is all about the config. The R740 (Stage 1) was 1,523 kg and
+*storage*-dominated; this compute-focused box is just **72.55 kg** and **DRAM-dominated** (47 kg — its
+192 GB of ECC DDR4 carries heavy per-module IC packaging, with little storage). Same tool, same method,
+wildly different footprint — because the BOM is different. (Its CPU lands at 18.2 kg ≈ the Fair-CO2
+paper's own ACT-derived per-CPU number, 18.53 kg.)
 
 ---
 

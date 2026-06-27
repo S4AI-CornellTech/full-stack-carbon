@@ -1,62 +1,51 @@
 # =====================================================================
-#  PLACEHOLDER capstone solution — a SECOND Dell PowerEdge.
-#  Every number below is ILLUSTRATIVE so the file parses and runs; this is
-#  NOT a real server.  Replace each value tagged __TODO__ with the real
-#  config (the maintainer has the spec sheet) and update solutions/EXPECTED.md
-#  with the real reference totals.  Structure mirrors ../../ACT/act/boms/dellr740.yaml.
+#  Capstone solution: a SECOND Dell PowerEdge — the Fair-CO2 paper's test node.
+#  2x Intel Xeon Gold 6240R (Cascade Lake, 14 nm, ~698 mm2 die), 192 GB DDR4
+#  (12x 16 GB ECC DIMMs, 16+2 ECC + 1 RCD = 19 ICs/module), 480 GB boot SSD.
+#  Server CONFIG is from the lab's Fair-CO2 server-carbon doc (cross-checked vs the
+#  Fair-CO2 paper). The carbon below is whatever ACT computes for this BOM — we do NOT
+#  align to the doc's per-component numbers (it used different DRAM/SSD coefficients and
+#  added chassis/PSU/cooling, which are outside ACT's bill-of-materials scope).
+#  Fab assumptions per the doc: 90% logic yield, USA grid, 95% gas abatement.
 # =====================================================================
-name: "PowerEdge <MODEL-TBD> (PLACEHOLDER)"
-description: "Second-PowerEdge capstone — PLACEHOLDER config; real numbers pending."
+name: "Dell PowerEdge - Fair-CO2 test node (2x Xeon Gold 6240R)"
 silicon:
-  # --- 2 CPU sockets ---   __TODO__ real die area / node / fab grid
+  # --- 2x CPU: Intel Xeon Gold 6240R, 14 nm, 698 mm2 die ---
   cpu.main0:
-    area: 5.0 cm2
-    process: 7nm
+    area: 698 mm2
+    process: 14nm
     n_ics: 1
-    fab_yield: 0.875
+    fab_yield: 0.90
     gpa: 95
-    fab_ci: taiwan
+    fab_ci: usa
   cpu.main1:
-    area: 5.0 cm2
-    process: 7nm
+    area: 698 mm2
+    process: 14nm
     n_ics: 1
-    fab_yield: 0.875
+    fab_yield: 0.90
     gpa: 95
-    fab_ci: taiwan
-  # --- 4 DRAM modules ---   __TODO__ real count / capacity / process
-  dram.main0:
-    model: dram
-    process: ddr4_10nm
-    n_ics: 10
-    capacity: 64 GB
-  dram.main1:
-    model: dram
-    process: ddr4_10nm
-    n_ics: 10
-    capacity: 64 GB
-  dram.main2:
-    model: dram
-    process: ddr4_10nm
-    n_ics: 10
-    capacity: 64 GB
-  dram.main3:
-    model: dram
-    process: ddr4_10nm
-    n_ics: 10
-    capacity: 64 GB
-  # --- 2 SSDs ---   __TODO__ real count / capacity / process
+    fab_ci: usa
+  # --- 192 GB DDR4: 12x 16 GB ECC DIMMs (19 ICs/module incl. ECC + RCD) ---
+  dram.main0:  { model: dram, process: ddr4_10nm, capacity: 16 GB, n_ics: 19, fab_yield: 0.95 }
+  dram.main1:  { model: dram, process: ddr4_10nm, capacity: 16 GB, n_ics: 19, fab_yield: 0.95 }
+  dram.main2:  { model: dram, process: ddr4_10nm, capacity: 16 GB, n_ics: 19, fab_yield: 0.95 }
+  dram.main3:  { model: dram, process: ddr4_10nm, capacity: 16 GB, n_ics: 19, fab_yield: 0.95 }
+  dram.main4:  { model: dram, process: ddr4_10nm, capacity: 16 GB, n_ics: 19, fab_yield: 0.95 }
+  dram.main5:  { model: dram, process: ddr4_10nm, capacity: 16 GB, n_ics: 19, fab_yield: 0.95 }
+  dram.main6:  { model: dram, process: ddr4_10nm, capacity: 16 GB, n_ics: 19, fab_yield: 0.95 }
+  dram.main7:  { model: dram, process: ddr4_10nm, capacity: 16 GB, n_ics: 19, fab_yield: 0.95 }
+  dram.main8:  { model: dram, process: ddr4_10nm, capacity: 16 GB, n_ics: 19, fab_yield: 0.95 }
+  dram.main9:  { model: dram, process: ddr4_10nm, capacity: 16 GB, n_ics: 19, fab_yield: 0.95 }
+  dram.main10: { model: dram, process: ddr4_10nm, capacity: 16 GB, n_ics: 19, fab_yield: 0.95 }
+  dram.main11: { model: dram, process: ddr4_10nm, capacity: 16 GB, n_ics: 19, fab_yield: 0.95 }
+  # --- 480 GB boot SSD ---
   ssd.main0:
     model: flash
     process: nand_10nm
+    capacity: 480 GB
     n_ics: 8
-    capacity: 1920 GB
-  ssd.main1:
-    model: flash
-    process: nand_10nm
-    n_ics: 8
-    capacity: 1920 GB
 materials:
-  # --- mainboard PCB ---   __TODO__ real area / layers
+  # --- mainboard PCB (ACT models PCB as area x layers; chassis/PSU/cooling are out of scope) ---
   board.pcb:
     category: pcb
     area: 1925 cm2

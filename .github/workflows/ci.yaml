@@ -43,9 +43,10 @@ jobs:
       - name: ACT tutorial BOMs smoke-check (segment-1 hands-on)
         if: matrix.tool == 'act'
         run: |
-          for b in exercises/sensitivity.yaml solutions/sensitivity_solved.yaml solutions/poweredge2.yaml; do
+          for b in exercises/sensitivity.yaml solutions/sensitivity_solved.yaml; do
             bash walkthrough/01_act/tutorial.sh "$b"
           done
+          bash walkthrough/01_act/tutorial.sh solutions/poweredge2.yaml --expect 72.55
       - name: EServe tutorial smoke-check (segment-5 hands-on)
         if: matrix.tool == 'eserve'
         run: |

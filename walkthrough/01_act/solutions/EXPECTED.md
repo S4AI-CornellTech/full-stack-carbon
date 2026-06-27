@@ -20,12 +20,21 @@ Baseline — soc 7 cm² / 28nm / coal + mem 64 GB / ddr3_50nm → **total ≈ 55
 All three applied → `solutions/sensitivity_solved.yaml` → **total ≈ 12.04 kg** (soc 6.99, mem 4.75).
 
 ## Stage 3 — second PowerEdge (capstone)
-`solutions/poweredge2.yaml` → **total ≈ 95.94 kg**  ⚠️ **PLACEHOLDER** — an illustrative stand-in
-server, **not real**. Placeholder breakdown: CPU 2 × 12.17 · DRAM 4 × 6.25 · SSD 2 × 23.14 · PCB 0.30 kg.
+`solutions/poweredge2.yaml` — the **Fair-CO2 test node** (2× Xeon Gold 6240R 14 nm · 192 GB DDR4 ·
+480 GB SSD) → **total ≈ 72.55 kg**:
 
-**TODO (maintainer):** replace `solutions/poweredge2.yaml`'s `__TODO__` values with the real
-second-PowerEdge config and put the real reference total here; then add `--expect <total>` to the CI
-smoke check in `.github/workflows/ci.yaml`.
+| class | kgCO2e |
+|---|---|
+| DRAM (12× 16 GB ECC) | 47.34 |
+| CPU (2× 698 mm² 14 nm) | 18.23 |
+| SSD (480 GB) | 6.69 |
+| PCB | 0.30 |
+
+Contrast with the R740 read example (1,523 kg, SSD-dominated): this compute-focused server is
+**DRAM-dominated** (65%) — 192 GB of ECC DDR4 with heavy per-module IC packaging (19 ICs × 12), little
+storage. The CPU (18.2 kg) ≈ the Fair-CO2 paper's ACT-derived `ACT_cpu_chip_cf` (18.53 kg for both
+dies). Carbon is what ACT computes from the config; we don't align to the doc's per-component numbers
+(different DRAM/SSD coefficients; chassis/PSU/cooling are out of BOM scope).
 
 ## Stage 4 — extend data (add the `france` location)
 After adding `france` (56 g/kWh) to the `EnergyLocation` enum + `location_2022.yaml`, the 7 cm² / 7nm

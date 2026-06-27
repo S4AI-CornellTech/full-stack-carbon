@@ -34,7 +34,7 @@ demo-microgreen: ; bash $(WALK)/04_microgreen/run.sh
 demo-eserve: ; bash $(WALK)/05_eserve/run.sh
 demo-fairco2: ; bash $(WALK)/06_fairco2/run.sh
 
-tutorial-act: ; @for b in exercises/sensitivity.yaml solutions/sensitivity_solved.yaml solutions/poweredge2.yaml; do bash $(WALK)/01_act/tutorial.sh $$b; done
+tutorial-act: ; @for b in exercises/sensitivity.yaml solutions/sensitivity_solved.yaml; do bash $(WALK)/01_act/tutorial.sh $$b; done && bash $(WALK)/01_act/tutorial.sh solutions/poweredge2.yaml --expect 72.55
 
 tutorial-eserve: ; @bash $(WALK)/05_eserve/tutorial.sh --gpu H100HGX --host --expect gpu=103 --expect host=3355.4 --expect crossover=25.1 && bash $(WALK)/05_eserve/tutorial.sh --gpu-file exercises/gpu_l4.json && bash $(WALK)/05_eserve/tutorial.sh --gpu-file solutions/my_gpu.json --host
 
