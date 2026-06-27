@@ -56,7 +56,7 @@ Each `NN_<tool>/` directory contains:
 - `TALKING_POINTS.md` — slide content for that tool's presentation, with honesty
   caveats where committed data is partial (tool owners author the actual deck)
 
-**Segment 1 (ACT)** additionally carries the hands-on tutorial — the pilot for all six tools:
-`TUTORIAL.md` (a ~20-min guided walkthrough), `tutorial.sh` (run any BOM through the real CLI),
-`exercises/` (participant-editable starter BOMs), and `solutions/` (reference BOMs + `EXPECTED.md`).
-Run it with `make tutorial-act`.
+**Segments 1 (ACT) and 5 (EServe)** additionally carry hands-on tutorials — the pilots for the per-tool
+hands-on format: each has `TUTORIAL.md` (a ~20-min guided walkthrough), a `tutorial.*` runner (drive the
+real tool from editable config files), `exercises/` (participant-editable starters), and `solutions/`
+(reference configs + `EXPECTED.md`). Run them with `make tutorial-act` / `make tutorial-eserve`.

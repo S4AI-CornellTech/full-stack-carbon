@@ -1,0 +1,13 @@
+{
+  "_help": "Stage-2 solved: the L4 with memory_type swapped GDDR6 -> HBM3e (0.36 -> 0.24 kgCO2e/GB, and the cooling model flips to the HBM/liquid branch).",
+  "tdp": 72,
+  "memory_size": 24,
+  "memory_type": "HBM3e",
+  "soc_area": 294,
+  "soc_cf": 7.5,
+  "pcb_area": 94.64,
+  "total_surface_area": 946.4,
+  "process_node": 7,
+  "lifetime_years": 4,
+  "suggested_psu": 250
+}

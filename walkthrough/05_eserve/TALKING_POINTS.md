@@ -65,6 +65,12 @@ the GPU.*
   The earlier 154 kg used an *unsourced* 0.85; see `act-core-migration/baselines/eserve/`.
 - **Lead with ratios/directions** — host ≈ 97%, storage+DRAM ≈ 30× the GPU, crossover ≈ 25 g/kWh.
 
+**Then: hands-on (≈20 min, see `TUTORIAL.md`).** Participants drive EServe's own calculators: read the
+H100's embodied breakdown → compare/edit a GPU config (memory tech, lifetime) → add the **host** and see
+it dominate (~30×) → sweep the **grid** to the ~25 g/kWh crossover → provision a node for their own
+deployment. The point to convey: the host is the **server you modeled in ACT (segment 1)** — and what
+you provision, and where, is a carbon decision the grid settles.
+
 **Hands off to:**
 - ← **Segment 4 (MicroGreen):** the embodied-vs-operational balance, now flipped to the data center.
 - → **Segment 6 (Fair-CO2):** the server's embodied carbon (`inputs/from_05_eserve.json`:

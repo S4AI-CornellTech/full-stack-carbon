@@ -6,7 +6,7 @@ export MPLBACKEND := Agg
 
 .PHONY: help submodules setup setup-full \
         demo-act demo-coffee demo-carbonclarity demo-microgreen demo-eserve demo-fairco2 \
-        all-demos verify golden clean tutorial-act
+        all-demos verify golden clean tutorial-act tutorial-eserve
 
 help: ; @printf '%s\n' \
   "full-stack-carbon suite targets:" \
@@ -16,6 +16,7 @@ help: ; @printf '%s\n' \
   "  make all-demos       run all six walkthrough segments in order, then verify" \
   "  make demo-<tool>     one segment: act coffee carbonclarity microgreen eserve fairco2" \
   "  make tutorial-act    run the segment-1 hands-on tutorial BOMs (01_act/TUTORIAL.md)" \
+  "  make tutorial-eserve run the segment-5 hands-on tutorial (05_eserve/TUTORIAL.md)" \
   "  make verify          check the cross-segment carbon handoffs line up" \
   "  make golden          show committed golden figures/results (zero compute)" \
   "  make clean           remove envs and regenerated figures"
@@ -33,6 +34,8 @@ demo-eserve: ; bash $(WALK)/05_eserve/run.sh
 demo-fairco2: ; bash $(WALK)/06_fairco2/run.sh
 
 tutorial-act: ; @for b in exercises/sensitivity.yaml solutions/sensitivity_solved.yaml solutions/poweredge2.yaml; do bash $(WALK)/01_act/tutorial.sh $$b; done
+
+tutorial-eserve: ; @bash $(WALK)/05_eserve/tutorial.sh --gpu H100HGX --host --expect gpu=103 --expect host=3355.4 --expect crossover=25.1 && bash $(WALK)/05_eserve/tutorial.sh --gpu-file exercises/gpu_l4.json && bash $(WALK)/05_eserve/tutorial.sh --gpu-file solutions/my_gpu.json --host
 
 all-demos: demo-act demo-carbonclarity demo-coffee demo-microgreen demo-eserve demo-fairco2 verify
 

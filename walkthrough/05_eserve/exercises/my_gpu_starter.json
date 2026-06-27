@@ -1,0 +1,13 @@
+{
+  "_help": "Capstone: model YOUR accelerator. Replace every __FILL__ from its datasheet, then run e.g.: ./tutorial.sh --gpu-file exercises/my_gpu_starter.json --host --n-gpus 8 --util 0.7 --grid-ci <your_region_gco2e_per_kwh>. memory_type is one of HBM3e|HBM3|HBM2e|HBM2|GDDR6|DDR4|LPDDR5. Add a cpu_configs block (cores, memory_size GB, storage_size GB) to model your own host; otherwise --host borrows a reference host. Reference: solutions/my_gpu.json and EServe/config/gpuconfigs.json.",
+  "tdp": "__FILL__",
+  "memory_size": "__FILL__",
+  "memory_type": "__FILL__",
+  "soc_area": "__FILL__",
+  "soc_cf": "__FILL__",
+  "pcb_area": "__FILL__",
+  "total_surface_area": "__FILL__",
+  "process_node": "__FILL__",
+  "lifetime_years": 4,
+  "suggested_psu": "__FILL__"
+}
