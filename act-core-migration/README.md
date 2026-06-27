@@ -55,19 +55,26 @@ reframed walkthrough.
     **All 14 ECM BOMs reproduce their baselines byte-for-byte.** ACT + MicroGreen now share one core.
   - These folded into C4 (done): ECM pin repointed (MicroGreen `act-core` `7f03583`), suite gitlinks
     bumped, `bootstrap.sh` installs act-core editable into the eserve + microgreen envs.
-- **C3 (EServe convergence): DONE** (EServe `act-core` `d38bf93`). Memory model converged onto
-  `act_core.MemoryModel` using the **paper-backed HBM3e = 0.24** (EcoServe Table 1; the GPU's 0.85
-  was unsourced and absent from the paper). GPU + CPU now self-consistent. Only HBM3/HBM3E GPUs change
-  (H100 full embodied 154 → ~103); EServe tests pass; deltas in
-  `baselines/eserve/c3_convergence_deltas.md`; walkthrough segment 5 refreshed. SoC/SSD/PDN/cooling
-  kept EServe-specific (documented follow-ups).
+- **C3 (EServe convergence): DONE** (EServe `act-core`: memory `d38bf93`, SSD `94d2a9a`).
+  - **Memory** converged onto `act_core.MemoryModel` using the **paper-backed HBM3e = 0.24**
+    (EcoServe Table 1; the GPU's 0.85 was unsourced and absent from the paper). GPU + CPU now
+    self-consistent. Only HBM3/HBM3E GPUs change (H100 full embodied 154 → ~103).
+  - **SSD (2026-06-27)** converged onto `act_core.SSDModel` at **nand_10nm = 10 g/GB** (the bare-die
+    NAND source ACT/MicroGreen use), replacing the whole-device 0.10999. H100 HGX host SSD 2,499 → 227 kg
+    (host now DRAM-led; total 3,355 → 1,084 kg); embodied↔operational crossover 25.1 → 11.4 gCO2e/kWh
+    (Obs 3 reframed — below real grids). Fair-CO2 was aligned to the same coefficient on its `act-core`
+    branch (`f4e2f53`; its deviation/2× swing headline is scale-invariant, unchanged).
+  - EServe tests pass; deltas in `baselines/eserve/c3_convergence_deltas.md`; walkthrough segment 5
+    refreshed. **SoC/PDN/cooling** kept EServe-specific (documented follow-ups).
 - **C4 (wire suite): DONE** (suite `act-core` `cc465ce`). `bootstrap.sh` installs act-core editable;
   `.gitmodules` tracks the act-core branch; gitlinks bumped (ACT `8764d6a`, EServe `d38bf93`,
   MicroGreen `7f03583`). `make all-demos` is green on the unified suite; submodules clean.
 
-## Workstream C COMPLETE
+## Workstream C COMPLETE (+ SSD convergence)
 All three ACT lineages — ACT, MicroGreen/EmbodiedCarbonModeling, and EServe — now share the single
 `act_core` package (pip-installable; ACT also uses it via PYTHONPATH). ACT is byte-identical, ECM's 14
-BOMs reproduce, and EServe's memory carbon is corrected to the paper-backed value. Everything is on
-`act-core` branches across the repos; **nothing is merged to `main`/`suite-assembly`** — the stable
-`v0.1.0` walkthrough is untouched, so merging is the user's call.
+BOMs reproduce, and EServe's **memory + SSD** carbon are converged onto act_core (Fair-CO2's SSD too).
+The tool repos stay on their **`act-core`** branches (pushed to origin for review) — **nothing is merged
+to any tool repo's `main` / no PRs**, per the collaborator-review constraint. The suite
+(full-stack-carbon), a new repo, has been promoted (`main` fast-forwarded to `act-core`) and pushed to
+origin. The stable `suite-assembly` / `v0.1.0` walkthrough snapshot is untouched.
