@@ -40,7 +40,7 @@ at all. The industry-default split isn't slightly off; it's badly unfair.
 ./tutorial.sh --swing llama
 ```
 The same Llama-3-8B serving job's attributed embodied carbon **swings ~2× (2.02×)** just from *who it
-shares the node with* — **0.161 gCO2e alone** vs **0.080 gCO2e next to Spark** (it splits the shared box
+shares the node with* — **0.139 gCO2e alone** vs **0.069 gCO2e next to Spark** (it splits the shared box
 with a neighbor). Try `--swing spark` (2.06×). **Lesson:** a fixed "your share" number can't be right if
 it changes depending on your neighbors — attribution has to be *relational*, which proportional billing
 can't capture.

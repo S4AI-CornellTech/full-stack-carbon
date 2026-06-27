@@ -120,6 +120,6 @@ drops to **≈ 7.8 kg**, near the wind result (7.0) and far below coal (20.9). T
 You modeled whole **servers** — bottom-up embodied carbon from a BOM. Segment 5 (**EServe**) takes the
 **GPU accelerator** case: it models an H100 natively (including its HBM), then adds the **host server**
 it racks into — and shows that host (the kind of box you just modeled) **dominates** the embodied
-footprint, ~30× the GPU, with the embodied-vs-operational balance flipping on the grid. The skill you
+footprint, ~10× the GPU, with the embodied-vs-operational balance set by the grid (and the node). The skill you
 just practiced — reading a system as a bill-of-materials — is exactly what makes EServe's "the host, not
 the accelerator" point land.

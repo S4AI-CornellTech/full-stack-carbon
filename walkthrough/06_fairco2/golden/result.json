@@ -39,20 +39,20 @@
     "shapley_speedup_x": 600000,
     "neighbor_swing": {
       "llama": {
-        "isolated_gco2e": 0.1608,
-        "with_spark_gco2e": 0.0797,
-        "min_gco2e": 0.0797,
+        "isolated_gco2e": 0.1386,
+        "with_spark_gco2e": 0.0687,
+        "min_gco2e": 0.0687,
         "min_partner": "spark",
-        "max_gco2e": 0.1608,
+        "max_gco2e": 0.1386,
         "max_partner": "nothing",
         "swing_x": 2.02
       },
       "spark": {
-        "isolated_gco2e": 0.2928,
-        "with_spark_gco2e": 0.1419,
-        "min_gco2e": 0.1419,
+        "isolated_gco2e": 0.2524,
+        "with_spark_gco2e": 0.1223,
+        "min_gco2e": 0.1223,
         "min_partner": "spark",
-        "max_gco2e": 0.2928,
+        "max_gco2e": 0.2524,
         "max_partner": "nothing",
         "swing_x": 2.06
       }

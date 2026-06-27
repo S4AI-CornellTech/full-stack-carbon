@@ -5,6 +5,7 @@
 [submodule "Fair-CO2"]
 	path = Fair-CO2
 	url = https://github.com/S4AI-CornellTech/fair-co2.git
+	branch = act-core
 [submodule "COFFEE"]
 	path = COFFEE
 	url = https://github.com/S4AI-CornellTech/COFFEE.git

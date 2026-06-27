@@ -11,7 +11,8 @@ RUP deviates from the fair Shapley share by **80.3% avg / 279% worst**; Fair-CO2
 (≈4.2–5.1×), at **~600,000×** less compute. (Fair-CO2's committed 10k-sim Monte-Carlo result.)
 
 ## Stage 2 — neighbor swing (`--swing <workload>`)
-`llama`: isolated **0.161** vs with-spark **0.080** gCO2e → **2.02×** swing. `spark`: **2.06×**.
+`llama`: isolated **0.139** vs with-spark **0.069** gCO2e → **2.02×** swing. `spark`: **2.06×**.
+(Absolutes use `act_core`'s aligned SSD coefficient; the swing **ratio** is coefficient-independent.)
 
 ## Stage 3 — attribute one schedule (`--workloads exercises/workloads.json`, budget = R740 1523.1 kg)
 Schedule: llama (cpu 40, runtime 10, start 0), spark (cpu 60, runtime 10, start 0), faiss (cpu 100,

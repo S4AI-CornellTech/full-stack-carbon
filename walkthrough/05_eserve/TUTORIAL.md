@@ -63,13 +63,15 @@ handful of explicit, editable inputs — just like an ACT BOM.
 | Component | kgCO2e |
 |---|---|
 | GPU (1 accelerator) | 103 |
+| Host SSD (22.7 TB) | 227 |
 | Host DRAM (2 TB) | 580 |
-| Host SSD (22.7 TB) | 2,499 |
-| **Host total** | **3,355** |
+| **Host total** | **1,084** |
 
-The host is **≈97%** of one accelerator's embodied carbon; its storage + DRAM alone is **≈30× the
-GPU**. The accelerator you obsessed over is the small half. **Back-link:** that host *is* the kind of
-server you learned to model in **ACT (segment 1)** — here it dominates the GPU box.
+The host is **≈91%** of one accelerator's embodied carbon; its storage + DRAM alone is **≈8× the GPU**.
+The accelerator you obsessed over is still the small half. Storage is priced on `act_core`'s shared
+**bare-die NAND** (nand_10nm = 10 g/GB, the same source ACT/MicroGreen use), so the host is **DRAM-led**:
+its 2 TB of DDR4 (580 kg) outweighs even 22.7 TB of SSD (227 kg). **Back-link:** that host *is* the kind
+of server you learned to model in **ACT (segment 1)** — here it dominates the GPU box.
 *(For a host-less GPU like L4, `--host` borrows the H100 HGX reference host and says so — the host is the
 box you rack GPUs into, not a property of the chip.)*
 
@@ -80,17 +82,20 @@ box you rack GPUs into, not a property of the chip.)*
 ```bash
 ./tutorial.sh --gpu H100HGX --host --grid-ci 17 261 501
 ```
-The 8-GPU node (5.95 kW, 80% util, 4-yr life) has a flat **embodied rate ≈ 119 g/hr** and an operational
+The 8-GPU node (5.95 kW, 80% util, 4-yr life) has a flat **embodied rate ≈ 54 g/hr** and an operational
 rate that rises with the grid: **81 / 1,242 / 2,385 g/hr** at 17 / 261 / 501 gCO2e/kWh. They cross at
-**≈ 25.1 gCO2e/kWh**. Sweep your own region:
+**≈ 11.4 gCO2e/kWh** — *below* all three, so operational wins at every one (yes, even Sweden's 17). Find
+the regime where building outweighs running:
 
 ```bash
-./tutorial.sh --gpu H100HGX --host --grid-ci 20      # below crossover: embodied wins
+./tutorial.sh --gpu H100HGX --host --grid-ci 8       # below crossover: embodied wins
 ./tutorial.sh --gpu H100HGX --host --grid-ci 30 --util 0.5
 ```
-**Takeaway:** below ~25 gCO2e/kWh, *building* the box outweighs everything you ever spend *running* it —
-so what to optimize (and what to provision) depends on the grid, not just the GPU. Sample grids:
-Sweden 17 · Ontario ~30 · France ~56 · world avg 261 · California 501 · India 725.
+**Takeaway:** for this big-host H100 node the crossover (~11 g/kWh) sits *below* essentially every real
+grid's annual average, so **operational dominates almost everywhere** — by ~1.5× on a clean grid (Sweden
+17) up to ~44× on a dirty one (California 501). *Building* outweighs *running* only in the very cleanest
+pockets (<~11 g/kWh). What dominates — and by how much — is still the grid's call, not the GPU's. Sample
+grids: Sweden 17 · Ontario ~30 · France ~56 · world avg 261 · California 501 · India 725.
 
 ---
 
@@ -105,8 +110,11 @@ The helper prints the GPU breakdown, the host-inclusive node footprint, and the 
 your deployment is **embodied- or operational-dominated**. A complete example is `solutions/my_gpu.json`
 (an A100 SXM + its own host):
 ```bash
-./tutorial.sh --gpu-file solutions/my_gpu.json --host     # GPU 99 / host 1,531 / crossover 25.1
+./tutorial.sh --gpu-file solutions/my_gpu.json --host     # GPU 99 / host 892 / crossover 18.2
 ```
+Note this lighter node's crossover (~18 g/kWh) sits *above* Sweden's 17 — so on the A100 box a clean grid
+**does** flip to embodied-dominated, where the bigger, higher-power H100 node (crossover ~11) stays
+operational-dominated. The crossover is a property of the *node* (power + host size), not just the grid.
 Compare to `solutions/EXPECTED.md`.
 
 **Optional extend (≈2 min)** — add a GPU EServe doesn't ship. Add an entry to

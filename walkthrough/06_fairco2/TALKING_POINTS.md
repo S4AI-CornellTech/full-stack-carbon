@@ -23,11 +23,14 @@ embodied carbon swings ~**2x** purely depending on what it shares the node with:
 
 | Job | sharing node w/ Spark | running alone | swing |
 |---|---|---|---|
-| Llama-3-8B | 0.080 gCO₂e | 0.161 gCO₂e | **2.02x** |
-| Spark | 0.142 gCO₂e | 0.293 gCO₂e | **2.06x** |
+| Llama-3-8B | 0.069 gCO₂e | 0.139 gCO₂e | **2.02x** |
+| Spark | 0.122 gCO₂e | 0.252 gCO₂e | **2.06x** |
 
 If a job's bill can move 2x just from its neighbor, "how do we split it?" is not a
 rounding question — it decides who pays. Figure: `fairco2_neighbor_swing.png`.
+*(Absolute gCO₂e use `act_core`'s aligned SSD coefficient — the suite's storage
+convergence — but the **swing is a ratio**, independent of the SSD/DRAM coefficients,
+so the unfairness argument is unchanged.)*
 
 ### REVEAL (the climax): proportional splitting is ~80% wrong
 

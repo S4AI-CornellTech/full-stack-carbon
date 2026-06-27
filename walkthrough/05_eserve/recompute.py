@@ -11,15 +11,18 @@ on a single NVIDIA H100 HGX node:
 A GPU-only breakdown (the previous version of this segment) shows neither. So we
 drive EServe's OWN server_carbon calculators on the committed H100HGX config:
 
-  * GPUCarbonCalculator           -> per-accelerator embodied (~154 kgCO2e).
+  * GPUCarbonCalculator           -> per-accelerator embodied (~103 kgCO2e).
   * CPUCarbonCalculator on the
-    H100HGX ``cpu_configs``        -> the host embodied (~3,355 kgCO2e: a 2 TB
+    H100HGX ``cpu_configs``        -> the host embodied (~1,084 kgCO2e: a 2 TB
     (2 TB DRAM, 22.7 TB SSD)          DRAM + 22.7 TB SSD host that dwarfs the GPU).
+
+Storage is priced on act_core's shared bare-die NAND model (nand_10nm), the same
+source ACT/MicroGreen use -- so the host is DRAM-led (DRAM ~580 > SSD ~227 kg).
 
 Then we amortise the whole 8-GPU node's embodied carbon over its 4-year life and
 cross it against operational carbon at the paper's three grid intensities to find
-the ~27 gCO2e/kWh crossover below which manufacturing outweighs everything you
-will ever spend running it.
+the ~11 gCO2e/kWh crossover below which manufacturing outweighs everything you
+will ever spend running it -- a clean-grid edge case, since real grids sit above it.
 
 NB the Section-4 "4R" ILP optimizer (EcoServe's 47% headline) is NOT committed,
 so this segment demonstrates the *Observations*, not the optimization, and leads
@@ -86,7 +89,7 @@ def crossover_figure(out_png, *, embodied_rate, power_kw, util, grid_ci, crossov
     ax.set_ylim(0, power_kw * util * xmax * 1.02)
     ax.set_xlabel("grid carbon intensity (gCO2e/kWh)")
     ax.set_ylabel("carbon rate (gCO2e per node-hour)")
-    ax.set_title("Below ~27 gCO2e/kWh, embodied outweighs ALL operational (EcoServe Obs 3)")
+    ax.set_title(f"Below ~{crossover_ci:.0f} gCO2e/kWh, embodied outweighs ALL operational (EcoServe Obs 3)")
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
     ax.legend(frameon=False, fontsize=8, loc="upper center")
@@ -136,22 +139,22 @@ def main() -> None:
         die_area_mm2=1600.0, process_node_nm=7,             # Xeon 8480C: enable the CPU-die term
     )                                                       #   (EServe returns ACT Table-12 const)
     host = host_calc.calculate_total_cf()
-    host_total = round(host["total_cf"], 1)                 # ~3355.4
-    host_ssd = round(host_calc.calculate_ssd_cf(), 1)       # ~2499.0
+    host_total = round(host["total_cf"], 1)                 # ~1083.7
+    host_ssd = round(host_calc.calculate_ssd_cf(), 1)       # ~227.2 (act_core nand_10nm)
     host_dram = round(host_calc.calculate_memory_cf(), 1)   # 580.0
     host_other = round(host_total - host_ssd - host_dram, 1)
 
     # --- Obs 2: host vs GPU (lead with ratios) ---
     per_accel = round(gpu_total + host_total, 1)            # one accelerator's share = 1 GPU + host
-    host_pct = round(100 * host_total / per_accel, 1)       # ~95.6 %
-    storage_dram_vs_gpu = round((host_ssd + host_dram) / gpu_total, 1)  # ~20x
+    host_pct = round(100 * host_total / per_accel, 1)       # ~91.3 %
+    storage_dram_vs_gpu = round((host_ssd + host_dram) / gpu_total, 1)  # ~7.8x
 
     # --- Obs 3: whole-node embodied vs operational crossover ---
-    node_embodied_kg = round(N_GPUS * gpu_total + host_total, 1)        # 8 GPU + host ~4589
-    embodied_rate = round(node_embodied_kg * 1000 / lifetime_hours, 1)  # ~131 g/hr
+    node_embodied_kg = round(N_GPUS * gpu_total + host_total, 1)        # 8 GPU + host ~1908
+    embodied_rate = round(node_embodied_kg * 1000 / lifetime_hours, 1)  # ~54 g/hr
     power_kw = round((N_GPUS * gspecs.tdp + cspecs.cpu_tdp) / 1000.0, 2)  # ~5.95 kW
     op_rates = {name: round(power_kw * UTILIZATION * ci, 1) for name, ci in GRID_CI.items()}
-    crossover_ci = round(embodied_rate / (power_kw * UTILIZATION), 1)   # ~27.5 gCO2e/kWh
+    crossover_ci = round(embodied_rate / (power_kw * UTILIZATION), 1)   # ~11.4 gCO2e/kWh
 
     # --- figures ---
     walk.bar_chart(
@@ -192,10 +195,13 @@ def main() -> None:
         "crossover_ci_gco2e_per_kwh": crossover_ci,
         "note": (
             "EcoServe Section-3 carbon model on the H100 HGX node. The HOST (2 TB DRAM + "
-            "22.7 TB SSD) dominates embodied carbon, not the GPU (Obs 2: host ~95% of one "
-            "accelerator's embodied; storage+DRAM ~20x the GPU). Amortized over a 4-yr life "
-            "the node's embodied rate (~131 gCO2e/hr) outweighs operational below "
-            "~27 gCO2e/kWh (Obs 3). Fair-CO2 (seg 6) time-allocates this embodied carbon to "
+            "22.7 TB SSD) dominates embodied carbon, not the GPU (Obs 2: host ~91% of one "
+            "accelerator's embodied; storage+DRAM ~8x the GPU). Storage is priced on "
+            "act_core's shared bare-die NAND (nand_10nm, as ACT/MicroGreen), so the host is "
+            "DRAM-led (DRAM 580 > SSD 227 kg). Amortized over a 4-yr life the node's embodied "
+            "rate (~54 gCO2e/hr) outweighs operational only below ~11 gCO2e/kWh (Obs 3) -- "
+            "operational dominates on essentially every real grid; embodied wins only on the "
+            "very cleanest. Fair-CO2 (seg 6) time-allocates this embodied carbon to "
             "co-located queries; gpu_embodied_kgco2e is the per-accelerator figure it cites."
         ),
     }

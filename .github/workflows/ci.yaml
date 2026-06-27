@@ -51,7 +51,7 @@ jobs:
         if: matrix.tool == 'eserve'
         run: |
           bash walkthrough/05_eserve/tutorial.sh --gpu H100HGX --host \
-            --expect gpu=103 --expect host=3355.4 --expect crossover=25.1
+            --expect gpu=103 --expect host=1083.7 --expect crossover=11.4
       - name: Fair-CO2 tutorial smoke-check (segment-6 hands-on)
         if: matrix.tool == 'fair-co2'
         run: |
