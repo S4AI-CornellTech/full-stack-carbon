@@ -38,7 +38,7 @@ tutorial-act: ; @for b in exercises/sensitivity.yaml solutions/sensitivity_solve
 
 tutorial-eserve: ; @bash $(WALK)/05_eserve/tutorial.sh --gpu H100HGX --host --expect gpu=103 --expect host=3355.4 --expect crossover=25.1 && bash $(WALK)/05_eserve/tutorial.sh --gpu-file exercises/gpu_l4.json && bash $(WALK)/05_eserve/tutorial.sh --gpu-file solutions/my_gpu.json --host
 
-tutorial-fairco2: ; @bash $(WALK)/06_fairco2/tutorial.sh --swing llama --expect swing=2.02 && bash $(WALK)/06_fairco2/tutorial.sh --workloads exercises/workloads.json --expect spark_rup=761.5 --expect spark_shapley=261.1 --expect llama_shapley=957.4
+tutorial-fairco2: ; @bash $(WALK)/06_fairco2/tutorial.sh --swing llama --expect swing=2.02 && bash $(WALK)/06_fairco2/tutorial.sh --workloads exercises/workloads.json --expect faiss_rup=253.8 --expect faiss_shapley=761.5 --expect faiss_fairco2=571.2
 
 all-demos: demo-act demo-carbonclarity demo-coffee demo-microgreen demo-eserve demo-fairco2 verify
 

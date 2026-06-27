@@ -13,11 +13,12 @@ cd walkthrough/06_fairco2
 ```
 Prereq: `make setup` built the `fair-co2` env.
 
-**Two ways to bill shared carbon.** **RUP** (Resource-Utilization-Proportional — the industry default,
+**Three ways to bill shared carbon.** **RUP** (Resource-Utilization-Proportional — the industry default,
 = Google's operational accounting + the Green Software Foundation SCI) charges each job in proportion to
 its **resource-time** (CPU × runtime). **Shapley** — the provably fair division of a shared cost —
 charges each job by its **marginal contribution to the peak** the hardware was built (and embodied) to
-serve. They disagree, a lot.
+serve, but it's exponentially expensive. **Fair-CO2** *approximates* that fair Shapley share cheaply
+enough (~600,000×) to bill per-job, live. We'll see all three on one schedule.
 
 ---
 
@@ -48,46 +49,51 @@ can't capture.
 
 ## Stage 3 — Attribute a shared node yourself (≈8 min)
 
-Three jobs co-locate on one server and share its embodied carbon — ACT's **R740 = 1,523 kg** from
-segment 1. Open `exercises/workloads.json`: each job has a `peak` (the demand it drives) and a
-`resource_time` (CPU × runtime, what RUP bills by). Run it:
+Three jobs co-locate on one server for a 10-slot window and share its embodied carbon — ACT's **R740 =
+1,523 kg** from segment 1. Open `exercises/workloads.json`: each job is a **schedule** entry — `cpu`
+(cores), `runtime` (slots), `start` (slot). The cluster is built for the **peak of concurrent demand**.
+Run it:
 
 ```bash
 ./tutorial.sh --workloads exercises/workloads.json
 ```
-| job | RUP (proportional) | fair (Shapley) | RUP error |
-|---|---|---|---|
-| llama (LLM serving) | 507.7 kg | 957.4 kg | **47% under-charged** |
-| spark (batch ETL) | 761.5 kg | 261.1 kg | **192% over-charged** |
-| faiss (index build) | 253.8 kg | 304.6 kg | 17% under-charged |
+| job | RUP | Shapley (fair) | Fair-CO2 | RUP err | F-CO2 err |
+|---|---|---|---|---|---|
+| llama (serving, steady) | 507.7 | 304.6 | 380.8 | 67% | 25% |
+| spark (batch, steady) | 761.5 | 456.9 | 571.2 | 67% | 25% |
+| **faiss (index rebuild, 2-slot burst)** | **253.8** | **761.5** | **571.2** | **67%** | 25% |
 
-**The unfairness, concrete:** Spark is a batch job with the *most* resource-time (so RUP bills it the
-most — 50% of the budget) but the *lowest* peak — it never drives the peak the hardware was sized for,
-so its fair share is the *smallest* (261 kg). RUP over-charges it ~3×. Meanwhile the spiky Llama serving
-job *drives* the peak and is under-charged by RUP. Now **edit the jobs** — bump Spark's `peak`, or drop
-Llama's `resource_time` — re-run, and watch the over/under-charging move. (This calls Fair-CO2's real
-`peak_shapley`.)
+Demand peaks at **200 cores** in slots 4–5: the `faiss` index rebuild **doubles** the cluster's peak for
+two slots. That burst is what forces you to provision — and embody — the extra hardware, so **fairly it
+owes the most (761 kg, 50%)**. But RUP bills by CPU×runtime, so it charges faiss the *least* (254 kg) and
+over-charges the steady all-day batch (spark). **RUP is backwards** — off by 67%. **Fair-CO2** moves
+faiss the right way (254 → 571 kg), landing ~25% from the exact fair share — far closer than RUP, and
+cheap enough to compute live (Stage 1's 600,000×). Now **edit the schedule** — shorten faiss's `runtime`,
+shift its `start` out of the peak, or give spark a burst — re-run and watch all three move.
 
 ---
 
 ## Stage 4 — Capstone: fairly bill your tenants (≈4 min)
 
-Copy `exercises/workloads.json`, put in **your own** co-located tenants (their peak demand + resource
-use) and the shared budget (`--budget <kg>`, or keep the upstream R740/H100 embodied carbon), and run:
+Copy `exercises/workloads.json`, put in **your own** tenant schedule (each tenant's `cpu`, `runtime`,
+`start`) and the shared budget (`--budget <kg>`, or keep the upstream R740 + H100 = 1,626 kg), and run:
 
 ```bash
-./tutorial.sh --workloads exercises/workloads.json --budget 1626   # e.g. R740 1523 + one H100 103
+./tutorial.sh --workloads exercises/workloads.json --budget 1626
 ```
-The helper reports each tenant's **fair share** and exactly how much RUP over- or under-charges them.
-That's the whole suite closing the loop: the carbon **ACT quantified**, **EServe provisioned**, finally
-**split fairly** across the jobs that share the machine.
+The helper reports each tenant's **RUP vs fair (Shapley) vs Fair-CO2** share and how far RUP misses.
+That's the whole suite closing the loop: the carbon **ACT quantified** and **EServe provisioned**,
+finally **split fairly** across the jobs that share the machine — and Fair-CO2 is what makes the fair
+split cheap enough to actually bill on.
 
 ---
 
 ## Honesty (say it aloud)
 
-The fair split uses Fair-CO2's **real `peak_shapley`** (`Fair-CO2/forecast/emb_shapley_lib.py`). The
-Stage-1 headline (RUP 80% vs Fair-CO2 19%) is Fair-CO2's committed **10,000-sim Monte-Carlo** result —
-the heavy simulation is not re-run here, and neither is any downstream carbon optimizer. The point this
-hands-on makes is the core one: **proportional billing of shared carbon is unfair, and a Shapley share
-fixes it.**
+The three methods reproduce Fair-CO2's own algorithms (`baseline_attribution` / exact
+`ground_truth_shapley_attribution` / `temporal_shapley` from its `dynamic_demand_sim.py`), and the
+hierarchical Shapley they build on is imported straight from `Fair-CO2/forecast/emb_shapley_lib.py` — on
+one editable schedule, no Monte-Carlo. The Stage-1 headline (RUP 80% vs Fair-CO2 19%) is Fair-CO2's
+committed 10,000-sim result; that simulation and any downstream optimizer are not re-run here. The point:
+**proportional billing of shared carbon is unfair; the fair Shapley share fixes it; and Fair-CO2 makes
+that fair share cheap enough to compute live.**

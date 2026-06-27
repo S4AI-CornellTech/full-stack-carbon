@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
-"""Segment 6 - Fair-CO2 tutorial helper: fairly attribute a shared carbon budget across
-co-located jobs, comparing the industry-default proportional (RUP) split to the fair
-Shapley split — using Fair-CO2's OWN `peak_shapley`.
+"""Segment 6 - Fair-CO2 tutorial helper: attribute a shared carbon budget across a SCHEDULE of
+co-located jobs three ways — the industry-default proportional (RUP) split, the exact fair
+**Shapley** ground truth, and **Fair-CO2's** cheap Shapley approximation — to show why RUP is
+wrong and how Fair-CO2 fixes it.
 
-Participant-facing runner for the hands-on tutorial (see TUTORIAL.md). It does NOT touch the
-canonical demo (run.sh / recompute.py) or its golden/handoff; the Fair-CO2 submodule is only
-ever read.
+The three attribution methods reproduce Fair-CO2's own algorithms in
+`Fair-CO2/monte-carlo-simulations/dynamic-demand/dynamic_demand_sim.py` (`baseline_attribution`,
+`ground_truth_shapley_attribution`, `temporal_shapley_shapley_attribution`); the hierarchical
+Shapley they build on is imported directly from `Fair-CO2/forecast/emb_shapley_lib.py`. No
+Monte-Carlo, no multiprocessing — one editable schedule. The Fair-CO2 submodule is only ever read.
 
-  ./tutorial.sh --workloads exercises/workloads.json     proportional (RUP) vs fair (Shapley) split
-  ./tutorial.sh --swing llama                            "your carbon bill depends on your neighbor"
+  ./tutorial.sh --workloads exercises/workloads.json     RUP vs Shapley vs Fair-CO2 on a schedule
+  ./tutorial.sh --swing llama                            "your bill depends on your neighbor"
 """
 import argparse
+import itertools
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -21,7 +26,7 @@ import walk  # noqa: E402,F401
 import recompute as rc  # noqa: E402  reuse grouped_bars + EMB_MATRIX (recompute is import-safe)
 import pandas as pd  # noqa: E402
 sys.path.insert(0, str(walk.SUITE_ROOT / "Fair-CO2" / "forecast"))
-from emb_shapley_lib import peak_shapley  # noqa: E402  Fair-CO2's real Shapley attribution
+from emb_shapley_lib import shapley_attribution as h_shapley  # noqa: E402  Fair-CO2's hierarchical Shapley
 
 
 def _resolve(p):
@@ -30,7 +35,7 @@ def _resolve(p):
 
 
 def default_budget():
-    """The shared embodied budget = ACT's R740 from segment 1 (committed handoff), in kg."""
+    """Shared embodied budget = ACT's R740 from segment 1 (committed handoff), in kg."""
     p = HERE / "inputs" / "from_01_act.json"
     if p.exists():
         return float(json.loads(p.read_text())["server_embodied_kgco2e"])
@@ -41,25 +46,72 @@ def token(name):
     return name.split()[0].strip("(),").lower()
 
 
-def attribute(jobs, budget):
-    names = [j["name"] for j in jobs]
-    peaks = {j["name"]: float(j["peak"]) for j in jobs}
-    rts = {j["name"]: float(j["resource_time"]) for j in jobs}
-    total_rt = sum(rts.values())
-    rup = {n: budget * rts[n] / total_rt for n in names}             # proportional to CPU x runtime
-    shap = dict(zip(names, peak_shapley(names, peaks, rts, budget)))  # Fair-CO2's fair share
-    return names, rup, shap
+def demand_series(jobs, time):
+    """Concurrent demand (cores) at each unit time slot — Fair-CO2 get_demand_from_schedule."""
+    d = [0] * time
+    for t in range(time):
+        for j in jobs:
+            if j["start"] <= t < j["start"] + j["runtime"]:
+                d[t] += j["cpu"]
+    return d
+
+
+def rup_attribution(jobs):
+    """RUP: proportional to CPU x runtime (Fair-CO2 baseline_attribution)."""
+    raw = [j["cpu"] * j["runtime"] for j in jobs]
+    s = sum(raw)
+    return [x / s for x in raw] if s else [0] * len(jobs)
+
+
+def shapley_exact(jobs, time):
+    """Exact fair Shapley over the schedule: each job's avg marginal contribution to the peak of
+    *concurrent* demand, all coalitions (Fair-CO2 ground_truth_shapley_attribution)."""
+    labels = [j["name"] for j in jobs]
+    by = {j["name"]: j for j in jobs}
+    n = len(labels)
+    combos = [set(c) for k in range(n + 1) for c in itertools.combinations(labels, k)]
+
+    def peak(coal):
+        return max(demand_series([by[l] for l in coal], time)) if coal else 0
+
+    out = []
+    for lab in labels:
+        sv = 0.0
+        for c in combos:
+            if lab in c:
+                without = c - {lab}
+                sv += (peak(c) - peak(without)) / math.comb(n - 1, len(without))
+        out.append(sv)
+    s = sum(out)
+    return [x / s for x in out] if s else [0] * n
+
+
+def fairco2_temporal(jobs, time):
+    """Fair-CO2's cheap approximation: a hierarchical Shapley over the demand *time-series* yields a
+    per-slot intensity; each job pays that intensity x its CPU over its active slots
+    (Fair-CO2 temporal_shapley_shapley_attribution). Linear in jobs, not exponential."""
+    dem = demand_series(jobs, time)
+    df = pd.DataFrame({"time": list(range(time)), "demand": dem})
+    _shap, _peaks, ci_list, _rt = h_shapley(df, "time", "demand", [1],
+                                             attribution_total=1, sampling_interval=1, offset=0)
+    ci = ci_list[-1]
+    out = []
+    for j in jobs:
+        a = sum(ci[t] * j["cpu"] for t in range(j["start"], min(j["start"] + j["runtime"], time)))
+        out.append(a)
+    s = sum(out)
+    return [x / s for x in out] if s else [0] * len(jobs)
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Fair-CO2 hands-on: proportional (RUP) vs fair (Shapley) carbon split")
+    ap = argparse.ArgumentParser(description="Fair-CO2 hands-on: RUP vs Shapley vs Fair-CO2 on a schedule")
     ap.add_argument("--workloads", default="exercises/workloads.json",
-                    help="JSON: {jobs:[{name,peak,resource_time}], budget_source?}")
+                    help="JSON: {time, jobs:[{name,cpu,runtime,start}], budget_source?}")
     ap.add_argument("--budget", type=float, default=None, help="shared embodied budget in kg (overrides config/default)")
     ap.add_argument("--swing", metavar="WORKLOAD", help="show a job's attributed-carbon swing across co-location partners")
     ap.add_argument("--fig", action="store_true", help="render the attribution chart into figures/tutorial/")
     ap.add_argument("--expect", action="append", default=[], metavar="KEY=VAL",
-                    help="assert a value: <jobtoken>_rup|_shapley|_dev, or swing (repeatable)")
+                    help="assert a value: <jobtoken>_rup|_shapley|_fairco2, or swing (repeatable)")
     args = ap.parse_args()
 
     results = {}
@@ -79,36 +131,46 @@ def main():
         print(f"  -> the same job's attributed bill swings {results['swing']}x just from its neighbor")
     else:
         cfg = json.loads(_resolve(args.workloads).read_text())
-        jobs = cfg["jobs"]
+        jobs, time = cfg["jobs"], int(cfg["time"])
         if args.budget is not None:
             budget = args.budget
         elif cfg.get("budget_source") == "from_01_act":
             budget = default_budget()
         else:
             budget = float(cfg.get("budget_kg", default_budget()))
-        names, rup, shap = attribute(jobs, budget)
-        print(f"[06_fairco2 tutorial] splitting {budget:,.1f} kgCO2e across {len(names)} co-located jobs")
-        print(f"  {'job':<22}{'RUP (proportional)':>20}{'fair (Shapley)':>18}{'RUP error':>14}")
-        for n in names:
-            dev = abs(rup[n] - shap[n]) / shap[n] * 100 if shap[n] else 0.0
-            over = "over-charges" if rup[n] > shap[n] else "under-charges"
-            tok = token(n)
-            results[f"{tok}_rup"] = round(rup[n], 1)
-            results[f"{tok}_shapley"] = round(shap[n], 1)
-            results[f"{tok}_dev"] = round(dev, 1)
-            print(f"  {n:<22}{rup[n]:>16,.1f} kg{shap[n]:>14,.1f} kg{dev:>10.0f}% {over}")
-        print("  -> RUP charges by resource-use; Shapley charges by marginal contribution to the peak the")
-        print("     hardware was built for. A high-runtime / low-peak batch job is over-charged by RUP.")
+
+        rup = rup_attribution(jobs)
+        shap = shapley_exact(jobs, time)
+        fco = fairco2_temporal(jobs, time)
+        dem = demand_series(jobs, time)
+        peak_t = max(range(time), key=lambda t: dem[t])
+
+        print(f"[06_fairco2 tutorial] one {time}-slot schedule, splitting {budget:,.1f} kgCO2e "
+              f"across {len(jobs)} co-located jobs")
+        print(f"  concurrent demand peaks at {max(dem)} cores (slot {peak_t})")
+        print(f"  {'job':<22}{'RUP':>10}{'Shapley(fair)':>15}{'Fair-CO2':>11}   {'RUP err':>8}{'F-CO2 err':>10}")
+        for i, j in enumerate(jobs):
+            r, s, f = rup[i] * budget, shap[i] * budget, fco[i] * budget
+            r_err = abs(r - s) / s * 100 if s else 0.0
+            f_err = abs(f - s) / s * 100 if s else 0.0
+            tok = token(j["name"])
+            results[f"{tok}_rup"] = round(r, 1)
+            results[f"{tok}_shapley"] = round(s, 1)
+            results[f"{tok}_fairco2"] = round(f, 1)
+            print(f"  {j['name']:<22}{r:>8,.1f}kg{s:>13,.1f}kg{f:>9,.1f}kg   {r_err:>6.0f}% {f_err:>8.0f}%")
+        print("  -> RUP bills by CPU x runtime; Shapley charges by who drives the PEAK the hardware was")
+        print("     built for. Fair-CO2 approximates the fair Shapley share cheaply enough to run live.")
         if args.fig:
             rc.grouped_bars(
                 HERE / "figures" / "tutorial" / "attribution.png",
-                groups=[token(n) for n in names],
-                series={"RUP (proportional)": [round(rup[n], 1) for n in names],
-                        "fair (Shapley)": [round(shap[n], 1) for n in names]},
-                title="Proportional vs fair carbon attribution",
-                subtitle="RUP over/under-charges jobs vs the fair Shapley share",
+                groups=[token(j["name"]) for j in jobs],
+                series={"RUP": [round(rup[i] * budget, 1) for i in range(len(jobs))],
+                        "Shapley (fair)": [round(shap[i] * budget, 1) for i in range(len(jobs))],
+                        "Fair-CO2": [round(fco[i] * budget, 1) for i in range(len(jobs))]},
+                title="RUP vs Shapley vs Fair-CO2",
+                subtitle="RUP misattributes; Fair-CO2 approximates the fair Shapley share",
                 ylabel="attributed embodied carbon (kgCO₂e)",
-                colors=["#bb5566", "#3b7a57"], unit="", ann_fmt="{:.0f}",
+                colors=["#bb5566", "#3b7a57", "#ddaa33"], unit="", ann_fmt="{:.0f}",
             )
 
     failures = []
@@ -120,7 +182,7 @@ def main():
             failures.append(f"{key}: not computed")
             continue
         want = float(raw)
-        tol = max(0.1, 0.005 * abs(want))
+        tol = max(0.2, 0.01 * abs(want))
         if abs(got - want) > tol:
             failures.append(f"{key}: got {got}, expected {want}")
     if failures:

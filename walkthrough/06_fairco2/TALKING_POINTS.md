@@ -67,10 +67,11 @@ dynamic demand) and `fairco2_interference.png` (co-location interference).
 
 **Then: hands-on (≈20 min, see `TUTORIAL.md`).** Participants attribute shared carbon themselves: read
 the verdict (RUP ~80% vs Fair-CO2 ~19%) → see a job's bill swing ~2× by neighbor → **split the R740's
-1,523 kg across 3 co-located jobs**, RUP vs the fair Shapley share (using Fair-CO2's own `peak_shapley`),
-and watch a high-runtime / low-peak batch job get over-charged ~3× by RUP → then bill their own tenant
-mix. The point to convey: this is the carbon **ACT quantified and EServe provisioned, finally split
-fairly** — and proportional billing gets it badly wrong.
+1,523 kg across one 3-job schedule three ways — RUP vs the fair Shapley share vs Fair-CO2's cheap
+approximation** — and watch RUP *under-charge the brief burst that drives the peak* (which fairly owes
+the most) while Fair-CO2 corrects it → then bill their own tenant schedule. The point to convey: this is
+the carbon **ACT quantified and EServe provisioned, finally split fairly** — RUP gets it badly wrong, and
+Fair-CO2 makes the fair split cheap enough to actually use.
 
 **Closes the loop with:**
 

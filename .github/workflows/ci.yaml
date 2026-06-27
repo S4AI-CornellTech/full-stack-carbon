@@ -56,7 +56,7 @@ jobs:
         run: |
           bash walkthrough/06_fairco2/tutorial.sh --swing llama --expect swing=2.02
           bash walkthrough/06_fairco2/tutorial.sh --workloads exercises/workloads.json \
-            --expect spark_rup=761.5 --expect spark_shapley=261.1 --expect llama_shapley=957.4
+            --expect faiss_rup=253.8 --expect faiss_shapley=761.5 --expect faiss_fairco2=571.2
       - name: Upload figures
         if: always()
         uses: actions/upload-artifact@v4
