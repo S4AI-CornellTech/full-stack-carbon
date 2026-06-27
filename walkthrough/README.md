@@ -56,7 +56,8 @@ Each `NN_<tool>/` directory contains:
 - `TALKING_POINTS.md` — slide content for that tool's presentation, with honesty
   caveats where committed data is partial (tool owners author the actual deck)
 
-**Segments 1 (ACT) and 5 (EServe)** additionally carry hands-on tutorials — the pilots for the per-tool
-hands-on format: each has `TUTORIAL.md` (a ~20-min guided walkthrough), a `tutorial.*` runner (drive the
-real tool from editable config files), `exercises/` (participant-editable starters), and `solutions/`
-(reference configs + `EXPECTED.md`). Run them with `make tutorial-act` / `make tutorial-eserve`.
+**Segments 1 (ACT), 5 (EServe), and 6 (Fair-CO2)** carry hands-on tutorials — the per-tool hands-on
+format: each has `TUTORIAL.md` (a ~20-min guided walkthrough), a `tutorial.*` runner (drive the real
+tool from editable config files), `exercises/` (participant-editable starters), and `solutions/`
+(reference configs + `EXPECTED.md`). Run them with `make tutorial-act` / `tutorial-eserve` /
+`tutorial-fairco2`.

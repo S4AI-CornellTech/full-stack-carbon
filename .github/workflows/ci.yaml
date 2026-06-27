@@ -51,6 +51,12 @@ jobs:
         run: |
           bash walkthrough/05_eserve/tutorial.sh --gpu H100HGX --host \
             --expect gpu=103 --expect host=3355.4 --expect crossover=25.1
+      - name: Fair-CO2 tutorial smoke-check (segment-6 hands-on)
+        if: matrix.tool == 'fair-co2'
+        run: |
+          bash walkthrough/06_fairco2/tutorial.sh --swing llama --expect swing=2.02
+          bash walkthrough/06_fairco2/tutorial.sh --workloads exercises/workloads.json \
+            --expect spark_rup=761.5 --expect spark_shapley=261.1 --expect llama_shapley=957.4
       - name: Upload figures
         if: always()
         uses: actions/upload-artifact@v4

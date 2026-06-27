@@ -65,6 +65,13 @@ dynamic demand) and `fairco2_interference.png` (co-location interference).
   pandas mean over `ref-sim-results/` (the same reduction Fair-CO2's own figure
   generators print); nothing is written into the Fair-CO2 repo.
 
+**Then: hands-on (≈20 min, see `TUTORIAL.md`).** Participants attribute shared carbon themselves: read
+the verdict (RUP ~80% vs Fair-CO2 ~19%) → see a job's bill swing ~2× by neighbor → **split the R740's
+1,523 kg across 3 co-located jobs**, RUP vs the fair Shapley share (using Fair-CO2's own `peak_shapley`),
+and watch a high-runtime / low-peak batch job get over-charged ~3× by RUP → then bill their own tenant
+mix. The point to convey: this is the carbon **ACT quantified and EServe provisioned, finally split
+fairly** — and proportional billing gets it badly wrong.
+
 **Closes the loop with:**
 
 - This is the **accounting climax** for the carbon quantified upstream: the embodied

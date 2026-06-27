@@ -1,0 +1,9 @@
+{
+  "_help": "Three jobs co-located on one server, sharing its embodied carbon. Edit each job's `peak` (the peak demand it drives — what the hardware is sized/built for) and `resource_time` (CPU x runtime — what RUP bills by). Re-run: ./tutorial.sh --workloads exercises/workloads.json . The shared budget defaults to ACT's R740 embodied carbon from segment 1 (1523.1 kg); override with --budget <kg>.",
+  "budget_source": "from_01_act",
+  "jobs": [
+    {"name": "llama (LLM serving)", "peak": 100, "resource_time": 40},
+    {"name": "spark (batch ETL)",   "peak": 30,  "resource_time": 60},
+    {"name": "faiss (index build)", "peak": 80,  "resource_time": 20}
+  ]
+}
