@@ -30,7 +30,8 @@ removes everything.)
 git clone https://github.com/S4AI-CornellTech/full-stack-carbon.git
 cd full-stack-carbon
 git submodule update --init
-git -C MicroGreen submodule update --init EmbodiedCarbonModeling   # modeling dep only
+git submodule update --init MicroGreen
+git -C MicroGreen submodule update --init EmbodiedCarbonModeling  # modeling dep only
 make setup          # build isolated per-tool Python envs (uv-first)
 make all-demos      # run the six-tool walkthrough, then verify the chain
 make golden         # or: show committed backup figures with zero compute
