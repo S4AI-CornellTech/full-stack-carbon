@@ -40,6 +40,12 @@ jobs:
         run: bash scripts/bootstrap.sh "${{ matrix.tool }}"
       - name: Recompute the walkthrough segment
         run: bash "walkthrough/${{ matrix.seg }}/run.sh"
+      - name: ACT tutorial BOMs smoke-check (segment-1 hands-on)
+        if: matrix.tool == 'act'
+        run: |
+          for b in exercises/sensitivity.yaml solutions/sensitivity_solved.yaml solutions/poweredge2.yaml; do
+            bash walkthrough/01_act/tutorial.sh "$b"
+          done
       - name: Upload figures
         if: always()
         uses: actions/upload-artifact@v4

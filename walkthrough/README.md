@@ -55,3 +55,8 @@ Each `NN_<tool>/` directory contains:
 - `golden/` — committed backup figures + `result.json` (the zero-compute fallback)
 - `TALKING_POINTS.md` — slide content for that tool's presentation, with honesty
   caveats where committed data is partial (tool owners author the actual deck)
+
+**Segment 1 (ACT)** additionally carries the hands-on tutorial — the pilot for all six tools:
+`TUTORIAL.md` (a ~20-min guided walkthrough), `tutorial.sh` (run any BOM through the real CLI),
+`exercises/` (participant-editable starter BOMs), and `solutions/` (reference BOMs + `EXPECTED.md`).
+Run it with `make tutorial-act`.

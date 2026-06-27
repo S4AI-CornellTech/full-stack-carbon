@@ -1,0 +1,17 @@
+# ACT sensitivity playground — all three knobs at their low-carbon end (the "after").
+#   soc.process 28nm -> 7nm, soc.fab_ci coal -> wind, mem.process ddr3_50nm -> ddr4_10nm
+name: ACT sensitivity playground (solved)
+description: 7nm logic on a wind grid + ddr4 memory.
+silicon:
+  soc:
+    area: 7 cm2
+    process: 7nm
+    n_ics: 1
+    fab_yield: 0.875
+    gpa: 95
+    fab_ci: wind
+  mem:
+    model: dram
+    process: ddr4_10nm
+    capacity: 64 GB
+    n_ics: 1

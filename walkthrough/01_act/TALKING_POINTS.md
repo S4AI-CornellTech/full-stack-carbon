@@ -34,8 +34,14 @@ walkthrough.
 - Even here the naive intuition is wrong: **storage, not the CPU, dominates** this
   server's embodied footprint.
 
+**Then: hands-on (≈20 min, see `TUTORIAL.md`).** Participants model hardware themselves: read the R740
+BOM → change one knob at a time (node / fab grid / memory) and watch the number move → **build a second
+PowerEdge** from its spec sheet → **extend** ACT with a new fab-grid location. The point to convey: ACT
+isn't a fixed number, it's a model you drive — node, grid, and memory are all explicit, editable inputs.
+
 **Hands off to:**
 - → **Segment 2 (CarbonClarity):** is 1,523 kg *the* number, or the middle of a wide
   distribution? (It's the latter.)
-- → **Segments 5 (EServe) & 6 (Fair-CO2):** the per-component server budget, committed
-  to their `inputs/`.
+- → **Segments 5 (EServe) & 6 (Fair-CO2):** the per-component server budget, committed to their
+  `inputs/`. EServe then models a **GPU accelerator** and reveals the **host server** — the kind you
+  just learned to model — dominates its embodied carbon.

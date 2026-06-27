@@ -1,0 +1,63 @@
+# =====================================================================
+#  PLACEHOLDER capstone solution — a SECOND Dell PowerEdge.
+#  Every number below is ILLUSTRATIVE so the file parses and runs; this is
+#  NOT a real server.  Replace each value tagged __TODO__ with the real
+#  config (the maintainer has the spec sheet) and update solutions/EXPECTED.md
+#  with the real reference totals.  Structure mirrors ../../ACT/act/boms/dellr740.yaml.
+# =====================================================================
+name: "PowerEdge <MODEL-TBD> (PLACEHOLDER)"
+description: "Second-PowerEdge capstone — PLACEHOLDER config; real numbers pending."
+silicon:
+  # --- 2 CPU sockets ---   __TODO__ real die area / node / fab grid
+  cpu.main0:
+    area: 5.0 cm2
+    process: 7nm
+    n_ics: 1
+    fab_yield: 0.875
+    gpa: 95
+    fab_ci: taiwan
+  cpu.main1:
+    area: 5.0 cm2
+    process: 7nm
+    n_ics: 1
+    fab_yield: 0.875
+    gpa: 95
+    fab_ci: taiwan
+  # --- 4 DRAM modules ---   __TODO__ real count / capacity / process
+  dram.main0:
+    model: dram
+    process: ddr4_10nm
+    n_ics: 10
+    capacity: 64 GB
+  dram.main1:
+    model: dram
+    process: ddr4_10nm
+    n_ics: 10
+    capacity: 64 GB
+  dram.main2:
+    model: dram
+    process: ddr4_10nm
+    n_ics: 10
+    capacity: 64 GB
+  dram.main3:
+    model: dram
+    process: ddr4_10nm
+    n_ics: 10
+    capacity: 64 GB
+  # --- 2 SSDs ---   __TODO__ real count / capacity / process
+  ssd.main0:
+    model: flash
+    process: nand_10nm
+    n_ics: 8
+    capacity: 1920 GB
+  ssd.main1:
+    model: flash
+    process: nand_10nm
+    n_ics: 8
+    capacity: 1920 GB
+materials:
+  # --- mainboard PCB ---   __TODO__ real area / layers
+  board.pcb:
+    category: pcb
+    area: 1925 cm2
+    layers: 12
