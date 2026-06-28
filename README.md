@@ -64,9 +64,8 @@ cd Fair-CO2/tutorial
 deactivate
 ```
 
-The full guided tutorial for each is in `<Tool>/tutorial/TUTORIAL.md` (5-min intro in
-`TALKING_POINTS.md`). Shortcut — no activation needed — from the suite root:
-`make tutorial-act` / `make tutorial-eserve` / `make tutorial-fairco2`.
+The full guided tutorial for each is in `<Tool>/tutorial/TUTORIAL.md`. Shortcut — no activation
+needed — from the suite root: `make tutorial-act` / `make tutorial-eserve` / `make tutorial-fairco2`.
 
 ## Environments
 The tools carry mutually incompatible pins (numpy 2.3.4 / 2.3.5 / 2.4.3; Python 3.11
