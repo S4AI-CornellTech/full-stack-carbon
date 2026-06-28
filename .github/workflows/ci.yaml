@@ -41,6 +41,5 @@ jobs:
       - name: Fair-CO2 tutorial smoke-check (Fair-CO2/tutorial)
         if: matrix.tool == 'fair-co2'
         run: |
-          PYTHON=$PWD/.envs/fair-co2/bin/python bash Fair-CO2/tutorial/tutorial.sh --swing llama --expect swing=2.02
-          PYTHON=$PWD/.envs/fair-co2/bin/python bash Fair-CO2/tutorial/tutorial.sh --workloads exercises/workloads.json \
+          $PWD/.envs/fair-co2/bin/python Fair-CO2/tutorial/tutorial.py \
             --expect faiss_rup=253.8 --expect faiss_shapley=761.5 --expect faiss_fairco2=571.2

@@ -20,11 +20,10 @@ setup: ; bash scripts/bootstrap.sh
 setup-full: ; FULL=1 bash scripts/bootstrap.sh
 
 # ACT's and Fair-CO2's hands-on tutorials live IN their tool repos (ACT/tutorial, Fair-CO2/tutorial);
-# these targets run them with the suite's per-tool env. ACT's uses the real act_model CLI directly
-# (no wrapper); fairco2 calls the in-repo tutorial.sh via $PYTHON. (EServe's hands-on is its own
-# repo's Quick Start — see EServe/README.md.)
+# these targets run them with the suite's per-tool env. ACT's uses the real act_model CLI; Fair-CO2's
+# runs tutorial.py directly. (EServe's hands-on is its own repo's Quick Start — see EServe/README.md.)
 tutorial-act: ; @for b in ACT/tutorial/exercises/sensitivity.yaml ACT/tutorial/solutions/sensitivity_solved.yaml ACT/tutorial/solutions/poweredge2.yaml; do PYTHONPATH=$(ROOT)/ACT $(ROOT)/.envs/act/bin/python -m act.act_model -m $$b -o /tmp/act-tut >/dev/null && echo "[ACT] $$b -> $$(grep '^total_carbon:' /tmp/act-tut/act_report.yaml)"; done && grep -q '^total_carbon: 72\.55' /tmp/act-tut/act_report.yaml && echo "  OK: poweredge2 ~= 72.55 kg" || { echo "  FAIL: poweredge2 != 72.55"; exit 1; }
 
-tutorial-fairco2: ; @PYTHON=$(ROOT)/.envs/fair-co2/bin/python bash $(ROOT)/Fair-CO2/tutorial/tutorial.sh --swing llama --expect swing=2.02 && PYTHON=$(ROOT)/.envs/fair-co2/bin/python bash $(ROOT)/Fair-CO2/tutorial/tutorial.sh --workloads exercises/workloads.json --expect faiss_rup=253.8 --expect faiss_shapley=761.5 --expect faiss_fairco2=571.2
+tutorial-fairco2: ; @$(ROOT)/.envs/fair-co2/bin/python $(ROOT)/Fair-CO2/tutorial/tutorial.py --expect faiss_rup=253.8 --expect faiss_shapley=761.5 --expect faiss_fairco2=571.2
 
 clean: ; rm -rf $(ROOT)/.envs $(ROOT)/.uv

@@ -56,7 +56,7 @@ deactivate
 ```bash
 source .envs/fair-co2/bin/activate
 cd Fair-CO2/tutorial
-./tutorial.sh --workloads exercises/workloads.json
+python tutorial.py
 deactivate
 ```
 
