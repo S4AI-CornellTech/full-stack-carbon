@@ -5,8 +5,6 @@ from device design & manufacturing, through server provisioning, to software car
 attribution in the cloud. The six tools are bundled here as git submodules, each with its
 own **self-contained hands-on tutorial**, sharing one set of per-tool Python environments.
 
-> **Collaborators / reviewers:** start with **[CONTRIBUTING.md](CONTRIBUTING.md)** — the handoff guide: current state, the branch model (`main` = the unified suite, `act-core` = active development), how to run, and how to continue.
-
 ## The tools
 | Tool | Layer | What it models |
 |------|-------|----------------|
