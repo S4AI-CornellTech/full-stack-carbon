@@ -10,12 +10,12 @@ single guided walkthrough that ties them into one story: **the life of a data ce
 ## The tools
 | Tool | Layer | What it models |
 |------|-------|----------------|
-| [ACT](ACT) | chip / server | Embodied + operational carbon from a bill-of-materials |
-| [COFFEE](COFFEE) | emerging memory | Life-cycle carbon of HZO FeFET memory (a density / endurance trade-off) |
-| [CarbonClarity](CarbonClarity) | uncertainty | Probabilistic embodied carbon — distributions & risk, not point estimates |
-| [MicroGreen](MicroGreen) | edge / IoT | Carbon-aware design-space exploration (embodied vs operational) for edge devices |
-| [EServe](EServe) (a.k.a. EcoServe) | server | Carbon-aware LLM serving — embodied + operational across the fleet |
-| [Fair-CO2](Fair-CO2) | datacenter | Fair (Shapley-based) carbon attribution for co-located workloads |
+| [ACT](https://github.com/S4AI-CornellTech/ACTv2) | chip / server | Embodied + operational carbon from a bill-of-materials |
+| [COFFEE](https://github.com/S4AI-CornellTech/COFFEE) | emerging memory | Life-cycle carbon of HZO FeFET memory (a density / endurance trade-off) |
+| [CarbonClarity](https://github.com/S4AI-CornellTech/CarbonClarity) | uncertainty | Probabilistic embodied carbon — distributions & risk, not point estimates |
+| [MicroGreen](https://github.com/S4AI-CornellTech/MicroGreen) | edge / IoT | Carbon-aware design-space exploration (embodied vs operational) for edge devices |
+| [EServe](https://github.com/S4AI-CornellTech/EServe) (a.k.a. EcoServe) | server | Carbon-aware LLM serving — embodied + operational across the fleet |
+| [Fair-CO2](https://github.com/S4AI-CornellTech/fair-co2) | datacenter | Fair (Shapley-based) carbon attribution for co-located workloads |
 
 ## Quickstart
 **No global install needed.** `make setup` uses a system [`uv`](https://docs.astral.sh/uv/) if you
