@@ -39,6 +39,41 @@ make golden         # or: show committed backup figures with zero compute
 See **[walkthrough/README.md](walkthrough/README.md)** for the guided story, and
 `make help` for all targets.
 
+## Hands-on tutorials
+
+The **ACT, EServe, and Fair-CO2** tutorials live in each tool's own repo under `<Tool>/tutorial/`. Each
+runs in that tool's isolated environment (`.envs/<tool>/`, built by `make setup`). From the suite root,
+**activate the env, run, then `deactivate`:**
+
+**ACT** — drive the real `act_model` CLI on bill-of-materials files you edit:
+```bash
+source .envs/act/bin/activate
+cd ACT
+python -m act.act_model -m tutorial/solutions/poweredge2.yaml -o /tmp/act-out
+cat /tmp/act-out/act_report.yaml        # then edit a BOM under tutorial/ and re-run
+deactivate
+```
+
+**EServe** — model a GPU accelerator, its host, and the embodied-vs-operational grid crossover:
+```bash
+source .envs/eserve/bin/activate
+cd EServe/tutorial
+./tutorial.sh --gpu H100HGX --host
+deactivate
+```
+
+**Fair-CO2** — attribute a shared server's carbon fairly across co-located jobs:
+```bash
+source .envs/fair-co2/bin/activate
+cd Fair-CO2/tutorial
+./tutorial.sh --workloads exercises/workloads.json
+deactivate
+```
+
+The full guided walkthrough for each is in `<Tool>/tutorial/TUTORIAL.md` (5-min intro in
+`TALKING_POINTS.md`). Shortcut — no activation needed — from the suite root:
+`make tutorial-act` / `make tutorial-eserve` / `make tutorial-fairco2`.
+
 ## Environments
 The tools carry mutually incompatible pins (numpy 2.3.4 / 2.3.5 / 2.4.3; Python 3.11
 vs 3.12), so each gets its **own** virtual environment under `.envs/<tool>/`, created
