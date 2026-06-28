@@ -40,13 +40,14 @@ jobs:
         run: bash scripts/bootstrap.sh "${{ matrix.tool }}"
       - name: Recompute the walkthrough segment
         run: bash "walkthrough/${{ matrix.seg }}/run.sh"
-      - name: ACT tutorial smoke-check (in-repo hands-on, ACT/tutorial)
+      - name: ACT tutorial smoke-check (real act_model CLI on tutorial BOMs)
         if: matrix.tool == 'act'
         run: |
-          for b in exercises/sensitivity.yaml solutions/sensitivity_solved.yaml; do
-            PYTHON=$PWD/.envs/act/bin/python bash ACT/tutorial/tutorial.sh "$b"
+          for b in ACT/tutorial/exercises/sensitivity.yaml ACT/tutorial/solutions/sensitivity_solved.yaml ACT/tutorial/solutions/poweredge2.yaml; do
+            PYTHONPATH=$PWD/ACT $PWD/.envs/act/bin/python -m act.act_model -m "$b" -o /tmp/act-tut >/dev/null
+            echo "[ACT] $b -> $(grep '^total_carbon:' /tmp/act-tut/act_report.yaml)"
           done
-          PYTHON=$PWD/.envs/act/bin/python bash ACT/tutorial/tutorial.sh solutions/poweredge2.yaml --expect 72.55
+          grep -q '^total_carbon: 72\.55' /tmp/act-tut/act_report.yaml && echo "OK: poweredge2 ~= 72.55 kg" || { echo "FAIL"; exit 1; }
       - name: EServe tutorial smoke-check (in-repo hands-on, EServe/tutorial)
         if: matrix.tool == 'eserve'
         run: |

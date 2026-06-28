@@ -36,7 +36,8 @@ demo-fairco2: ; bash $(WALK)/06_fairco2/run.sh
 
 # The hands-on tutorials now live IN each tool repo (ACT/tutorial, EServe/tutorial, Fair-CO2/tutorial);
 # these targets run them with the suite's per-tool env via $PYTHON.
-tutorial-act: ; @for b in exercises/sensitivity.yaml solutions/sensitivity_solved.yaml; do PYTHON=$(ROOT)/.envs/act/bin/python bash $(ROOT)/ACT/tutorial/tutorial.sh $$b; done && PYTHON=$(ROOT)/.envs/act/bin/python bash $(ROOT)/ACT/tutorial/tutorial.sh solutions/poweredge2.yaml --expect 72.55
+# ACT's hands-on uses the real act_model CLI directly (no wrapper); this just runs it on the tutorial BOMs.
+tutorial-act: ; @for b in ACT/tutorial/exercises/sensitivity.yaml ACT/tutorial/solutions/sensitivity_solved.yaml ACT/tutorial/solutions/poweredge2.yaml; do PYTHONPATH=$(ROOT)/ACT $(ROOT)/.envs/act/bin/python -m act.act_model -m $$b -o /tmp/act-tut >/dev/null && echo "[ACT] $$b -> $$(grep '^total_carbon:' /tmp/act-tut/act_report.yaml)"; done && grep -q '^total_carbon: 72\.55' /tmp/act-tut/act_report.yaml && echo "  OK: poweredge2 ~= 72.55 kg" || { echo "  FAIL: poweredge2 != 72.55"; exit 1; }
 
 tutorial-eserve: ; @PYTHON=$(ROOT)/.envs/eserve/bin/python bash $(ROOT)/EServe/tutorial/tutorial.sh --gpu H100HGX --host --expect gpu=103 --expect host=1083.7 --expect crossover=11.4 && PYTHON=$(ROOT)/.envs/eserve/bin/python bash $(ROOT)/EServe/tutorial/tutorial.sh --gpu-file exercises/gpu_l4.json && PYTHON=$(ROOT)/.envs/eserve/bin/python bash $(ROOT)/EServe/tutorial/tutorial.sh --gpu-file solutions/my_gpu.json --host
 
