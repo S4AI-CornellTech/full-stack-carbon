@@ -28,40 +28,10 @@ removes everything.)
 git clone https://github.com/S4AI-CornellTech/full-stack-carbon.git
 cd full-stack-carbon
 git submodule update --init
+git submodule update --init MicroGreen
 git -C MicroGreen submodule update --init EmbodiedCarbonModeling  # MicroGreen modeling dep
 make setup          # build the isolated per-tool Python envs (uv-first)
 ```
-Then run a hands-on tutorial (next section), or `make help` for all targets.
-
-## Hands-on tutorials
-
-The **ACT** and **Fair-CO2** tutorials live in their tool repo under `<Tool>/tutorial/`; **EServe**'s
-hands-on is its repo's own **Quick Start**. Each runs in that tool's isolated environment
-(`.envs/<tool>/`, built by `make setup`). From the suite root, **activate the env, run, then
-`deactivate`:**
-
-**ACT** — drive the real `act_model` CLI on bill-of-materials files you edit:
-```bash
-source .envs/act/bin/activate
-cd ACT
-python -m act.act_model -m tutorial/solutions/poweredge2.yaml -o /tmp/act-out
-cat /tmp/act-out/act_report.yaml        # then edit a BOM under tutorial/ and re-run
-deactivate
-```
-
-**EServe** — model a GPU accelerator and its host: its hands-on is the EServe repo's own **Quick Start**
-(`EServe/README.md`, with runnable `EServe/examples/`), in the `eserve` env (`source .envs/eserve/bin/activate`).
-
-**Fair-CO2** — attribute a shared server's carbon fairly across co-located jobs:
-```bash
-source .envs/fair-co2/bin/activate
-cd Fair-CO2/tutorial
-python tutorial.py
-deactivate
-```
-
-The full ACT and Fair-CO2 tutorials are in `<Tool>/tutorial/TUTORIAL.md`. Shortcut — no activation
-needed — from the suite root: `make tutorial-act` / `make tutorial-fairco2`.
 
 ## Environments
 The tools carry mutually incompatible pins (numpy 2.3.4 / 2.3.5 / 2.4.3; Python 3.11
