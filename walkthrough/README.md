@@ -54,11 +54,17 @@ Each `NN_<tool>/` directory contains:
 - `inputs/` — committed handoffs from prior segments + any committed intermediate data
 - `figures/` — regenerated outputs (gitignored)
 - `golden/` — committed backup figures + `result.json` (the zero-compute fallback)
-- `TALKING_POINTS.md` — slide content for that tool's presentation, with honesty
-  caveats where committed data is partial (tool owners author the actual deck)
+- `TALKING_POINTS.md` — the tool's 5-min slide content (honesty caveats baked in). *(For
+  ACT / EServe / Fair-CO2 this — and the hands-on tutorial — now live in the tool repo's
+  `tutorial/`; their suite segment is just the AE-demo files above. CC / COFFEE / MicroGreen
+  keep theirs here.)*
 
-**Segments 1 (ACT), 5 (EServe), and 6 (Fair-CO2)** carry hands-on tutorials — the per-tool hands-on
-format: each has `TUTORIAL.md` (a ~20-min guided walkthrough), a `tutorial.*` runner (drive the real
-tool from editable config files), `exercises/` (participant-editable starters), and `solutions/`
-(reference configs + `EXPECTED.md`). Run them with `make tutorial-act` / `tutorial-eserve` /
-`tutorial-fairco2`.
+**ACT, EServe, and Fair-CO2** carry hands-on tutorials. As with the collaborator-owned CarbonClarity /
+COFFEE / MicroGreen tutorials, **each tutorial lives in its own tool repo** — `ACT/tutorial/`,
+`EServe/tutorial/`, `Fair-CO2/tutorial/` — not in this suite. Each has `TUTORIAL.md` (a ~20-min guided
+walkthrough), a `tutorial.*` runner (drive the real tool from editable config files), `exercises/`
+(participant-editable starters), and `solutions/` (reference configs + `EXPECTED.md`). Run them from this
+suite with `make tutorial-act` / `tutorial-eserve` / `tutorial-fairco2` (which pass the suite's per-tool
+env), or standalone from inside a tool repo: `cd <Tool>/tutorial && PYTHON=…/bin/python ./tutorial.sh …`.
+The suite keeps each segment's cross-tool **AE-demo walkthrough** (`run.sh` / `recompute.py` / `golden/`)
+and the `verify_chain` handoffs.

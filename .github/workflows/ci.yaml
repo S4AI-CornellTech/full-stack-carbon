@@ -40,23 +40,23 @@ jobs:
         run: bash scripts/bootstrap.sh "${{ matrix.tool }}"
       - name: Recompute the walkthrough segment
         run: bash "walkthrough/${{ matrix.seg }}/run.sh"
-      - name: ACT tutorial BOMs smoke-check (segment-1 hands-on)
+      - name: ACT tutorial smoke-check (in-repo hands-on, ACT/tutorial)
         if: matrix.tool == 'act'
         run: |
           for b in exercises/sensitivity.yaml solutions/sensitivity_solved.yaml; do
-            bash walkthrough/01_act/tutorial.sh "$b"
+            PYTHON=$PWD/.envs/act/bin/python bash ACT/tutorial/tutorial.sh "$b"
           done
-          bash walkthrough/01_act/tutorial.sh solutions/poweredge2.yaml --expect 72.55
-      - name: EServe tutorial smoke-check (segment-5 hands-on)
+          PYTHON=$PWD/.envs/act/bin/python bash ACT/tutorial/tutorial.sh solutions/poweredge2.yaml --expect 72.55
+      - name: EServe tutorial smoke-check (in-repo hands-on, EServe/tutorial)
         if: matrix.tool == 'eserve'
         run: |
-          bash walkthrough/05_eserve/tutorial.sh --gpu H100HGX --host \
+          PYTHON=$PWD/.envs/eserve/bin/python bash EServe/tutorial/tutorial.sh --gpu H100HGX --host \
             --expect gpu=103 --expect host=1083.7 --expect crossover=11.4
-      - name: Fair-CO2 tutorial smoke-check (segment-6 hands-on)
+      - name: Fair-CO2 tutorial smoke-check (in-repo hands-on, Fair-CO2/tutorial)
         if: matrix.tool == 'fair-co2'
         run: |
-          bash walkthrough/06_fairco2/tutorial.sh --swing llama --expect swing=2.02
-          bash walkthrough/06_fairco2/tutorial.sh --workloads exercises/workloads.json \
+          PYTHON=$PWD/.envs/fair-co2/bin/python bash Fair-CO2/tutorial/tutorial.sh --swing llama --expect swing=2.02
+          PYTHON=$PWD/.envs/fair-co2/bin/python bash Fair-CO2/tutorial/tutorial.sh --workloads exercises/workloads.json \
             --expect faiss_rup=253.8 --expect faiss_shapley=761.5 --expect faiss_fairco2=571.2
       - name: Upload figures
         if: always()

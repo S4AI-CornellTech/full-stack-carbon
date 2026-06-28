@@ -15,9 +15,9 @@ help: ; @printf '%s\n' \
   "  make setup-full      + heavy extras (MicroGreen hardware stack, Fair-CO2 forecasting)" \
   "  make all-demos       run all six walkthrough segments in order, then verify" \
   "  make demo-<tool>     one segment: act coffee carbonclarity microgreen eserve fairco2" \
-  "  make tutorial-act    run the segment-1 hands-on tutorial BOMs (01_act/TUTORIAL.md)" \
-  "  make tutorial-eserve run the segment-5 hands-on tutorial (05_eserve/TUTORIAL.md)" \
-  "  make tutorial-fairco2 run the segment-6 hands-on tutorial (06_fairco2/TUTORIAL.md)" \
+  "  make tutorial-act    run ACT's in-repo hands-on tutorial (ACT/tutorial/TUTORIAL.md)" \
+  "  make tutorial-eserve run EServe's in-repo hands-on tutorial (EServe/tutorial/TUTORIAL.md)" \
+  "  make tutorial-fairco2 run Fair-CO2's in-repo hands-on tutorial (Fair-CO2/tutorial/TUTORIAL.md)" \
   "  make verify          check the cross-segment carbon handoffs line up" \
   "  make golden          show committed golden figures/results (zero compute)" \
   "  make clean           remove envs and regenerated figures"
@@ -34,11 +34,13 @@ demo-microgreen: ; bash $(WALK)/04_microgreen/run.sh
 demo-eserve: ; bash $(WALK)/05_eserve/run.sh
 demo-fairco2: ; bash $(WALK)/06_fairco2/run.sh
 
-tutorial-act: ; @for b in exercises/sensitivity.yaml solutions/sensitivity_solved.yaml; do bash $(WALK)/01_act/tutorial.sh $$b; done && bash $(WALK)/01_act/tutorial.sh solutions/poweredge2.yaml --expect 72.55
+# The hands-on tutorials now live IN each tool repo (ACT/tutorial, EServe/tutorial, Fair-CO2/tutorial);
+# these targets run them with the suite's per-tool env via $PYTHON.
+tutorial-act: ; @for b in exercises/sensitivity.yaml solutions/sensitivity_solved.yaml; do PYTHON=$(ROOT)/.envs/act/bin/python bash $(ROOT)/ACT/tutorial/tutorial.sh $$b; done && PYTHON=$(ROOT)/.envs/act/bin/python bash $(ROOT)/ACT/tutorial/tutorial.sh solutions/poweredge2.yaml --expect 72.55
 
-tutorial-eserve: ; @bash $(WALK)/05_eserve/tutorial.sh --gpu H100HGX --host --expect gpu=103 --expect host=1083.7 --expect crossover=11.4 && bash $(WALK)/05_eserve/tutorial.sh --gpu-file exercises/gpu_l4.json && bash $(WALK)/05_eserve/tutorial.sh --gpu-file solutions/my_gpu.json --host
+tutorial-eserve: ; @PYTHON=$(ROOT)/.envs/eserve/bin/python bash $(ROOT)/EServe/tutorial/tutorial.sh --gpu H100HGX --host --expect gpu=103 --expect host=1083.7 --expect crossover=11.4 && PYTHON=$(ROOT)/.envs/eserve/bin/python bash $(ROOT)/EServe/tutorial/tutorial.sh --gpu-file exercises/gpu_l4.json && PYTHON=$(ROOT)/.envs/eserve/bin/python bash $(ROOT)/EServe/tutorial/tutorial.sh --gpu-file solutions/my_gpu.json --host
 
-tutorial-fairco2: ; @bash $(WALK)/06_fairco2/tutorial.sh --swing llama --expect swing=2.02 && bash $(WALK)/06_fairco2/tutorial.sh --workloads exercises/workloads.json --expect faiss_rup=253.8 --expect faiss_shapley=761.5 --expect faiss_fairco2=571.2
+tutorial-fairco2: ; @PYTHON=$(ROOT)/.envs/fair-co2/bin/python bash $(ROOT)/Fair-CO2/tutorial/tutorial.sh --swing llama --expect swing=2.02 && PYTHON=$(ROOT)/.envs/fair-co2/bin/python bash $(ROOT)/Fair-CO2/tutorial/tutorial.sh --workloads exercises/workloads.json --expect faiss_rup=253.8 --expect faiss_shapley=761.5 --expect faiss_fairco2=571.2
 
 all-demos: demo-act demo-carbonclarity demo-coffee demo-microgreen demo-eserve demo-fairco2 verify
 

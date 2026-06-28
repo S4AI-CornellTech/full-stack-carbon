@@ -101,12 +101,20 @@ The story, order, and headline numbers live in **`walkthrough/README.md`**. The 
   figure + `result.json`, and falls back to a committed `golden/` via `run.sh --golden`.
 - Segments run **standalone** — the value one hands the next is committed into the next's `inputs/`.
 - `make verify` (`walkthrough/lib/verify_chain.py`) asserts those handoffs line up.
-- Each segment's **`TALKING_POINTS.md`** is the slide content for that tool's presentation (owners
-  build the actual decks from it; honesty caveats are baked in).
+- Each tool's **`TALKING_POINTS.md`** is its 5-min slide content (owners build the actual decks from it;
+  honesty caveats are baked in). For **ACT / EServe / Fair-CO2** it now lives with the hands-on tutorial
+  in the tool repo's `tutorial/`; for CarbonClarity / COFFEE / MicroGreen it's still in the suite segment.
 
-**To edit/add a segment:** copy the shape of `walkthrough/05_eserve/` (`run.sh` + `recompute.py` +
-`TALKING_POINTS.md` + `inputs/` + `golden/`), use the `walkthrough/lib/walk.py` helpers, and after a
-real run snapshot the backup: `rm -f golden/* && cp figures/* golden/`.
+**Hands-on tutorials live in the tool repos.** Each of ACT / EServe / Fair-CO2 has a self-contained
+`tutorial/` folder (`TUTORIAL.md` + `TALKING_POINTS.md` + a `tutorial.*` runner + `exercises/` +
+`solutions/`) that does NOT depend on the suite's `lib/`. The suite runs them via
+`make tutorial-<tool>` (passing the per-tool env as `$PYTHON`); standalone:
+`cd <Tool>/tutorial && PYTHON=…/bin/python ./tutorial.sh …`. (The collaborator's CarbonClarity / COFFEE /
+MicroGreen tutorials follow the same in-repo pattern.)
+
+**To edit/add a suite segment (the cross-tool AE-demo):** copy the shape of `walkthrough/05_eserve/`
+(`run.sh` + `recompute.py` + `inputs/` + `golden/`), use the `walkthrough/lib/walk.py` helpers, and after
+a real run snapshot the backup: `rm -f golden/* && cp figures/* golden/`.
 
 ---
 
@@ -139,9 +147,10 @@ stays byte-identical, ECM's 14 BOMs reproduce, and EServe's memory was corrected
   its own `main` (or open PRs). The suite's `main` already ships these commits via gitlinks.
 - **Keep developing on the suite's `act-core`**, then promote `main` → `act-core` to cut each milestone.
 - **Repos are public** — all eight clone anonymously (the suite uses HTTPS submodule URLs).
-- **Slide decks:** build from the six `TALKING_POINTS.md`.
+- **Slide decks:** build from the six tools' `TALKING_POINTS.md` (ACT / EServe / Fair-CO2 in their
+  `tutorial/` folders; CarbonClarity / COFFEE / MicroGreen in the suite segments).
 - **Deferred technical follow-ups** (detailed in `act-core-migration/README.md`):
-  - EServe's **SoC / SSD / PDN** are still EServe-specific (only the memory model converged onto `act_core`).
+  - EServe's **SoC / PDN** are still EServe-specific (memory + SSD now converged onto `act_core`).
   - The HBM coefficient (0.24) is paper-backed; pulling the real figure from NVIDIA's H100 PCF PDF
     would settle the HBM-stacking-overhead question.
   - COFFEE's **lifetime/endurance** branch (only the embodied/density path is demoed).
@@ -154,7 +163,7 @@ stays byte-identical, ECM's 14 BOMs reproduce, and EServe's memory was corrected
 |---|---|
 | quickstart + suite overview | `README.md` |
 | the walkthrough story + how to run it | `walkthrough/README.md` |
-| a tool's slide content (per segment) | `walkthrough/<segment>/TALKING_POINTS.md` |
+| a tool's hands-on tutorial + slide content | `<Tool>/tutorial/` (ACT/EServe/Fair-CO2); `walkthrough/<segment>/TALKING_POINTS.md` (CC/COFFEE/MicroGreen) |
 | the `act_core` refactor: status, commits, regression | `act-core-migration/README.md` |
 | the EServe memory-convergence deltas | `act-core-migration/baselines/eserve/c3_convergence_deltas.md` |
 | every Make target | `make help` |
