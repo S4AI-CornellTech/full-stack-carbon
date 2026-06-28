@@ -35,9 +35,10 @@ Then run a hands-on tutorial (next section), or `make help` for all targets.
 
 ## Hands-on tutorials
 
-The **ACT, EServe, and Fair-CO2** tutorials live in each tool's own repo under `<Tool>/tutorial/`. Each
-runs in that tool's isolated environment (`.envs/<tool>/`, built by `make setup`). From the suite root,
-**activate the env, run, then `deactivate`:**
+The **ACT** and **Fair-CO2** tutorials live in their tool repo under `<Tool>/tutorial/`; **EServe**'s
+hands-on is its repo's own **Quick Start**. Each runs in that tool's isolated environment
+(`.envs/<tool>/`, built by `make setup`). From the suite root, **activate the env, run, then
+`deactivate`:**
 
 **ACT** — drive the real `act_model` CLI on bill-of-materials files you edit:
 ```bash
@@ -48,13 +49,8 @@ cat /tmp/act-out/act_report.yaml        # then edit a BOM under tutorial/ and re
 deactivate
 ```
 
-**EServe** — model a GPU accelerator, its host, and the embodied-vs-operational grid crossover:
-```bash
-source .envs/eserve/bin/activate
-cd EServe/tutorial
-./tutorial.sh --gpu H100HGX --host
-deactivate
-```
+**EServe** — model a GPU accelerator and its host: its hands-on is the EServe repo's own **Quick Start**
+(`EServe/README.md`, with runnable `EServe/examples/`), in the `eserve` env (`source .envs/eserve/bin/activate`).
 
 **Fair-CO2** — attribute a shared server's carbon fairly across co-located jobs:
 ```bash
@@ -64,8 +60,8 @@ cd Fair-CO2/tutorial
 deactivate
 ```
 
-The full guided tutorial for each is in `<Tool>/tutorial/TUTORIAL.md`. Shortcut — no activation
-needed — from the suite root: `make tutorial-act` / `make tutorial-eserve` / `make tutorial-fairco2`.
+The full ACT and Fair-CO2 tutorials are in `<Tool>/tutorial/TUTORIAL.md`. Shortcut — no activation
+needed — from the suite root: `make tutorial-act` / `make tutorial-fairco2`.
 
 ## Environments
 The tools carry mutually incompatible pins (numpy 2.3.4 / 2.3.5 / 2.4.3; Python 3.11
@@ -77,7 +73,7 @@ Streamlit stack, Fair-CO2's Prophet/HuggingFace forecasting path) are gated behi
 ## Layout
 ```
 ACT/ COFFEE/ CarbonClarity/ MicroGreen/ EServe/ Fair-CO2/   # the six tool submodules
-  ACT/tutorial/  EServe/tutorial/  Fair-CO2/tutorial/       # the in-repo hands-on tutorials
+  ACT/tutorial/  Fair-CO2/tutorial/                         # ACT & Fair-CO2 in-repo tutorials
 scripts/bootstrap.sh  per-tool environment builder
 Makefile            orchestration (make help)
 ```
@@ -86,7 +82,7 @@ Makefile            orchestration (make help)
 - Submodules use HTTPS URLs so the suite clones anonymously for artifact evaluation.
 - `make setup` only builds the per-tool envs under `.envs/` — it never modifies a submodule's
   tracked files. The hands-on tutorials live inside the tool repos themselves
-  (`ACT/tutorial/`, `EServe/tutorial/`, `Fair-CO2/tutorial/`).
+  (`ACT/tutorial/`, `Fair-CO2/tutorial/`; EServe's is its repo Quick Start).
 
 ## Citation
 See `CITATION.cff` and each tool's own README for per-tool references.

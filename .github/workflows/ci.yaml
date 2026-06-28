@@ -1,6 +1,6 @@
 name: tutorials
 
-# Lightweight CI: for ACT / EServe / Fair-CO2, build the tool's env and smoke-check its
+# Lightweight CI: for ACT / Fair-CO2, build the tool's env and smoke-check its
 # in-repo hands-on tutorial. One job per tool so failures are isolated.
 
 on:
@@ -16,7 +16,6 @@ jobs:
       matrix:
         include:
           - { tool: act,      dir: ACT }
-          - { tool: eserve,   dir: EServe }
           - { tool: fair-co2, dir: Fair-CO2 }
     runs-on: ubuntu-latest
     env:
@@ -26,10 +25,7 @@ jobs:
         with:
           submodules: false
       - name: Init submodules
-        run: |
-          git submodule update --init "${{ matrix.dir }}"
-          # eserve installs the shared act_core editable, so it needs ACT too
-          case "${{ matrix.tool }}" in eserve) git submodule update --init ACT ;; esac
+        run: git submodule update --init "${{ matrix.dir }}"
       - name: Install uv
         uses: astral-sh/setup-uv@v3
       - name: Build the tool env
@@ -42,11 +38,6 @@ jobs:
             echo "[ACT] $b -> $(grep '^total_carbon:' /tmp/act-tut/act_report.yaml)"
           done
           grep -q '^total_carbon: 72\.55' /tmp/act-tut/act_report.yaml && echo "OK: poweredge2 ~= 72.55 kg" || { echo "FAIL"; exit 1; }
-      - name: EServe tutorial smoke-check (EServe/tutorial)
-        if: matrix.tool == 'eserve'
-        run: |
-          PYTHON=$PWD/.envs/eserve/bin/python bash EServe/tutorial/tutorial.sh --gpu H100HGX --host \
-            --expect gpu=103 --expect host=1083.7 --expect crossover=11.4
       - name: Fair-CO2 tutorial smoke-check (Fair-CO2/tutorial)
         if: matrix.tool == 'fair-co2'
         run: |
