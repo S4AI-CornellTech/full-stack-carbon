@@ -1,27 +1,23 @@
-name: walkthrough
+name: tutorials
 
-# Lightweight CI: rebuild each tool's env and recompute its walkthrough segment
-# from committed data (the artifact-evaluation path) — never the heavy data
-# collection. One job per segment so failures are isolated.
+# Lightweight CI: for ACT / EServe / Fair-CO2, build the tool's env and smoke-check its
+# in-repo hands-on tutorial. One job per tool so failures are isolated.
 
 on:
   push:
-    branches: [main, suite-assembly, act-core]
+    branches: [main, act-core]
   pull_request:
-    branches: [main, suite-assembly]
+    branches: [main]
 
 jobs:
-  segment:
+  tutorial:
     strategy:
       fail-fast: false
       matrix:
         include:
-          - { tool: act,           dir: ACT,           seg: 01_act }
-          - { tool: carbonclarity, dir: CarbonClarity, seg: 02_carbonclarity }
-          - { tool: coffee,        dir: COFFEE,        seg: 03_coffee }
-          - { tool: microgreen,    dir: MicroGreen,    seg: 04_microgreen }
-          - { tool: eserve,        dir: EServe,        seg: 05_eserve }
-          - { tool: fair-co2,      dir: Fair-CO2,      seg: 06_fairco2 }
+          - { tool: act,      dir: ACT }
+          - { tool: eserve,   dir: EServe }
+          - { tool: fair-co2, dir: Fair-CO2 }
     runs-on: ubuntu-latest
     env:
       MPLBACKEND: Agg
@@ -32,14 +28,12 @@ jobs:
       - name: Init submodules
         run: |
           git submodule update --init "${{ matrix.dir }}"
-          # eserve + microgreen install the shared act-core (act_core) editable, so they need ACT too
-          case "${{ matrix.tool }}" in eserve|microgreen) git submodule update --init ACT ;; esac
+          # eserve installs the shared act_core editable, so it needs ACT too
+          case "${{ matrix.tool }}" in eserve) git submodule update --init ACT ;; esac
       - name: Install uv
         uses: astral-sh/setup-uv@v3
       - name: Build the tool env
         run: bash scripts/bootstrap.sh "${{ matrix.tool }}"
-      - name: Recompute the walkthrough segment
-        run: bash "walkthrough/${{ matrix.seg }}/run.sh"
       - name: ACT tutorial smoke-check (real act_model CLI on tutorial BOMs)
         if: matrix.tool == 'act'
         run: |
@@ -48,34 +42,14 @@ jobs:
             echo "[ACT] $b -> $(grep '^total_carbon:' /tmp/act-tut/act_report.yaml)"
           done
           grep -q '^total_carbon: 72\.55' /tmp/act-tut/act_report.yaml && echo "OK: poweredge2 ~= 72.55 kg" || { echo "FAIL"; exit 1; }
-      - name: EServe tutorial smoke-check (in-repo hands-on, EServe/tutorial)
+      - name: EServe tutorial smoke-check (EServe/tutorial)
         if: matrix.tool == 'eserve'
         run: |
           PYTHON=$PWD/.envs/eserve/bin/python bash EServe/tutorial/tutorial.sh --gpu H100HGX --host \
             --expect gpu=103 --expect host=1083.7 --expect crossover=11.4
-      - name: Fair-CO2 tutorial smoke-check (in-repo hands-on, Fair-CO2/tutorial)
+      - name: Fair-CO2 tutorial smoke-check (Fair-CO2/tutorial)
         if: matrix.tool == 'fair-co2'
         run: |
           PYTHON=$PWD/.envs/fair-co2/bin/python bash Fair-CO2/tutorial/tutorial.sh --swing llama --expect swing=2.02
           PYTHON=$PWD/.envs/fair-co2/bin/python bash Fair-CO2/tutorial/tutorial.sh --workloads exercises/workloads.json \
             --expect faiss_rup=253.8 --expect faiss_shapley=761.5 --expect faiss_fairco2=571.2
-      - name: Upload figures
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: figures-${{ matrix.tool }}
-          path: walkthrough/${{ matrix.seg }}/figures/**
-          if-no-files-found: ignore
-
-  verify:
-    needs: segment
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: false
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Verify cross-segment handoffs (uses committed goldens)
-        run: python walkthrough/lib/verify_chain.py

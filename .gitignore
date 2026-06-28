@@ -6,7 +6,6 @@
 
 # Scratch / regenerated outputs
 /results/
-walkthrough/*/figures/
 
 # Reference papers (kept locally; not redistributed in the repo)
 /papers/

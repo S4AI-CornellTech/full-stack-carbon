@@ -2,8 +2,8 @@
 
 A unified suite of lab tools for **carbon modeling of computer hardware and systems** —
 from device design & manufacturing, through server provisioning, to software carbon
-attribution in the cloud. The six tools are bundled here as git submodules with a
-single guided walkthrough that ties them into one story: **the life of a data center**.
+attribution in the cloud. The six tools are bundled here as git submodules, each with its
+own **self-contained hands-on tutorial**, sharing one set of per-tool Python environments.
 
 > **Collaborators / reviewers:** start with **[CONTRIBUTING.md](CONTRIBUTING.md)** — the handoff guide: current state, the branch model (`main` = the unified suite, `act-core` = active development), how to run, and how to continue.
 
@@ -30,14 +30,10 @@ removes everything.)
 git clone https://github.com/S4AI-CornellTech/full-stack-carbon.git
 cd full-stack-carbon
 git submodule update --init
-git submodule update --init MicroGreen
-git -C MicroGreen submodule update --init EmbodiedCarbonModeling  # modeling dep only
-make setup          # build isolated per-tool Python envs (uv-first)
-make all-demos      # run the six-tool walkthrough, then verify the chain
-make golden         # or: show committed backup figures with zero compute
+git -C MicroGreen submodule update --init EmbodiedCarbonModeling  # MicroGreen modeling dep
+make setup          # build the isolated per-tool Python envs (uv-first)
 ```
-See **[walkthrough/README.md](walkthrough/README.md)** for the guided story, and
-`make help` for all targets.
+Then run a hands-on tutorial (next section), or `make help` for all targets.
 
 ## Hands-on tutorials
 
@@ -70,7 +66,7 @@ cd Fair-CO2/tutorial
 deactivate
 ```
 
-The full guided walkthrough for each is in `<Tool>/tutorial/TUTORIAL.md` (5-min intro in
+The full guided tutorial for each is in `<Tool>/tutorial/TUTORIAL.md` (5-min intro in
 `TALKING_POINTS.md`). Shortcut — no activation needed — from the suite root:
 `make tutorial-act` / `make tutorial-eserve` / `make tutorial-fairco2`.
 
@@ -84,15 +80,16 @@ Streamlit stack, Fair-CO2's Prophet/HuggingFace forecasting path) are gated behi
 ## Layout
 ```
 ACT/ COFFEE/ CarbonClarity/ MicroGreen/ EServe/ Fair-CO2/   # the six tool submodules
-walkthrough/        the six-segment guided example (the workshop centerpiece)
+  ACT/tutorial/  EServe/tutorial/  Fair-CO2/tutorial/       # the in-repo hands-on tutorials
 scripts/bootstrap.sh  per-tool environment builder
 Makefile            orchestration (make help)
 ```
 
 ## Notes
 - Submodules use HTTPS URLs so the suite clones anonymously for artifact evaluation.
-- The walkthrough never modifies a submodule: it reuses each tool's code/data in place
-  and writes only into `walkthrough/<segment>/figures/` (gitignored).
+- `make setup` only builds the per-tool envs under `.envs/` — it never modifies a submodule's
+  tracked files. The hands-on tutorials live inside the tool repos themselves
+  (`ACT/tutorial/`, `EServe/tutorial/`, `Fair-CO2/tutorial/`).
 
 ## Citation
 See `CITATION.cff` and each tool's own README for per-tool references.

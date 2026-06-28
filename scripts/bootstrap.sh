@@ -5,12 +5,12 @@
 # Python 3.11 vs 3.12), so a single shared environment is impossible. Each tool
 # therefore gets its own venv under .envs/<tool>/.
 #
-# By default we install only what each tool's WALKTHROUGH demo needs. The heavy,
+# By default we install only what each tool's hands-on tutorial needs. The heavy,
 # optional pieces (MicroGreen's on-device hardware + Streamlit stack, Fair-CO2's
 # demand-forecasting path) are gated behind FULL=1.
 #
 # Usage:
-#   scripts/bootstrap.sh                 # build every tool's env (walkthrough deps)
+#   scripts/bootstrap.sh                 # build every tool's env (tutorial deps)
 #   scripts/bootstrap.sh act eserve      # build only the named tools
 #   FULL=1 scripts/bootstrap.sh          # also install heavy/optional extras
 #

@@ -7,6 +7,12 @@ onto it. Full design: `/home/leo/.claude/plans/our-lab-has-a-wobbly-simon.md`
 is on the **`act-core`** branch; `suite-assembly` / tag `v0.1.0` stay as the stable
 reframed walkthrough.
 
+> **Note (later):** the cross-tool `walkthrough/` was since **removed** from the suite once the hands-on
+> tutorials moved into the tool repos (ACT/EServe/Fair-CO2 `tutorial/`). The `make all-demos` /
+> `make demo-*` / "walkthrough segment" references below are historical (they were the regression check
+> at migration time); the live regression net is now `make tutorial-act/eserve/fairco2` + the baselines
+> here. The walkthrough is preserved at tag `v0.1.0`.
+
 ## Baselines (captured BEFORE any refactor — the regression net)
 - `baselines/act/<bom>/act_report.yaml` — ACT report for each BOM (dellr740,
   fairphone3, test, imported). `ACT/ci_script.sh` passes at capture time.

@@ -8,13 +8,15 @@ Read this first — it links to the deeper docs instead of duplicating them.
 ## What this is
 
 `full-stack-carbon` bundles six lab tools for carbon modeling of computer hardware and systems —
-device manufacturing → server provisioning → software carbon attribution — as git submodules, with
-a single guided **walkthrough** ("the life of a data center") built for an academic workshop. The
-tools: **ACT, COFFEE, CarbonClarity, MicroGreen, EServe (a.k.a. EcoServe), Fair-CO2**.
+device manufacturing → server provisioning → software carbon attribution — as git submodules, built
+for an academic workshop. The tools: **ACT, COFFEE, CarbonClarity, MicroGreen, EServe (a.k.a.
+EcoServe), Fair-CO2**.
 
 Two things were built on top of bundling them:
-1. A reframed **walkthrough** that runs each tool from committed data (artifact-evaluation style) and
-   ties them into one story.
+1. **Self-contained hands-on tutorials** in each tool's own repo (ACT / EServe / Fair-CO2 done here;
+   CarbonClarity / COFFEE / MicroGreen are the collaborator's, in their repos), run on shared per-tool
+   envs. *(An earlier cross-tool "life of a data center" walkthrough was removed once the tutorials moved
+   into the repos; it's preserved at tag `v0.1.0`.)*
 2. An **`act_core` unification** that de-duplicates the three ACT-derived codebases (ACT, MicroGreen's
    `EmbodiedCarbonModeling`, EServe) onto one shared package.
 
@@ -23,10 +25,11 @@ Two things were built on top of bundling them:
 | Workstream | What | State |
 |---|---|---|
 | A — plumbing & envs | six submodules, per-tool venvs, `Makefile`, CI | ✅ done |
-| B — the walkthrough | six reframed segments, golden fallbacks, chain verify | ✅ done (tag `v0.1.0`) |
+| B — hands-on tutorials | ACT / EServe / Fair-CO2 tutorials, in their tool repos | ✅ done (earlier walkthrough at tag `v0.1.0`) |
 | C — `act_core` unification | ACT + MicroGreen + EServe share one core | ✅ done (shipped on `main`) |
 
-A from-scratch clone → `make setup` → `make all-demos` is **verified to run end-to-end**.
+A from-scratch clone → `make setup` → `make tutorial-act` / `tutorial-eserve` / `tutorial-fairco2` is
+**verified to run end-to-end**.
 The suite's `main` ships the unified suite; the pre-existing **tool** repos keep their `act_core` work
 on `act-core` branches (their own `main`s untouched).
 
@@ -81,9 +84,8 @@ needs a `python3` + network; `make clean` removes `.uv/` and `.envs/`. **Platfor
 
 ```bash
 make submodules     # init the six tools + MicroGreen's EmbodiedCarbonModeling
-make setup          # build the six isolated per-tool venvs (uv-first); ~a few min
-make all-demos      # run all six walkthrough segments, then verify the chain
-make golden         # OR: show the committed backup figures with zero compute
+make setup          # build the per-tool venvs (uv-first); ~a few min
+make tutorial-act   # run ACT's hands-on tutorial (or tutorial-eserve / tutorial-fairco2)
 make help           # every target
 ```
 
@@ -93,28 +95,21 @@ editable. See `README.md` for the quickstart and `scripts/bootstrap.sh` for the 
 
 ---
 
-## How the walkthrough works (Workstream B)
+## How the tutorials work (Workstream B)
 
-The story, order, and headline numbers live in **`walkthrough/README.md`**. The model:
+Each of **ACT / EServe / Fair-CO2** has a self-contained `tutorial/` folder in its **own repo**:
+`TUTORIAL.md` (a ~20-min guided tutorial) + `TALKING_POINTS.md` (the 5-min intro) + `exercises/` +
+`solutions/`, plus a runner — for ACT the real `act_model` CLI directly, for EServe/Fair-CO2 a thin
+`tutorial.*` harness that drives the tool's library and prints the real API calls. They do **not**
+depend on the suite (nothing imports a suite `lib/`); the suite only supplies the shared per-tool env.
 
-- Each `walkthrough/NN_<tool>/` **recomputes from committed data** (no live workloads), writes a
-  figure + `result.json`, and falls back to a committed `golden/` via `run.sh --golden`.
-- Segments run **standalone** — the value one hands the next is committed into the next's `inputs/`.
-- `make verify` (`walkthrough/lib/verify_chain.py`) asserts those handoffs line up.
-- Each tool's **`TALKING_POINTS.md`** is its 5-min slide content (owners build the actual decks from it;
-  honesty caveats are baked in). For **ACT / EServe / Fair-CO2** it now lives with the hands-on tutorial
-  in the tool repo's `tutorial/`; for CarbonClarity / COFFEE / MicroGreen it's still in the suite segment.
-
-**Hands-on tutorials live in the tool repos.** Each of ACT / EServe / Fair-CO2 has a self-contained
-`tutorial/` folder (`TUTORIAL.md` + `TALKING_POINTS.md` + a `tutorial.*` runner + `exercises/` +
-`solutions/`) that does NOT depend on the suite's `lib/`. The suite runs them via
-`make tutorial-<tool>` (passing the per-tool env as `$PYTHON`); standalone:
-`cd <Tool>/tutorial && PYTHON=…/bin/python ./tutorial.sh …`. (The collaborator's CarbonClarity / COFFEE /
-MicroGreen tutorials follow the same in-repo pattern.)
-
-**To edit/add a suite segment (the cross-tool AE-demo):** copy the shape of `walkthrough/05_eserve/`
-(`run.sh` + `recompute.py` + `inputs/` + `golden/`), use the `walkthrough/lib/walk.py` helpers, and after
-a real run snapshot the backup: `rm -f golden/* && cp figures/* golden/`.
+Run from the suite — or standalone inside a tool repo:
+```bash
+make tutorial-act      # or tutorial-eserve / tutorial-fairco2  (uses the per-tool .envs/<tool>)
+# standalone: cd <Tool>/tutorial, activate .envs/<tool>, run — see each TUTORIAL.md
+```
+The collaborator-owned **CarbonClarity / COFFEE / MicroGreen** tutorials live the same way, in their
+own repos.
 
 ---
 
@@ -136,7 +131,7 @@ stays byte-identical, ECM's 14 BOMs reproduce, and EServe's memory was corrected
 - **ACT:** `cd ACT && bash ci_script.sh`; and diff a BOM report vs `baselines/act/<bom>/`.
 - **EServe:** `cd EServe && ../.envs/eserve/bin/python -m pytest tests` (incl. `test_h100_validation`).
 - **MicroGreen/ECM:** re-run its 14 BOMs and diff `total_carbon` vs `baselines/microgreen/<bom>/`.
-- **Walkthrough:** `make all-demos` must stay green.
+- **Tutorials:** `make tutorial-act` / `tutorial-eserve` / `tutorial-fairco2` must pass.
 
 ---
 
@@ -147,8 +142,8 @@ stays byte-identical, ECM's 14 BOMs reproduce, and EServe's memory was corrected
   its own `main` (or open PRs). The suite's `main` already ships these commits via gitlinks.
 - **Keep developing on the suite's `act-core`**, then promote `main` → `act-core` to cut each milestone.
 - **Repos are public** — all eight clone anonymously (the suite uses HTTPS submodule URLs).
-- **Slide decks:** build from the six tools' `TALKING_POINTS.md` (ACT / EServe / Fair-CO2 in their
-  `tutorial/` folders; CarbonClarity / COFFEE / MicroGreen in the suite segments).
+- **Slide decks:** build from each tool's `TALKING_POINTS.md` — ACT / EServe / Fair-CO2 in their
+  `tutorial/` folders; CarbonClarity / COFFEE / MicroGreen in those repos (the collaborator's).
 - **Deferred technical follow-ups** (detailed in `act-core-migration/README.md`):
   - EServe's **SoC / PDN** are still EServe-specific (memory + SSD now converged onto `act_core`).
   - The HBM coefficient (0.24) is paper-backed; pulling the real figure from NVIDIA's H100 PCF PDF
@@ -162,13 +157,12 @@ stays byte-identical, ECM's 14 BOMs reproduce, and EServe's memory was corrected
 | For… | Read |
 |---|---|
 | quickstart + suite overview | `README.md` |
-| the walkthrough story + how to run it | `walkthrough/README.md` |
-| a tool's hands-on tutorial + slide content | `<Tool>/tutorial/` (ACT/EServe/Fair-CO2); `walkthrough/<segment>/TALKING_POINTS.md` (CC/COFFEE/MicroGreen) |
+| a tool's hands-on tutorial + slide content | `<Tool>/tutorial/` (ACT / EServe / Fair-CO2; others in those repos) |
 | the `act_core` refactor: status, commits, regression | `act-core-migration/README.md` |
 | the EServe memory-convergence deltas | `act-core-migration/baselines/eserve/c3_convergence_deltas.md` |
 | every Make target | `make help` |
 | a tool's own documentation | that submodule's own `README` |
 | the source papers | `papers/` (kept local; gitignored) |
 
-The reasoning behind specific choices (why HBM3e = 0.24, why the segment order, the "naive number →
-real point" reframe) lives in the relevant `TALKING_POINTS.md` and `act-core-migration/README.md`.
+The reasoning behind specific choices (why HBM3e = 0.24, the "naive number → real point" framing) lives
+in the relevant `TALKING_POINTS.md` and `act-core-migration/README.md`.

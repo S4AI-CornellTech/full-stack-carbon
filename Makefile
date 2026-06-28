@@ -1,52 +1,33 @@
-# full-stack-carbon - suite orchestration. See README.md for the walkthrough story.
+# full-stack-carbon - one-stop bundle of the six carbon tools (git submodules) with shared
+# per-tool Python envs and the three in-repo hands-on tutorials. See README.md.
 ROOT  := $(CURDIR)
-WALK  := $(ROOT)/walkthrough
-PYACT := $(ROOT)/.envs/act/bin/python
 export MPLBACKEND := Agg
 
-.PHONY: help submodules setup setup-full \
-        demo-act demo-coffee demo-carbonclarity demo-microgreen demo-eserve demo-fairco2 \
-        all-demos verify golden clean tutorial-act tutorial-eserve tutorial-fairco2
+.PHONY: help submodules setup setup-full clean \
+        tutorial-act tutorial-eserve tutorial-fairco2
 
 help: ; @printf '%s\n' \
   "full-stack-carbon suite targets:" \
   "  make submodules      init the six tool submodules (+ MicroGreen modeling dep)" \
-  "  make setup           build per-tool Python envs (walkthrough deps)" \
+  "  make setup           build per-tool Python envs (uv-first)" \
   "  make setup-full      + heavy extras (MicroGreen hardware stack, Fair-CO2 forecasting)" \
-  "  make all-demos       run all six walkthrough segments in order, then verify" \
-  "  make demo-<tool>     one segment: act coffee carbonclarity microgreen eserve fairco2" \
   "  make tutorial-act    run ACT's in-repo hands-on tutorial (ACT/tutorial/TUTORIAL.md)" \
   "  make tutorial-eserve run EServe's in-repo hands-on tutorial (EServe/tutorial/TUTORIAL.md)" \
   "  make tutorial-fairco2 run Fair-CO2's in-repo hands-on tutorial (Fair-CO2/tutorial/TUTORIAL.md)" \
-  "  make verify          check the cross-segment carbon handoffs line up" \
-  "  make golden          show committed golden figures/results (zero compute)" \
-  "  make clean           remove envs and regenerated figures"
+  "  make clean           remove the per-tool envs (.envs) and repo-local uv (.uv)"
 
 submodules: ; git submodule update --init && git -C MicroGreen submodule update --init EmbodiedCarbonModeling
 
 setup: ; bash scripts/bootstrap.sh
 setup-full: ; FULL=1 bash scripts/bootstrap.sh
 
-demo-act: ; bash $(WALK)/01_act/run.sh
-demo-carbonclarity: ; bash $(WALK)/02_carbonclarity/run.sh
-demo-coffee: ; bash $(WALK)/03_coffee/run.sh
-demo-microgreen: ; bash $(WALK)/04_microgreen/run.sh
-demo-eserve: ; bash $(WALK)/05_eserve/run.sh
-demo-fairco2: ; bash $(WALK)/06_fairco2/run.sh
-
-# The hands-on tutorials now live IN each tool repo (ACT/tutorial, EServe/tutorial, Fair-CO2/tutorial);
-# these targets run them with the suite's per-tool env via $PYTHON.
-# ACT's hands-on uses the real act_model CLI directly (no wrapper); this just runs it on the tutorial BOMs.
+# The hands-on tutorials live IN each tool repo (ACT/tutorial, EServe/tutorial, Fair-CO2/tutorial);
+# these targets run them with the suite's per-tool env. ACT's uses the real act_model CLI directly
+# (no wrapper); eserve/fairco2 call the in-repo tutorial.sh via $PYTHON.
 tutorial-act: ; @for b in ACT/tutorial/exercises/sensitivity.yaml ACT/tutorial/solutions/sensitivity_solved.yaml ACT/tutorial/solutions/poweredge2.yaml; do PYTHONPATH=$(ROOT)/ACT $(ROOT)/.envs/act/bin/python -m act.act_model -m $$b -o /tmp/act-tut >/dev/null && echo "[ACT] $$b -> $$(grep '^total_carbon:' /tmp/act-tut/act_report.yaml)"; done && grep -q '^total_carbon: 72\.55' /tmp/act-tut/act_report.yaml && echo "  OK: poweredge2 ~= 72.55 kg" || { echo "  FAIL: poweredge2 != 72.55"; exit 1; }
 
 tutorial-eserve: ; @PYTHON=$(ROOT)/.envs/eserve/bin/python bash $(ROOT)/EServe/tutorial/tutorial.sh --gpu H100HGX --host --expect gpu=103 --expect host=1083.7 --expect crossover=11.4 && PYTHON=$(ROOT)/.envs/eserve/bin/python bash $(ROOT)/EServe/tutorial/tutorial.sh --gpu-file exercises/gpu_l4.json && PYTHON=$(ROOT)/.envs/eserve/bin/python bash $(ROOT)/EServe/tutorial/tutorial.sh --gpu-file solutions/my_gpu.json --host
 
 tutorial-fairco2: ; @PYTHON=$(ROOT)/.envs/fair-co2/bin/python bash $(ROOT)/Fair-CO2/tutorial/tutorial.sh --swing llama --expect swing=2.02 && PYTHON=$(ROOT)/.envs/fair-co2/bin/python bash $(ROOT)/Fair-CO2/tutorial/tutorial.sh --workloads exercises/workloads.json --expect faiss_rup=253.8 --expect faiss_shapley=761.5 --expect faiss_fairco2=571.2
 
-all-demos: demo-act demo-carbonclarity demo-coffee demo-microgreen demo-eserve demo-fairco2 verify
-
-verify: ; $(PYACT) $(WALK)/lib/verify_chain.py
-
-golden: ; @for s in 01_act 02_carbonclarity 03_coffee 04_microgreen 05_eserve 06_fairco2; do bash $(WALK)/$$s/run.sh --golden; done
-
-clean: ; rm -rf $(ROOT)/.envs $(ROOT)/.uv $(WALK)/*/figures
+clean: ; rm -rf $(ROOT)/.envs $(ROOT)/.uv
